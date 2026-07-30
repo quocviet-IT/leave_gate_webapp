@@ -623,3 +623,222 @@ textarea.field-control {
     flex: 1;
   }
 }
+
+/* ---- printable workshop QR poster ---- */
+
+.poster-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.poster-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.poster-toolbar h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.poster-toolbar p {
+  margin: 0.25rem 0 0;
+  color: var(--ink-2);
+  font-size: 0.85rem;
+}
+
+.qr-poster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 210mm);
+  min-height: 297mm;
+  padding: 16mm 18mm 14mm;
+  border: 1px solid var(--rule);
+  background: #ffffff;
+  color: #17202e;
+  text-align: center;
+}
+
+.qr-poster header {
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+  align-items: center;
+}
+
+.qr-poster header span {
+  color: #45516a;
+  font-size: 11pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.qr-poster header h1 {
+  max-width: 165mm;
+  margin: 0;
+  font-size: 24pt;
+  line-height: 1.15;
+}
+
+.qr-poster header p {
+  margin: 0;
+  color: #45516a;
+  font-size: 13pt;
+}
+
+.poster-qr {
+  width: 86mm;
+  height: 86mm;
+  margin: 9mm 0 4mm;
+  padding: 3mm;
+  border: 0.6mm solid #17202e;
+  background: #ffffff;
+}
+
+.poster-qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.poster-url {
+  max-width: 170mm;
+  margin: 0;
+  color: #2a4b9b;
+  font-family: "Cascadia Mono", Consolas, ui-monospace, monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.poster-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5mm 8mm;
+  width: 100%;
+  margin: 10mm 0 0;
+  padding: 0;
+  counter-reset: poster-step;
+  list-style: none;
+  text-align: left;
+}
+
+.poster-steps li {
+  display: grid;
+  grid-template-columns: 10mm 1fr;
+  gap: 1mm 3mm;
+  align-items: start;
+  counter-increment: poster-step;
+}
+
+.poster-steps li::before {
+  display: grid;
+  grid-row: 1 / span 2;
+  place-items: center;
+  width: 9mm;
+  height: 9mm;
+  border-radius: 50%;
+  background: #2a4b9b;
+  color: #ffffff;
+  content: counter(poster-step);
+  font-size: 12pt;
+  font-weight: 800;
+}
+
+.poster-steps strong {
+  font-size: 12pt;
+}
+
+.poster-steps span {
+  color: #45516a;
+  font-size: 10pt;
+  line-height: 1.35;
+}
+
+.qr-poster footer {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 6mm;
+  border-top: 0.4mm solid #dbe1ea;
+}
+
+.qr-poster footer strong {
+  color: #2a4b9b;
+  font-size: 15pt;
+}
+
+.qr-poster footer span {
+  color: #45516a;
+  font-size: 10pt;
+}
+
+@media (max-width: 48rem) {
+  .poster-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .poster-toolbar .button {
+    align-self: flex-start;
+  }
+
+  .qr-poster {
+    min-height: 0;
+    padding: 1.25rem;
+  }
+
+  .poster-qr {
+    width: min(86mm, 75vw);
+    height: min(86mm, 75vw);
+  }
+
+  .poster-steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  body:has(.qr-poster) {
+    background: #ffffff;
+  }
+
+  .ant-layout:has(.qr-poster) > .ant-layout-sider,
+  .ant-layout:has(.qr-poster) .ant-layout-header,
+  .poster-toolbar {
+    display: none !important;
+  }
+
+  .ant-layout:has(.qr-poster),
+  .ant-layout:has(.qr-poster) > .ant-layout {
+    min-height: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .ant-layout-content:has(.qr-poster) {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .qr-poster {
+    width: 210mm;
+    height: 297mm;
+    min-height: 297mm;
+    border: 0;
+    break-after: avoid;
+    break-inside: avoid;
+  }
+}
