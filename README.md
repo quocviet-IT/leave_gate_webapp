@@ -4,7 +4,19 @@ Web app nội bộ CTYHP thay hai mẫu đơn giấy đang lưu hành. CBNV mở
 đơn — không cần đăng nhập; một trong bốn chị nhận và duyệt; bảo vệ xác nhận giờ ra vào ngay tại
 bốt; đơn đã duyệt chảy về màn hình chấm công.
 
-**Trạng thái:** mới ở mức tài liệu. PRD v0.5 (nháp) + demo giao diện. Chưa có code.
+**Trạng thái:** PRD v0.5 (nháp) + khung web app đã dựng và chạy được. Nền cơ sở dữ liệu đã áp
+lên Supabase; logic tính giờ / SLA / mã đơn đã có kèm test. Các màn hình còn là chỗ trống có
+nhãn — xem [AGENTS.md](AGENTS.md) để biết bước kế tiếp.
+
+```bash
+npm install
+cp .env.local.example .env.local   # điền URL + key của Supabase
+npm run migrate                    # áp migration
+npm run dev
+```
+
+Bốn cổng kiểm tra: `npm run build` · `npm test` · `npm run typecheck` · `npm run lint`, cộng
+`node scripts/smoke-pages.mjs http://localhost:3000` khi sửa giao diện.
 
 Hệ thống chia **ba vùng**: vùng nhân viên công khai (`/don`, `/tra-cuu` — không đăng nhập, nhận
 diện bằng tên + mã CBNV), vùng quản trị (`/admin` — Google SSO `@ctyhp.vn`), và vùng bốt bảo vệ
