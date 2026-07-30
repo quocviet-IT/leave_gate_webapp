@@ -13,6 +13,7 @@
     "migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "verify:employees": "node --env-file=.env.local scripts/verify-employees.mjs",
     "verify:submit": "node --env-file=.env.local scripts/verify-submit.mjs",
+    "verify:lookup": "node --env-file=.env.local scripts/verify-lookup.mjs",
     "measure:js": "node scripts/measure-js.mjs",
     "smoke": "node --env-file=.env.local scripts/smoke-pages.mjs"
   },
