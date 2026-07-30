@@ -492,6 +492,26 @@
   .signoff .line { height: 3.25rem; border-bottom: 1px dotted var(--rule); }
   .signoff .date { font-family: var(--font-display); font-size: var(--step--1); color: var(--ink-3); }
 
+  .card--zone { border-top: 3px solid var(--accent); }
+  .card--zone h4 { color: var(--accent); }
+  .card--zone .rt { font-family: var(--font-data); font-size: var(--step--2); color: var(--ink-3); }
+
+  .qr {
+    width: 4.4rem; height: 4.4rem; flex: 0 0 auto;
+    border: 1px solid var(--rule); border-radius: 4px; background: var(--surface-2);
+    display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr);
+    gap: 2px; padding: .3rem;
+  }
+  .qr i { background: var(--ink-3); border-radius: 1px; }
+  .qr i.o { background: transparent; }
+
+  .ticket {
+    display: flex; align-items: center; gap: .7rem;
+    border: 1px dashed var(--accent); border-radius: 5px;
+    background: var(--accent-soft); padding: .6rem .7rem;
+  }
+  .ticket .code { font-family: var(--font-data); font-size: var(--step-1); font-weight: 700; color: var(--accent); letter-spacing: .04em; }
+
   @media print {
     body { background: #fff; color: #000; }
     .shell { grid-template-columns: minmax(0,1fr); max-width: none; padding: 0; }
@@ -509,21 +529,26 @@
   <aside class="index">
     <div class="index-mark">
       <b>Nghỉ phép &amp; Ra vào cổng</b>
-      <span>PRD · Phase 1 · v0.4</span>
+      <span>PRD · Phase 1 · v0.5</span>
     </div>
     <nav>
+      <a href="#s0"><em>0</em><span>Thay đổi v0.5</span></a>
       <a href="#s1"><em>I</em><span>Vấn đề</span></a>
       <a href="#s2"><em>II</em><span>Mục tiêu</span></a>
-      <a href="#s3"><em>III</em><span>Phạm vi</span></a>
-      <a href="#s4"><em>IV</em><span>Người dùng</span></a>
-      <a href="#s5"><em>V</em><span>Luồng &amp; thông báo</span></a>
-      <a href="#s6"><em>VI</em><span>Mẫu giấy</span></a>
-      <a href="#s7"><em>VII</em><span>Trường dữ liệu</span></a>
-      <a href="#s8"><em>VIII</em><span>Tính thời gian</span></a>
-      <a href="#s9"><em>IX</em><span>Giao diện</span></a>
-      <a href="#s10"><em>X</em><span>Quy tắc</span></a>
-      <a href="#s11"><em>XI</em><span>Kỹ thuật</span></a>
-      <a href="#s12"><em>XII</em><span>Rủi ro</span></a>
+      <a href="#s3"><em>III</em><span>Ba vùng</span></a>
+      <a href="#s4"><em>IV</em><span>Phạm vi</span></a>
+      <a href="#s5"><em>V</em><span>Người dùng</span></a>
+      <a href="#s6"><em>VI</em><span>Luồng &amp; thông báo</span></a>
+      <a href="#s7"><em>VII</em><span>Phân công đơn</span></a>
+      <a href="#s8"><em>VIII</em><span>Bốt bảo vệ</span></a>
+      <a href="#s9"><em>IX</em><span>Mẫu giấy</span></a>
+      <a href="#s10"><em>X</em><span>Trường dữ liệu</span></a>
+      <a href="#s11"><em>XI</em><span>Tính thời gian</span></a>
+      <a href="#s12"><em>XII</em><span>Giao diện</span></a>
+      <a href="#s13"><em>XIII</em><span>Quy tắc</span></a>
+      <a href="#s14"><em>XIV</em><span>Dữ liệu gốc</span></a>
+      <a href="#s15"><em>XV</em><span>Kỹ thuật</span></a>
+      <a href="#s16"><em>XVI</em><span>Rủi ro</span></a>
     </nav>
   </aside>
 
@@ -540,34 +565,78 @@
       <h1>Hệ thống Xin nghỉ phép &amp; Giấy ra vào cổng</h1>
 
       <p class="lede">
-        Thay hai mẫu đơn giấy đang lưu hành bằng một web app nội bộ. CBNV gửi đơn trên điện thoại,
-        một trong bốn chị duyệt, Google Chat thông báo ngay, đơn đã duyệt tự chảy về màn hình chấm công.
+        Thay hai mẫu đơn giấy đang lưu hành bằng một web app nội bộ. CBNV mở link hoặc quét mã QR để gửi
+        đơn — không cần đăng nhập; một trong bốn chị nhận và duyệt; bảo vệ xác nhận giờ ra vào ngay tại
+        bốt; đơn đã duyệt tự chảy về màn hình chấm công.
       </p>
 
       <div class="stats">
         <div><span class="k">Loại đơn</span><span class="v big">2</span></div>
+        <div><span class="k">Vùng truy cập</span><span class="v big">3</span></div>
         <div><span class="k">Người duyệt</span><span class="v big">4</span></div>
         <div><span class="k">Cần duyệt</span><span class="v big">1 / 4</span></div>
-        <div><span class="k">Màn hình</span><span class="v big">6</span></div>
-        <div><span class="k">Phiên bản</span><span class="v">0.4 — nháp</span></div>
+        <div><span class="k">Màn hình</span><span class="v big">9</span></div>
+        <div><span class="k">Phiên bản</span><span class="v">0.5 — nháp</span></div>
         <div><span class="k">Bàn giao</span><span class="v">30/07/2026</span></div>
       </div>
     </header>
 
     <div class="keys">
       <div>
-        <span class="kh">Đăng nhập</span>
-        <span class="kb">Một nút <strong>Đăng nhập bằng email công ty</strong>. Không nhập email, không mật khẩu. Tài khoản ngoài <code>@ctyhp.vn</code> bị chặn.</span>
+        <span class="kh">Nhân viên</span>
+        <span class="kb">Một <strong>link công khai</strong> hoặc mã QR dán tại xưởng. Không đăng nhập, không mật khẩu — chọn tên rồi nhập <strong>mã CBNV</strong> của mình.</span>
       </div>
       <div>
         <span class="kh">Duyệt</span>
-        <span class="kb">Hàng chờ chung toàn công ty. <strong>Chị Diệu · chị Phúc · chị Trân · chị Hạnh</strong> — một chị duyệt là đơn có hiệu lực.</span>
+        <span class="kb">Hàng chờ chung toàn công ty trong <code>/admin</code>. <strong>Chị Diệu · chị Phúc · chị Trân · chị Hạnh</strong> — một chị <strong>nhận xử lý</strong> rồi duyệt là đơn có hiệu lực.</span>
+      </div>
+      <div>
+        <span class="kh">Bảo vệ</span>
+        <span class="kb">Bốt cổng mở <code>/bao-ve</code> bằng mã PIN, thấy đơn đã duyệt trong ngày, bấm <strong>Cho ra</strong> / <strong>Cho vào</strong> để ghi giờ thực tế.</span>
       </div>
       <div>
         <span class="kh">Chấm công</span>
-        <span class="kb"><strong>Chị Khoa (C&amp;B)</strong> nhận đơn đã duyệt kèm số giờ hệ thống tính sẵn. Lọc theo kỳ, tải Excel.</span>
+        <span class="kb"><strong>Chị Khoa (C&amp;B)</strong> nhận đơn đã duyệt kèm số giờ hệ thống tính sẵn. Sửa giờ chốt phải ghi lý do. Lọc theo kỳ, tải Excel.</span>
       </div>
     </div>
+
+    <!-- 0 -->
+    <section class="sec" id="s0">
+      <h2><em>0</em>Thay đổi so với bản v0.4</h2>
+      <p>
+        Bản v0.5 tiếp thu toàn bộ 17 đầu mục Ban Giám đốc nêu khi đánh giá v0.4. Bảng dưới đối chiếu từng
+        đầu mục với mục đã đưa vào, kèm quyết định thiết kế phát sinh.
+      </p>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c2">Nhóm</th><th class="c1">Yêu cầu</th><th class="c3">Vào mục</th><th>Quyết định kèm theo</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="4"><span class="pill pill--info">1 · Kiến trúc</span></td><td>Phân tách vùng Nhân viên và vùng Quản trị</td><td class="num">III</td><td>Thành ba vùng, không phải hai — bốt bảo vệ là vùng thứ ba, vào bằng mã PIN</td></tr>
+            <tr><td>Form công khai tối giản, dùng link / QR, không đăng nhập</td><td class="num">III · XII</td><td>Không đăng nhập nên phải có cách nhận diện thay thế: <strong>chọn tên + nhập mã CBNV khớp</strong></td></tr>
+            <tr><td>Trang tra cứu trạng thái đơn độc lập qua mã đơn / link</td><td class="num">XII · XIII</td><td>Tra cứu cần <strong>mã đơn + mã CBNV</strong>, hoặc mở link riêng đã cấp lúc gửi — tránh ai biết mã đơn cũng đọc được</td></tr>
+            <tr><td>Dashboard tổng quan, duyệt đơn, chấm công cho Quản lý &amp; PNS</td><td class="num">III · XII</td><td>Thêm màn hình tổng quan mới; giữ SSO <code>@ctyhp.vn</code> cho riêng vùng này</td></tr>
+            <tr><td><span class="pill pill--info">2 · Khối SX</span></td><td>Quản xưởng tạo đơn hộ công nhân</td><td class="num">V · XIII</td><td>Vai trò mới. Đơn ghi rõ ai tạo hộ; quản xưởng không có quyền duyệt</td></tr>
+            <tr><td rowspan="3"><span class="pill pill--info">3 · Bảo vệ</span></td><td>Màn hình bảng tra cứu đơn ra/vào cổng trong ngày</td><td class="num">VIII</td><td>Chỉ đơn đã duyệt, chỉ trong ngày, chỉ đọc — không sửa được nội dung đơn</td></tr>
+            <tr><td>Xác nhận giờ ra/vào thực tế bằng nút bấm</td><td class="num">VIII · XI</td><td>Giờ bảo vệ bấm là <strong>giờ thực tế ưu tiên</strong>, đè lên giờ CBNV tự khai</td></tr>
+            <tr><td>Webhook bắn đơn đã duyệt vào nhóm Chat Bảo vệ</td><td class="num">VI</td><td>Hai nhóm Chat riêng: nhóm Duyệt và nhóm Bảo vệ, nội dung khác nhau</td></tr>
+            <tr><td rowspan="4"><span class="pill pill--info">4 · Phân công</span></td><td>Nút Nhận xử lý để một người xí đơn</td><td class="num">VII</td><td>Nhận rồi <strong>tự nhả sau 30 phút</strong> nếu không quyết — tránh đơn bị giữ chết</td></tr>
+            <tr><td>Khóa dòng real-time và tự refresh khi đơn đã được duyệt</td><td class="num">VII</td><td>Khóa lạc quan theo số phiên bản đơn; thao tác trên bản cũ bị chặn kèm thông báo</td></tr>
+            <tr><td>Cảnh báo SLA qua Google Chat mốc 1h, 2h</td><td class="num">VI · VII</td><td>Chỉ đếm giờ làm việc; ngoài giờ và Chủ nhật không đếm, tránh nhắc lúc 2 giờ sáng</td></tr>
+            <tr><td>Tab cá nhân tại màn hình duyệt đơn</td><td class="num">VII · XII</td><td>Bốn tab: Tất cả · Tôi đã nhận · Tôi đã duyệt · Quá hạn</td></tr>
+            <tr><td rowspan="3"><span class="pill pill--info">5 · Nghiệp vụ</span></td><td>Bắt buộc lý do khi C&amp;B sửa Giờ chốt</td><td class="num">XI · XIII</td><td>Tối thiểu 10 ký tự; lưu số cũ, số mới, người sửa, thời điểm, lý do</td></tr>
+            <tr><td>CBNV chủ động rút / hủy đơn chờ duyệt, bắn thông báo cập nhật</td><td class="num">VI · XIII</td><td>Rút được ở trang tra cứu công khai; đơn đã có người nhận thì nhắc riêng người đó</td></tr>
+            <tr><td>Thời hạn chót cập nhật giờ ra/vào thực tế</td><td class="num">XI · XIII</td><td><strong>Hết ngày làm việc kế tiếp</strong>; quá hạn CBNV bị khóa, chỉ chị Khoa sửa kèm lý do</td></tr>
+            <tr><td rowspan="2"><span class="pill pill--info">6 · Dữ liệu</span></td><td>Tự đồng bộ Nhân sự &amp; Phòng ban từ Google Workspace Directory</td><td class="num">XIV</td><td>Directory <strong>không có mã CBNV</strong> — cần PNS cấp nguồn mã, đây là điều kiện tiên quyết</td></tr>
+            <tr><td>Gộp hai form thành một route với trường động</td><td class="num">X · XII</td><td>Một địa chỉ <code>/don</code>, ô Loại đơn đổi các trường bên dưới</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:1rem">
+        <strong>Hệ quả lớn nhất của v0.5:</strong> bỏ đăng nhập ở vùng nhân viên nên ba quy tắc của v0.4 phải viết lại —
+        “chỉ tài khoản công ty mới vào được”, “không ai tự duyệt đơn của mình”, và “người này không đọc được đơn
+        người khác”. Cách xử lý mới nằm ở mục XIII, quy tắc 1 · 9 · 14.
+      </div>
+    </section>
 
     <!-- I -->
     <section class="sec" id="s1">
@@ -576,10 +645,13 @@
         <table>
           <thead><tr><th class="c2">Bước</th><th>Trên giấy hiện nay</th><th>Trên app</th></tr></thead>
           <tbody>
-            <tr><td>Tạo đơn</td><td>In mẫu, viết tay họ tên · chức vụ · phòng ban mỗi lần</td><td>Ba trường này tự điền từ tài khoản</td></tr>
+            <tr><td>Tạo đơn</td><td>In mẫu, viết tay họ tên · chức vụ · phòng ban mỗi lần</td><td>Chọn tên mình, ba trường này tự hiện ra từ dữ liệu Nhân sự</td></tr>
+            <tr><td>Công nhân không dùng máy tính</td><td>Vẫn phải xin mẫu giấy, nhờ người viết hộ</td><td>Quét mã QR dán tại xưởng để tự gửi; hoặc nhờ quản xưởng tạo hộ trên máy</td></tr>
             <tr><td>Lấy chữ ký</td><td>Mang giấy đi tìm người ký; người ký đi vắng thì đợi</td><td>Đơn vào hàng chờ của cả bốn chị, kèm thông báo Google Chat</td></tr>
+            <tr><td>Bốn người ký cùng một tờ</td><td>Không xảy ra vì chỉ có một tờ giấy chạy vòng</td><td>Có thể xảy ra khi bốn chị mở cùng lúc — xử lý bằng nút Nhận xử lý ở mục VII</td></tr>
             <tr><td>Tính số giờ</td><td>Nhân sự tính tay, tự trừ Chủ nhật và giờ nghỉ trưa</td><td>Hệ thống tính sẵn, Nhân sự chỉ kiểm lại</td></tr>
             <tr><td>Bằng chứng</td><td>Chữ ký tay, khó tra lại</td><td>Lưu tên người duyệt và thời điểm, không sửa được</td></tr>
+            <tr><td>Giờ ra vào thực tế</td><td>Bảo vệ ghi tay lên tờ giấy, chữ khó đọc</td><td>Bảo vệ bấm một nút tại bốt, hệ thống ghi đúng giây</td></tr>
             <tr><td>Về Nhân sự</td><td>Nộp giấy cho bảo vệ → bảo vệ chuyển về Nhân sự</td><td>Hiện ngay trên màn hình chấm công</td></tr>
             <tr><td>Chấm công</td><td>Gom và nhập tay từng tờ</td><td>Lọc theo kỳ rồi tải một file Excel</td></tr>
             <tr><td>Lưu trữ</td><td>Tập giấy, thất lạc là mất</td><td>Lưu trong cơ sở dữ liệu, in PDF khi cần</td></tr>
@@ -596,35 +668,106 @@
           <thead><tr><th class="c1">Mục tiêu</th><th>Cách đo</th><th class="c3">Mốc</th></tr></thead>
           <tbody>
             <tr><td>Bỏ in và ký tay hai mẫu đơn</td><td>Tỉ lệ đơn tạo trên app so với tổng số đơn trong kỳ</td><td class="num">≥ 95%</td></tr>
+            <tr><td>Khối sản xuất gửi được đơn mà không cần email công ty</td><td>Tỉ lệ đơn của khối sản xuất gửi qua link / QR hoặc quản xưởng tạo hộ</td><td class="num">100%</td></tr>
             <tr><td>Duyệt nhanh hơn</td><td>Thời gian trung bình từ lúc gửi đến lúc có người duyệt, trong giờ làm</td><td class="num">≤ 2 giờ</td></tr>
+            <tr><td>Không đơn nào bị bỏ quên</td><td>Số đơn còn ở trạng thái chờ quá 4 giờ làm việc mà không ai nhận</td><td class="num">0</td></tr>
+            <tr><td>Không duyệt trùng, không tranh chấp</td><td>Số đơn có nhiều hơn một người duyệt hoặc bị ghi đè kết quả</td><td class="num">0</td></tr>
+            <tr><td>Giờ ra vào cổng là số đo, không phải số khai</td><td>Tỉ lệ đơn ra vào cổng có giờ do bảo vệ bấm tại bốt</td><td class="num">≥ 90%</td></tr>
             <tr><td>Nhân sự không nhập tay, không tính tay</td><td>Thời gian tạo dữ liệu chấm công cho một kỳ</td><td class="num">≤ 5 phút</td></tr>
+            <tr><td>Mọi lần sửa số giờ đều truy được nguyên nhân</td><td>Tỉ lệ dòng sửa giờ chốt có lý do điều chỉnh</td><td class="num">100%</td></tr>
             <tr><td>Không mất đơn</td><td>Số đơn đã gửi mà không tra được trạng thái</td><td class="num">0</td></tr>
             <tr><td>Dùng được ngay, không cần đào tạo</td><td>CBNV tự gửi đơn đầu tiên mà không hỏi ai</td><td class="num">≤ 3 phút</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="note" style="margin-top:1rem">
-        <strong>Lưu ý:</strong> Phase 1 chưa bỏ được 100% giấy ở cổng — khâu “Bảo vệ tiếp nhận” chưa đưa vào app.
-        CBNV cho bảo vệ xem đơn đã duyệt trên điện thoại, hoặc in một bản khi bảo vệ yêu cầu.
+      <div class="note note--info" style="margin-top:1rem">
+        <strong>So với v0.4:</strong> khâu “Bảo vệ tiếp nhận” đã vào Phase 1, nên mục tiêu bỏ giấy ở cổng không còn
+        phải trừ ra. Phần giấy còn lại duy nhất là bản in lưu hồ sơ khi Nhân sự cần — in từ app, không phải viết tay.
       </div>
     </section>
 
     <!-- III -->
     <section class="sec" id="s3">
-      <h2><em>III</em>Phạm vi</h2>
+      <h2><em>III</em>Ba vùng trải nghiệm</h2>
+      <p>
+        App chia thành ba vùng tách biệt, mỗi vùng một cách vào và một nhóm người dùng. Tách như vậy vì ba
+        nhóm này khác nhau hoàn toàn: công nhân cần vào nhanh không rào cản, người duyệt cần dữ liệu đầy đủ
+        và có kiểm soát, bảo vệ cần một bảng duy nhất bấm được bằng ngón tay trên máy dùng chung.
+      </p>
+      <div class="duo">
+        <div class="card card--zone">
+          <h4>Vùng nhân viên · công khai</h4>
+          <span class="rt">/don · /tra-cuu</span>
+          <ul>
+            <li><strong>Không đăng nhập.</strong> Mở link hoặc quét mã QR dán tại xưởng và bảng tin</li>
+            <li>Một form duy nhất, ô đầu tiên chọn loại đơn rồi các trường bên dưới đổi theo</li>
+            <li>Nhận diện bằng <strong>chọn tên + nhập mã CBNV</strong> khớp với dữ liệu Nhân sự</li>
+            <li>Gửi xong nhận <strong>mã đơn</strong> và một link riêng để theo dõi</li>
+            <li>Trang tra cứu: xem trạng thái, rút đơn còn chờ, cập nhật giờ vào lại thực tế, in đơn đã duyệt</li>
+          </ul>
+        </div>
+        <div class="card card--zone">
+          <h4>Vùng quản trị · <code>/admin</code></h4>
+          <span class="rt">/admin/tong-quan · /duyet-don · /cham-cong</span>
+          <ul>
+            <li><strong>Đăng nhập bằng tài khoản Google công ty</strong>, chặn tên miền ngoài <code>@ctyhp.vn</code></li>
+            <li>Màn hình tổng quan: số đơn chờ, đơn quá hạn, giờ nghỉ trong kỳ, đơn chưa chấm công</li>
+            <li>Hàng chờ duyệt kèm nút Nhận xử lý và bốn tab cá nhân</li>
+            <li>Màn hình chấm công: lọc theo kỳ, hai cột giờ, tải Excel, đánh dấu đã chấm</li>
+            <li>Quản xưởng tạo đơn hộ công nhân của xưởng mình</li>
+          </ul>
+        </div>
+        <div class="card card--zone">
+          <h4>Vùng bốt bảo vệ · <code>/bao-ve</code></h4>
+          <span class="rt">/bao-ve</span>
+          <ul>
+            <li><strong>Vào bằng mã PIN của bốt</strong>, phiên giữ dài ngày để đổi ca không phải đăng nhập lại</li>
+            <li>Một bảng duy nhất: đơn ra vào cổng đã duyệt của <strong>ngày hôm nay</strong></li>
+            <li>Hai nút lớn mỗi dòng: <strong>Cho ra</strong> và <strong>Cho vào</strong> — bấm là ghi giờ</li>
+            <li>Chỉ đọc phần còn lại; không sửa, không duyệt, không thấy lý do nghỉ</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tw" style="margin-top:1rem">
+        <table>
+          <thead><tr><th class="c2">Vùng</th><th class="c2">Địa chỉ</th><th class="c1">Vào bằng gì</th><th>Ai dùng</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill pill--mute">Nhân viên</span></td><td class="mono">/don · /tra-cuu</td><td>Không đăng nhập · link hoặc QR · chọn tên + mã CBNV</td><td>Toàn bộ CBNV, kể cả người không có email công ty</td></tr>
+            <tr><td><span class="pill pill--info">Quản trị</span></td><td class="mono">/admin/*</td><td>Google Workspace SSO, giới hạn <code>ctyhp.vn</code></td><td>Bốn chị người duyệt · chị Khoa (C&amp;B) · quản xưởng</td></tr>
+            <tr><td><span class="pill pill--draft">Bốt bảo vệ</span></td><td class="mono">/bao-ve</td><td>Mã PIN của bốt</td><td>Bảo vệ đang trực tại cổng</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:1rem">
+        <strong>Vùng công khai không có nghĩa là ai cũng đọc được đơn.</strong> Form công khai chỉ cho <em>gửi</em>.
+        Muốn <em>đọc</em> một đơn phải có mã đơn kèm mã CBNV, hoặc link riêng cấp lúc gửi. Danh sách toàn bộ đơn
+        chỉ tồn tại trong vùng quản trị.
+      </div>
+    </section>
+
+    <!-- IV -->
+    <section class="sec" id="s4">
+      <h2><em>IV</em>Phạm vi</h2>
       <div class="duo">
         <div class="card card--in">
           <h4>Trong Phase 1</h4>
           <ul>
-            <li>Đăng nhập một nút bằng email công ty</li>
-            <li>Đơn xin nghỉ phép</li>
-            <li>Giấy xin phép ra vào cổng</li>
-            <li>Trang “Đơn của tôi” — theo dõi, huỷ đơn còn chờ</li>
-            <li>Hàng chờ duyệt chung cho bốn chị</li>
+            <li>Form công khai một route, trường động theo loại đơn</li>
+            <li>Nhận diện bằng chọn tên + mã CBNV, không cần đăng nhập</li>
+            <li>Mã QR để dán tại xưởng và bảng tin</li>
+            <li>Trang tra cứu đơn: theo dõi · rút đơn · cập nhật giờ thực tế · in</li>
+            <li>Đăng nhập Google cho vùng quản trị</li>
+            <li>Màn hình tổng quan cho Quản lý và PNS</li>
+            <li>Hàng chờ duyệt chung, nút Nhận xử lý, khóa chống duyệt trùng</li>
+            <li>Bốn tab cá nhân tại màn hình duyệt</li>
             <li>Duyệt, hoặc từ chối và ghi thêm lý do</li>
-            <li>Thông báo Google Chat</li>
+            <li>Quản xưởng tạo đơn hộ công nhân</li>
+            <li>Màn hình bốt bảo vệ: bảng đơn trong ngày, nút Cho ra / Cho vào</li>
+            <li>Hai nhóm Google Chat: nhóm Duyệt và nhóm Bảo vệ</li>
+            <li>Nhắc SLA mốc 1 giờ và 2 giờ</li>
             <li>Tự tính số giờ theo giờ làm việc công ty</li>
-            <li>Màn hình chấm công: lọc · Excel · đánh dấu</li>
+            <li>Màn hình chấm công: lọc · Excel · đánh dấu · lý do điều chỉnh bắt buộc</li>
+            <li>Đồng bộ CBNV và phòng ban từ Google Workspace Directory</li>
             <li>Bản in theo bố cục mẫu giấy</li>
             <li>Dùng được trên điện thoại</li>
           </ul>
@@ -632,21 +775,23 @@
         <div class="card card--out">
           <h4>Để lại Phase 2</h4>
           <ul>
-            <li>Màn hình cho bảo vệ tại cổng</li>
             <li>Tự động trừ ngày lễ — Phase 1 chỉ trừ Chủ nhật</li>
             <li>Theo dõi số ngày phép năm còn lại</li>
             <li>Nối trực tiếp vào máy chấm công / bảng lương</li>
             <li>Nhắn riêng Google Chat cho từng người</li>
+            <li>Quét mã QR của từng đơn tại cổng thay vì tìm trong bảng</li>
+            <li>Đăng nhập đích danh cho từng bảo vệ</li>
             <li>Màn hình quản trị phòng ban &amp; CBNV cho Nhân sự</li>
+            <li>Phân quyền duyệt theo phòng ban</li>
             <li>Ứng dụng cài đặt trên điện thoại</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- IV -->
-    <section class="sec" id="s4">
-      <h2><em>IV</em>Người dùng và quyền</h2>
+    <!-- V -->
+    <section class="sec" id="s5">
+      <h2><em>V</em>Người dùng và quyền</h2>
       <div class="tw">
         <table>
           <thead><tr><th class="c2">Vai trò</th><th class="c1">Ai</th><th>Làm được gì</th></tr></thead>
@@ -660,23 +805,40 @@
                 Chị Hạnh <span class="sub mono">hanh@ctyhp.vn</span>
               </td>
               <td>
-                Duyệt hoặc từ chối đơn của <strong>toàn bộ CBNV</strong>, không phân theo phòng ban.
-                <span class="sub">Một chị duyệt là đơn có hiệu lực. Không tự duyệt đơn của mình — ba chị còn lại xử lý.</span>
+                Nhận xử lý rồi duyệt hoặc từ chối đơn của <strong>toàn bộ CBNV</strong>, không phân theo phòng ban.
+                <span class="sub">Một chị duyệt là đơn có hiệu lực. Đơn của chính mình do ba chị còn lại xử lý — hệ thống ẩn nút Duyệt.</span>
               </td>
             </tr>
             <tr>
               <td><span class="pill pill--info">Chấm công</span></td>
               <td>Chị Khoa — C&amp;B Nhân sự <span class="sub mono">anhkhoa@ctyhp.vn</span></td>
               <td>
-                Xem mọi đơn đã duyệt · sửa số giờ chốt · lọc · tải Excel · đánh dấu đã chấm công · huỷ đơn đã duyệt kèm lý do.
+                Xem mọi đơn đã duyệt · sửa giờ chốt kèm lý do bắt buộc · lọc · tải Excel · đánh dấu đã chấm công ·
+                hủy đơn đã duyệt kèm lý do · sửa giờ ra vào thực tế đã quá hạn.
+              </td>
+            </tr>
+            <tr>
+              <td><span class="pill pill--info">Quản xưởng</span></td>
+              <td>Trưởng bộ phận khối sản xuất <span class="sub">danh sách do PNS chỉ định</span></td>
+              <td>
+                Tạo đơn hộ công nhân <strong>thuộc bộ phận mình</strong>; xem trạng thái các đơn mình đã tạo hộ.
+                <span class="sub">Không có quyền duyệt. Đơn tạo hộ ghi rõ “do … tạo hộ” và vẫn phải qua bốn chị.</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="pill pill--draft">Bảo vệ</span></td>
+              <td>Bảo vệ trực tại bốt cổng <span class="sub">vào bằng mã PIN của bốt</span></td>
+              <td>
+                Xem bảng đơn ra vào cổng <strong>đã duyệt, trong ngày</strong>; bấm Cho ra / Cho vào để ghi giờ thực tế.
+                <span class="sub">Không thấy lý do nghỉ, không thấy đơn nghỉ phép, không sửa được đơn.</span>
               </td>
             </tr>
             <tr>
               <td><span class="pill pill--mute">CBNV</span></td>
-              <td>Mọi người có email công ty</td>
+              <td>Toàn bộ CBNV — <strong>không cần email công ty</strong></td>
               <td>
-                Tạo · gửi · theo dõi · huỷ đơn của mình; cập nhật giờ vào lại thực tế; in đơn của mình.
-                <span class="sub">Không thấy đơn của người khác — ràng buộc đặt ở tầng cơ sở dữ liệu.</span>
+                Gửi đơn trên form công khai; tra cứu · rút đơn còn chờ · cập nhật giờ vào lại thực tế · in đơn của mình.
+                <span class="sub">Chỉ mở được đơn khi có mã đơn kèm mã CBNV, hoặc link riêng cấp lúc gửi.</span>
               </td>
             </tr>
           </tbody>
@@ -684,58 +846,248 @@
       </div>
     </section>
 
-    <!-- V -->
-    <section class="sec" id="s5">
-      <h2><em>V</em>Luồng xử lý và thông báo</h2>
+    <!-- VI -->
+    <section class="sec" id="s6">
+      <h2><em>VI</em>Luồng xử lý và thông báo</h2>
       <div class="frame">
 <pre class="mermaid">
 flowchart LR
-  A["CBNV tạo đơn"] --> B["Chờ duyệt<br/>hàng chờ chung của 4 chị"]
-  B --> C["Đã duyệt<br/>ghi tên + thời điểm"]
-  B --> D["Bị từ chối<br/>kèm lý do"]
-  B --> E["Đã huỷ<br/>CBNV tự huỷ"]
-  C --> F["Chị Khoa chấm công<br/>số giờ đã tính sẵn"]
-  F --> G["Đánh dấu đã chấm"]
-  F --> H["Tải file Excel"]
-  B -.-> N["Google Chat"]
-  C -.-> N
+  A["CBNV gửi đơn<br/>form công khai"] --> B["Chờ duyệt<br/>hàng chờ chung"]
+  Q["Quản xưởng tạo hộ"] --> B
+  B --> R["Đang xử lý<br/>1 trong 4 chị đã nhận"]
+  R --> C["Đã duyệt<br/>ghi tên + thời điểm"]
+  R --> D["Bị từ chối<br/>kèm lý do"]
+  B --> E["Đã rút<br/>CBNV tự rút"]
+  R -.->|"30 phút không quyết"| B
+  C --> G["Bốt bảo vệ<br/>Cho ra · Cho vào"]
+  G --> F["Chị Khoa chấm công"]
+  C --> F
+  F --> H["Đánh dấu đã chấm"]
+  F --> X["Tải file Excel"]
+  B -.->|"1h · 2h chưa ai nhận"| N["Nhóm Chat Duyệt"]
+  R -.-> N
   D -.-> N
+  E -.-> N
+  C -.-> M["Nhóm Chat Bảo vệ"]
 </pre>
       </div>
       <p style="margin-top:1rem">
         Trạng thái đơn:
         <span class="pill pill--draft">Chờ duyệt</span>
+        <span class="pill pill--info">Đang xử lý</span>
         <span class="pill pill--ok">Đã duyệt</span>
         <span class="pill pill--stop">Bị từ chối</span>
-        <span class="pill pill--mute">Đã huỷ</span>
+        <span class="pill pill--mute">Đã rút</span>
+        <span class="sub" style="display:inline">— riêng đơn ra vào cổng có thêm dấu <b>Đã ra</b> và <b>Đã vào</b> do bảo vệ ghi.</span>
       </p>
 
-      <h3>Thông báo Google Chat</h3>
-      <figure>
-        <div class="scroller">
-          <div class="gchat">
-            <div class="gchat-head"><span class="who">Đơn từ CBNV</span><span class="bot">APP</span><span>· 09:12</span></div>
-            <div class="gchat-body">
-              <span class="t">Đơn xin nghỉ phép mới — chờ duyệt</span>
-              <div class="gchat-kv">
-                <span class="k">Người gửi</span><span>Nguyễn Văn Bình · Sản xuất</span>
-                <span class="k">Thời gian</span><span class="mono">30/07 → 01/08 · 24 giờ</span>
-                <span class="k">Loại</span><span>Phép năm</span>
+      <h3>Ai nhận thông báo nào</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Việc xảy ra</th><th class="c2">Nhóm Duyệt</th><th class="c2">Nhóm Bảo vệ</th><th>Nội dung tin</th></tr></thead>
+          <tbody>
+            <tr><td>Đơn mới chờ duyệt</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Tên · phòng ban · loại đơn · thời gian · số giờ · link mở đơn</td></tr>
+            <tr><td>Chưa ai nhận sau 1 giờ làm việc</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Nhắc nhẹ, kèm số đơn đang chờ</td></tr>
+            <tr><td>Chưa ai nhận sau 2 giờ làm việc</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Nhắc lần hai, gọi tên cả bốn chị</td></tr>
+            <tr><td>Một chị nhận xử lý</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>“Chị Diệu đang xử lý đơn …” — để ba chị còn lại khỏi mở</td></tr>
+            <tr><td>Đơn ra vào cổng được duyệt</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--ok">Có</span></td><td>Tin cho bảo vệ: tên · phòng ban · giờ ra · giờ vào dự kiến. <strong>Không có lý do</strong></td></tr>
+            <tr><td>Đơn nghỉ phép được duyệt</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Bảo vệ không cần biết ai nghỉ phép ở nhà</td></tr>
+            <tr><td>Đơn bị từ chối</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Tên · loại đơn · người từ chối. Lý do từ chối không đưa vào tin</td></tr>
+            <tr><td>CBNV rút đơn</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Cập nhật vào đúng luồng tin của đơn đó, để không ai duyệt đơn đã rút</td></tr>
+            <tr><td>Đơn đã duyệt bị chị Khoa hủy</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--ok">Có</span></td><td>Bảo vệ phải biết để không cho ra cổng nữa</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Mô phỏng tin nhắn</h3>
+      <div class="grid-figs">
+        <figure>
+          <div class="scroller">
+            <div class="gchat">
+              <div class="gchat-head"><span class="who">Duyệt đơn — Nhân sự</span><span class="bot">APP</span><span>· 09:12</span></div>
+              <div class="gchat-body">
+                <span class="t">Đơn xin nghỉ phép mới — chờ duyệt</span>
+                <div class="gchat-kv">
+                  <span class="k">Mã đơn</span><span class="mono">NP-2607-0148</span>
+                  <span class="k">Người gửi</span><span>Nguyễn Văn Bình · Sản xuất</span>
+                  <span class="k">Thời gian</span><span class="mono">30/07 → 01/08 · 24 giờ</span>
+                  <span class="k">Loại</span><span>Phép năm</span>
+                </div>
               </div>
+              <div class="gchat-foot"><span class="btn btn--pri">Nhận xử lý</span> <span class="btn">Mở đơn</span></div>
             </div>
-            <div class="gchat-foot"><span class="btn btn--pri">Mở đơn để duyệt</span></div>
           </div>
-        </div>
-        <figcaption>
-          <b>Mô phỏng</b> — tin nhắn <strong>không kèm lý do nghỉ</strong>. Lý do có thể là chuyện sức khoẻ
-          hoặc gia đình; ai cần đọc thì mở đơn trong app.
-        </figcaption>
-      </figure>
+          <figcaption>
+            <b>Nhóm Duyệt</b> — tin <strong>không kèm lý do nghỉ</strong>. Lý do có thể là chuyện sức khoẻ hoặc gia đình;
+            ai cần đọc thì mở đơn trong app.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="gchat">
+              <div class="gchat-head"><span class="who">Bảo vệ cổng</span><span class="bot">APP</span><span>· 09:31</span></div>
+              <div class="gchat-body">
+                <span class="t">Đã duyệt — cho ra cổng hôm nay</span>
+                <div class="gchat-kv">
+                  <span class="k">CBNV</span><span>Trần Thị Lan · Sản xuất</span>
+                  <span class="k">Giờ ra</span><span class="mono">30/07 · 10:00</span>
+                  <span class="k">Vào lại</span><span class="mono">30/07 · 14:00 (dự kiến)</span>
+                  <span class="k">Người duyệt</span><span>Chị Trân</span>
+                </div>
+              </div>
+              <div class="gchat-foot"><span class="btn">Mở bảng bốt bảo vệ</span></div>
+            </div>
+          </div>
+          <figcaption>
+            <b>Nhóm Bảo vệ</b> — chỉ đơn ra vào cổng, chỉ những gì cần để cho qua cổng. Không có lý do,
+            không có đơn nghỉ phép.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="gchat">
+              <div class="gchat-head"><span class="who">Duyệt đơn — Nhân sự</span><span class="bot">APP</span><span>· 11:12</span></div>
+              <div class="gchat-body">
+                <span class="t" style="color:var(--warn)">Nhắc lần 2 — đơn chờ đã 2 giờ làm việc</span>
+                <div class="gchat-kv">
+                  <span class="k">Mã đơn</span><span class="mono">RC-2607-0311</span>
+                  <span class="k">Người gửi</span><span>Phạm Thu Hà · Kế toán</span>
+                  <span class="k">Chờ từ</span><span class="mono">09:12 · chưa ai nhận</span>
+                </div>
+                <span class="hint">Chị Diệu · chị Phúc · chị Trân · chị Hạnh</span>
+              </div>
+              <div class="gchat-foot"><span class="btn btn--pri">Nhận xử lý</span></div>
+            </div>
+          </div>
+          <figcaption>
+            <b>Nhắc SLA</b> — mốc 1 giờ nhắc nhẹ, mốc 2 giờ gọi tên cả bốn chị. Chỉ đếm giờ làm việc:
+            đơn gửi 16:30 thứ Bảy thì mốc 1 giờ rơi vào 08:00 thứ Hai, không nhắc lúc nửa đêm.
+          </figcaption>
+        </figure>
+      </div>
     </section>
 
-    <!-- VI -->
-    <section class="sec" id="s6">
-      <h2><em>VI</em>Hai mẫu giấy hiện hành</h2>
+    <!-- VII -->
+    <section class="sec" id="s7">
+      <h2><em>VII</em>Phân công đơn giữa bốn người duyệt</h2>
+      <p>
+        Trên giấy chỉ có một tờ nên không bao giờ hai người ký cùng lúc. Trên app thì bốn chị mở cùng một
+        hàng chờ, nên phải có cơ chế để một đơn chỉ một người xử lý, và để không đơn nào bị cả bốn chị
+        tưởng người khác làm rồi.
+      </p>
+
+      <h3>Bốn cơ chế</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Cơ chế</th><th>Cách chạy</th><th class="c3">Chống được gì</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Nhận xử lý</strong><span class="sub">Claim</span></td>
+              <td>
+                Mỗi dòng có nút <strong>Nhận xử lý</strong>. Bấm xong đơn chuyển sang <em>Đang xử lý</em>, ghi tên và thời điểm.
+                Ba chị còn lại thấy dòng đó xám lại kèm chữ “Chị Diệu đang xử lý”.
+                <span class="sub">Nhận rồi <strong>tự nhả về hàng chờ sau 30 phút</strong> nếu không duyệt cũng không từ chối. Người nhận cũng có nút Nhả đơn.</span>
+              </td>
+              <td>Bốn người cùng mở một đơn</td>
+            </tr>
+            <tr>
+              <td><strong>Khóa theo phiên bản</strong><span class="sub">Optimistic locking</span></td>
+              <td>
+                Mỗi đơn giữ một số phiên bản, tăng lên sau mỗi lần đổi trạng thái. Nút Duyệt gửi kèm số phiên bản
+                đang hiển thị trên máy; nếu số đó không còn khớp thì hệ thống <strong>từ chối thao tác</strong> và hiện
+                “Đơn này chị Trân vừa duyệt lúc 09:31”.
+                <span class="sub">Ràng buộc đặt ở tầng cơ sở dữ liệu, không chỉ ở giao diện.</span>
+              </td>
+              <td>Hai lần duyệt ghi đè nhau</td>
+            </tr>
+            <tr>
+              <td><strong>Tự cập nhật</strong><span class="sub">Real-time</span></td>
+              <td>
+                Bảng hàng chờ nghe thay đổi từ cơ sở dữ liệu. Đơn được nhận, duyệt, từ chối hay rút thì các máy
+                khác thấy ngay, không cần bấm tải lại. Số đơn chờ trên menu cũng đổi theo.
+              </td>
+              <td>Nhìn số liệu cũ rồi bấm oan</td>
+            </tr>
+            <tr>
+              <td><strong>Nhắc theo mốc</strong><span class="sub">SLA reminder</span></td>
+              <td>
+                Đếm từ lúc gửi, <strong>chỉ tính giờ làm việc</strong>. Mốc 1 giờ nhắc nhẹ vào nhóm Duyệt; mốc 2 giờ
+                nhắc lại kèm gọi tên cả bốn chị. Đơn đã có người nhận thì ngừng nhắc.
+              </td>
+              <td>Đơn nằm im vì ai cũng tưởng người khác làm</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Bốn tab ở màn hình duyệt</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Tab</th><th>Hiện những đơn nào</th><th class="c3">Dùng để</th></tr></thead>
+          <tbody>
+            <tr><td>Tất cả đơn chờ</td><td>Mọi đơn <em>Chờ duyệt</em> và <em>Đang xử lý</em> của toàn công ty</td><td>Xem bức tranh chung</td></tr>
+            <tr><td>Đơn tôi đã nhận</td><td>Đơn mình đang giữ, chưa quyết — kèm đồng hồ đếm 30 phút</td><td>Việc của mình</td></tr>
+            <tr><td>Đơn tôi đã duyệt</td><td>Đơn mình đã duyệt hoặc từ chối, mới nhất trước</td><td>Tra lại việc đã làm</td></tr>
+            <tr><td>Quá hạn</td><td>Đơn chờ quá 2 giờ làm việc mà chưa ai nhận</td><td>Dọn phần bị bỏ quên</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:1rem">
+        <strong>Nhận xử lý không phải là phân công cứng.</strong> Không ai bị gán đơn tự động, và bốn chị vẫn
+        có thẩm quyền như nhau trên toàn bộ CBNV. Cơ chế này chỉ để bốn người không đụng nhau; nếu chị nhận
+        đơn đi vắng, sau 30 phút đơn tự về hàng chờ cho người khác.
+      </div>
+    </section>
+
+    <!-- VIII -->
+    <section class="sec" id="s8">
+      <h2><em>VIII</em>Màn hình bốt bảo vệ</h2>
+      <p>
+        Trên giấy, bảo vệ ký vào ô “Bảo vệ tiếp nhận” rồi gom tờ giấy chuyển về Nhân sự. Trên app, bảo vệ
+        không ký và không giữ giấy nữa — chỉ bấm một nút để ghi lại đúng thời điểm CBNV ra và vào.
+      </p>
+
+      <h3>Cách vào và cách dùng</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Hạng mục</th><th>Quy định Phase 1</th></tr></thead>
+          <tbody>
+            <tr><td>Vào màn hình</td><td>Mở <code>/bao-ve</code>, nhập <strong>mã PIN của bốt</strong>. Phiên giữ 30 ngày trên đúng máy đó nên đổi ca không phải nhập lại.</td></tr>
+            <tr><td>Đổi mã PIN</td><td>Chị Khoa đổi được trong vùng quản trị; đổi xong mọi máy bốt phải nhập lại.</td></tr>
+            <tr><td>Thấy gì</td><td>Chỉ đơn <strong>ra vào cổng</strong>, <strong>đã duyệt</strong>, có giờ ra thuộc <strong>ngày hôm nay</strong>. Sắp theo giờ ra gần nhất trước.</td></tr>
+            <tr><td>Không thấy gì</td><td>Không thấy đơn nghỉ phép, không thấy lý do xin phép, không thấy đơn của ngày khác, không thấy đơn chưa duyệt.</td></tr>
+            <tr><td>Thao tác</td><td>Hai nút mỗi dòng: <strong>Cho ra</strong> và <strong>Cho vào</strong>. Bấm là ghi ngay giờ hệ thống, không nhập tay giờ.</td></tr>
+            <tr><td>Bấm sai</td><td>Hoàn tác được trong <strong>5 phút</strong> ngay trên dòng đó. Quá 5 phút thì chị Khoa sửa kèm lý do.</td></tr>
+            <tr><td>Thứ tự</td><td>Phải <em>Cho ra</em> trước mới <em>Cho vào</em> được. Bấm Cho vào trước, hệ thống chặn kèm nhắc.</td></tr>
+            <tr><td>Ghi lại gì</td><td>Thời điểm đến giây · thao tác · mã bốt. Phase 1 <strong>không ghi đích danh</strong> bảo vệ nào bấm.</td></tr>
+            <tr><td>Mất mạng</td><td>Bảo vệ ghi tay lên sổ ca như hiện nay, chị Khoa nhập bù kèm lý do. Bản offline thuộc Phase 2.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Giờ nào được tính</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Tình huống</th><th>Giờ hệ thống dùng để tính công</th></tr></thead>
+          <tbody>
+            <tr><td>Bảo vệ bấm cả Cho ra và Cho vào</td><td><strong>Giờ bảo vệ bấm</strong> — số đo tại cổng, tin cậy nhất</td></tr>
+            <tr><td>Bảo vệ chỉ bấm Cho ra</td><td>Giờ ra lấy của bảo vệ; giờ vào lấy của CBNV tự khai, đánh dấu <em>chưa xác nhận tại cổng</em></td></tr>
+            <tr><td>Bảo vệ không bấm gì</td><td>Lấy giờ CBNV tự khai, hiện cảnh báo trên màn chấm công</td></tr>
+            <tr><td>Giờ bảo vệ lệch giờ CBNV khai quá 15 phút</td><td>Vẫn lấy giờ bảo vệ, nhưng đánh dấu để chị Khoa xem lại</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note note--info" style="margin-top:1rem">
+        <strong>Phase 1 vẫn cần bảo vệ tìm tên trong bảng.</strong> Bảng một ngày thường dưới 20 dòng nên tìm bằng
+        mắt là đủ, kèm ô tìm theo tên. Quét mã QR của từng đơn ngay tại cổng thuộc Phase 2.
+      </div>
+    </section>
+
+    <!-- IX -->
+    <section class="sec" id="s9">
+      <h2><em>IX</em>Hai mẫu giấy hiện hành</h2>
       <div class="grid-figs">
         <figure>
           <div class="scroller">
@@ -791,53 +1143,83 @@ flowchart LR
       </div>
     </section>
 
-    <!-- VII -->
-    <section class="sec" id="s7">
-      <h2><em>VII</em>Trường dữ liệu</h2>
-      <p>App giữ lại toàn bộ các trường trên mẫu giấy; chỉ thay cách thu thập và cách ký.</p>
+    <!-- X -->
+    <section class="sec" id="s10">
+      <h2><em>X</em>Trường dữ liệu</h2>
+      <p>
+        App giữ lại toàn bộ các trường trên mẫu giấy; chỉ thay cách thu thập và cách ký. Hai mẫu dùng
+        <strong>một địa chỉ duy nhất</strong> <code>/don</code>: ô đầu tiên chọn loại đơn, các trường bên dưới đổi theo.
+      </p>
 
-      <h3>Đơn xin nghỉ phép</h3>
+      <h3>Phần chung — nhận diện người gửi</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Trường</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <tbody>
+            <tr><td class="pf">Loại đơn</td><td>Hai lựa chọn lớn: <strong>Xin nghỉ phép</strong> · <strong>Ra vào cổng</strong>. Đổi lựa chọn thì phần dưới đổi theo</td><td>Có</td></tr>
+            <tr><td class="pf">Tôi tên là</td><td>Ô tìm và chọn tên trong danh sách CBNV đồng bộ từ Google Directory — gõ vài chữ là ra</td><td>Có</td></tr>
+            <tr><td class="pf">Mã CBNV</td><td>Ô nhập. Phải khớp với tên đã chọn mới gửi được. Sai 5 lần thì khóa 15 phút</td><td>Có</td></tr>
+            <tr><td class="pf">Chức vụ / Phòng–Ban–Bộ phận</td><td>Tự hiện ra sau khi chọn tên, chỉ đọc</td><td>tự động</td></tr>
+            <tr><td class="pf">— không có trên giấy</td><td><strong>Mã đơn</strong> hệ thống cấp sau khi gửi, ví dụ <span class="mono">NP-2607-0148</span>, kèm link riêng để theo dõi</td><td>tự động</td></tr>
+            <tr><td class="pf">— không có trên giấy</td><td><strong>Người tạo hộ</strong> — điền khi quản xưởng tạo thay công nhân, in ra bản giấy luôn</td><td>Có điều kiện</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Phần riêng — Đơn xin nghỉ phép</h3>
       <div class="tw">
         <table>
           <thead><tr><th class="c1">Trên mẫu giấy</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
           <tbody>
-            <tr><td class="pf">Tôi tên là / Chức vụ / Phòng–Ban</td><td>Tự điền từ tài khoản</td><td>tự động</td></tr>
             <tr><td class="pf">Được nghỉ từ ngày … đến ngày …</td><td>Hai ô chọn ngày, thêm lựa chọn nghỉ nửa ngày sáng hoặc chiều</td><td>Có</td></tr>
-            <tr><td class="pf">Tổng thời gian nghỉ</td><td>Hệ thống tự tính ra ngày và giờ theo mục VIII</td><td>tự động</td></tr>
+            <tr><td class="pf">Tổng thời gian nghỉ</td><td>Hệ thống tự tính ra ngày và giờ theo mục XI</td><td>tự động</td></tr>
             <tr><td class="pf">Lý do — 8 ô đánh dấu</td><td>Chọn một. Chọn <strong>Trường hợp đặc biệt</strong> hoặc <strong>Khác</strong> thì hiện ô để tự ghi rõ</td><td>Có</td></tr>
             <tr><td class="pf">Lý do (dòng viết tay)</td><td>Ô văn bản diễn giải</td><td>Có</td></tr>
             <tr><td class="pf">Bàn giao lại cho</td><td>Chọn một CBNV trong danh sách</td><td>Có</td></tr>
             <tr><td class="pf">Đề xuất ngày làm bù</td><td>Ô chọn ngày</td><td>Không</td></tr>
             <tr><td class="pf">Cam kết không ảnh hưởng công việc</td><td>Ô tích, in nguyên văn cam kết bên cạnh</td><td>Có</td></tr>
-            <tr><td class="pf">4 ô ký: BGĐ · GSNB · TP/TBP · Người làm đơn</td><td>Ô người làm đơn là tài khoản gửi đơn; ba ô còn lại thay bằng một trong bốn chị, ghi tên và thời điểm</td><td>tự động</td></tr>
+            <tr><td class="pf">4 ô ký: BGĐ · GSNB · TP/TBP · Người làm đơn</td><td>Ô người làm đơn ghi tên đã chọn kèm mã đơn và thời điểm gửi; ba ô còn lại thay bằng một trong bốn chị, ghi tên và thời điểm duyệt</td><td>tự động</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Giấy xin phép ra vào cổng</h3>
+      <h3>Phần riêng — Giấy xin phép ra vào cổng</h3>
       <div class="tw">
         <table>
           <thead><tr><th class="c1">Trên mẫu giấy</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
           <tbody>
-            <tr><td class="pf">Họ tên / Chức vụ / Phòng–Ban–Bộ phận</td><td>Tự điền từ tài khoản</td><td>tự động</td></tr>
             <tr><td class="pf">Lý do: Đi công tác · Nghỉ phép · Khác</td><td>Chọn một. Chọn <strong>Khác</strong> thì hiện ô để tự ghi rõ</td><td>Có</td></tr>
             <tr><td class="pf">Diễn giải</td><td>Ô văn bản</td><td>Có</td></tr>
             <tr><td class="pf">Thời gian ra</td><td>Một ô chọn ngày và giờ</td><td>Có</td></tr>
             <tr><td class="pf">Thời gian vào lại</td><td>Một ô chọn ngày và giờ, hiểu là dự kiến; phải sau thời gian ra</td><td>Có</td></tr>
-            <tr><td class="pf">Thời gian vào sớm / vào trễ</td><td>CBNV nhập giờ vào lại thực tế; hệ thống tự tính chênh lệch</td><td>Sau khi về</td></tr>
-            <tr><td class="pf">Lý do vào sớm / vào trễ</td><td>Ô văn bản, bắt buộc khi lệch quá 15 phút</td><td>Có điều kiện</td></tr>
+            <tr><td class="pf">Thời gian vào sớm / vào trễ</td><td>Hệ thống tính chênh lệch giữa giờ vào lại thực tế và giờ dự kiến</td><td>tự động</td></tr>
+            <tr><td class="pf">Lý do của việc vào sớm/vào trễ</td><td>Ô văn bản, bắt buộc khi lệch quá 15 phút</td><td>Có điều kiện</td></tr>
+            <tr><td class="pf">Ô ký “Bảo vệ tiếp nhận”</td><td><strong>Thay bằng hai dấu thời gian</strong> bảo vệ bấm tại bốt: <em>Đã cho ra</em> và <em>Đã cho vào</em>, kèm giờ đến giây và mã bốt</td><td>tự động</td></tr>
+            <tr><td class="pf">— không có trên giấy</td><td><strong>Giờ vào lại thực tế</strong>: ưu tiên giờ bảo vệ bấm; nếu bảo vệ không bấm thì CBNV nhập ở trang tra cứu, hạn chót hết ngày làm việc kế tiếp</td><td>Có</td></tr>
             <tr><td class="pf">— không có trên giấy</td><td>Hệ thống tính <strong>số giờ vắng trong giờ làm</strong> để chấm công dùng trực tiếp</td><td>tự động</td></tr>
-            <tr><td class="pf">Ô ký “Bảo vệ tiếp nhận”</td><td>Phase 2</td><td>—</td></tr>
             <tr><td class="pf">3 ô ký còn lại</td><td>Một trong bốn chị người duyệt</td><td>tự động</td></tr>
-            <tr><td class="pf">Lưu ý: nộp lại cho Bảo vệ để chuyển về Nhân sự</td><td>Không cần nữa — đơn tự chảy về màn hình chấm công</td><td>—</td></tr>
+            <tr><td class="pf">Lưu ý: nộp lại cho Bảo vệ để chuyển về Nhân sự</td><td>Không cần nữa — bảo vệ xác nhận ngay tại bốt, đơn tự chảy về màn hình chấm công</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Phần riêng — chấm công</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Trường</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <tbody>
+            <tr><td class="pf">Giờ tính</td><td>Số hệ thống tính, khóa, không ai sửa được</td><td>tự động</td></tr>
+            <tr><td class="pf">Giờ chốt</td><td>Số chị Khoa dùng để tính lương; mặc định bằng Giờ tính</td><td>Có</td></tr>
+            <tr><td class="pf">Lý do điều chỉnh</td><td>Ô văn bản, <strong>bắt buộc tối thiểu 10 ký tự</strong> khi Giờ chốt khác Giờ tính. Không ghi thì không lưu được</td><td>Có điều kiện</td></tr>
+            <tr><td class="pf">Vết sửa</td><td>Mỗi lần sửa lưu: số cũ · số mới · người sửa · thời điểm · lý do. Xem lại được toàn bộ, không xóa được</td><td>tự động</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- VIII -->
-    <section class="sec" id="s8">
-      <h2><em>VIII</em>Cách hệ thống tính thời gian</h2>
+    <!-- XI -->
+    <section class="sec" id="s11">
+      <h2><em>XI</em>Cách hệ thống tính thời gian</h2>
       <div class="duo">
         <div class="tw">
           <table>
@@ -848,8 +1230,9 @@ flowchart LR
               <tr><td>Buổi chiều</td><td class="num">13:00 – 17:00 · 4 giờ</td></tr>
               <tr><td>Một ngày làm việc</td><td class="num">8 giờ</td></tr>
               <tr><td>Ngày không làm</td><td>Chủ nhật — không tính vào thời gian nghỉ</td></tr>
-              <tr><td>Ngày lễ</td><td>Phase 1 chưa trừ tự động; chị Khoa sửa số giờ chốt</td></tr>
+              <tr><td>Ngày lễ</td><td>Phase 1 chưa trừ tự động; chị Khoa sửa số giờ chốt kèm lý do</td></tr>
               <tr><td>Múi giờ</td><td class="num">UTC+7 — kể cả trong file Excel</td></tr>
+              <tr><td>Mốc đếm SLA</td><td>Chỉ giờ làm việc; ngoài giờ và Chủ nhật dừng đếm</td></tr>
             </tbody>
           </table>
         </div>
@@ -862,20 +1245,34 @@ flowchart LR
               <tr><td>Nghỉ phép</td><td>Nửa ngày, buổi chiều</td><td class="num">4 giờ</td></tr>
               <tr><td>Ra cổng</td><td>Ra 10:00 → vào 14:00</td><td class="num">3 giờ<span class="sub">trừ nghỉ trưa</span></td></tr>
               <tr><td>Ra cổng</td><td>Ra 16:00 → vào 09:00 hôm sau</td><td class="num">2 giờ<span class="sub">1 giờ chiều + 1 giờ sáng</span></td></tr>
-              <tr><td>Ra cổng</td><td>Dự kiến vào 14:00, thực tế 14:20</td><td class="num">Trễ 20 phút<span class="sub">&gt; 15 phút → phải ghi lý do</span></td></tr>
+              <tr><td>Ra cổng</td><td>Dự kiến vào 14:00, bảo vệ bấm 14:20</td><td class="num">Trễ 20 phút<span class="sub">&gt; 15 phút → phải ghi lý do</span></td></tr>
+              <tr><td>SLA</td><td>Gửi 16:30 thứ Bảy, chưa ai nhận</td><td class="num">Nhắc 09:00 thứ Hai<span class="sub">1 giờ làm việc</span></td></tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <h3>Hạn chót cập nhật giờ ra vào thực tế</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Mốc</th><th>Ai làm được gì</th></tr></thead>
+          <tbody>
+            <tr><td>Ngay tại cổng</td><td>Bảo vệ bấm Cho ra / Cho vào — cách đúng và nhanh nhất, không cần ai nhập thêm</td></tr>
+            <tr><td>Đến <strong>hết ngày làm việc kế tiếp</strong></td><td>CBNV tự nhập giờ vào lại thực tế ở trang tra cứu, nếu bảo vệ không bấm. Kèm lý do khi lệch quá 15 phút</td></tr>
+            <tr><td>Quá hạn</td><td>Ô nhập của CBNV <strong>khóa lại</strong>. Chỉ chị Khoa sửa được, bắt buộc ghi lý do điều chỉnh</td></tr>
+            <tr><td>Sau khi đã đánh dấu chấm công</td><td>Khóa với mọi người. Muốn sửa thì chị Khoa bỏ dấu chấm công trước, mỗi bước đều lưu vết</td></tr>
+          </tbody>
+        </table>
+      </div>
       <div class="note note--info" style="margin-top:1rem">
         <strong>Số hệ thống tính là số đề xuất, không phải số chốt.</strong> Chị Khoa sửa được số giờ chốt;
-        mỗi lần sửa lưu lại số cũ, số mới, người sửa, thời điểm.
+        từ v0.5 mỗi lần sửa <strong>bắt buộc ghi lý do</strong>, và lưu lại số cũ, số mới, người sửa, thời điểm.
       </div>
     </section>
 
-    <!-- IX -->
-    <section class="sec" id="s9">
-      <h2><em>IX</em>Giao diện mô phỏng</h2>
+    <!-- XII -->
+    <section class="sec" id="s12">
+      <h2><em>XII</em>Giao diện mô phỏng</h2>
       <div class="note">
         <strong>Bản vẽ minh họa, không phải ảnh chụp sản phẩm đã làm.</strong> Màu sắc và cách sắp xếp có thể thay đổi khi làm thật.
       </div>
@@ -885,39 +1282,66 @@ flowchart LR
         <figure>
           <div class="scroller">
             <div class="mock sm">
-              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app</span></div>
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/don</span></div>
               <div class="mock-app full">
-                <div class="mock-main" style="gap:.9rem;padding:1.4rem 1.2rem">
+                <div class="mock-main" style="gap:.9rem;padding:1.2rem 1.1rem">
                   <div style="display:flex;flex-direction:column;gap:.2rem">
-                    <strong style="font-size:var(--step-1)">Nhân sự CTYHP</strong>
-                    <span class="hint">Xin nghỉ phép &amp; ra vào cổng</span>
+                    <strong style="font-size:var(--step-1)">Gửi đơn — Nhân sự CTYHP</strong>
+                    <span class="hint">Không cần đăng nhập. Điền 4 ô là xong.</span>
                   </div>
-                  <span class="btn-sso">
-                    <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
-                      <rect x="1.5" y="4" width="17" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                      <path d="M2.2 5 10 11 17.8 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                    </svg>
-                    Đăng nhập bằng email công ty
-                  </span>
-                  <p class="hint" style="margin:0">Chọn tài khoản <span class="mono">@ctyhp.vn</span> của bạn. Không cần nhập email, không cần mật khẩu.</p>
-                  <div class="inp" style="background:var(--stop-soft);border-color:var(--stop-soft);color:var(--stop)">
-                    Tài khoản ngoài công ty sẽ bị từ chối
+                  <div class="fld">
+                    <label>1 · Loại đơn</label>
+                    <div class="radios"><span class="radio on">Xin nghỉ phép</span><span class="radio">Ra vào cổng</span></div>
+                  </div>
+                  <div class="fld"><label>2 · Tôi tên là</label><div class="inp">Nguyễn Văn Bình <span class="hint">· gõ tên để tìm</span></div></div>
+                  <div class="fld"><label>3 · Mã CBNV của bạn</label><div class="inp mono">HP–0148</div></div>
+                  <div class="g2">
+                    <div class="fld"><label>Chức vụ</label><div class="inp ro">Công nhân</div></div>
+                    <div class="fld"><label>Phòng / Ban</label><div class="inp ro">Sản xuất</div></div>
+                  </div>
+                  <p class="hint" style="margin:0">Hai ô trên tự hiện ra sau khi chọn tên — không phải viết tay nữa.</p>
+                  <div class="btns"><span class="btn btn--pri">Tiếp tục</span></div>
+                  <div style="display:flex;gap:.7rem;align-items:center;border-top:1px solid var(--rule-soft);padding-top:.7rem">
+                    <div class="qr">
+                      <i></i><i></i><i class="o"></i><i></i><i></i>
+                      <i></i><i class="o"></i><i></i><i class="o"></i><i></i>
+                      <i class="o"></i><i></i><i></i><i></i><i class="o"></i>
+                      <i></i><i class="o"></i><i></i><i class="o"></i><i></i>
+                      <i></i><i></i><i class="o"></i><i></i><i></i>
+                    </div>
+                    <span class="hint">Mã QR dán tại xưởng và bảng tin. Quét là vào đúng màn hình này.</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <figcaption><b>Màn hình 1 · Đăng nhập</b> — một nút duy nhất. Bấm vào là hiện danh sách tài khoản Google của công ty để chọn. Tên miền ngoài <code>@ctyhp.vn</code> bị chặn.</figcaption>
+          <figcaption>
+            <b>Màn hình 1 · Form công khai</b> — thay màn hình đăng nhập của v0.4. Ô <em>Loại đơn</em> quyết định các
+            trường hiện ra ở bước sau. Ô <em>Mã CBNV</em> là cách hệ thống biết đúng người, thay cho mật khẩu.
+          </figcaption>
         </figure>
 
         <figure>
           <div class="scroller">
             <div class="mock sm">
-              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/don-cua-toi</span></div>
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/tra-cuu</span></div>
               <div class="mock-app full">
                 <div class="mock-main">
-                  <div class="mock-h"><strong>Đơn của tôi</strong><span>Nguyễn Văn Bình</span></div>
-                  <div class="btns"><span class="btn btn--pri">Xin nghỉ phép</span><span class="btn">Xin ra vào cổng</span></div>
+                  <div class="mock-h"><strong>Tra cứu đơn</strong><span>Không cần đăng nhập</span></div>
+                  <div class="ticket">
+                    <div class="qr" style="width:3.2rem;height:3.2rem">
+                      <i></i><i class="o"></i><i></i><i></i><i class="o"></i>
+                      <i class="o"></i><i></i><i></i><i class="o"></i><i></i>
+                      <i></i><i></i><i class="o"></i><i></i><i></i>
+                      <i></i><i class="o"></i><i></i><i></i><i class="o"></i>
+                      <i class="o"></i><i></i><i></i><i class="o"></i><i></i>
+                    </div>
+                    <div style="display:flex;flex-direction:column">
+                      <span class="hint">Mã đơn của bạn</span>
+                      <span class="code">NP-2607-0148</span>
+                      <span class="hint">Chụp lại hoặc lưu link để mở lần sau</span>
+                    </div>
+                  </div>
                   <div class="req">
                     <div class="top"><strong>Nghỉ phép năm</strong><span class="pill pill--ok">Đã duyệt</span></div>
                     <span class="hint mono">30/07 → 01/08 · 24 giờ</span>
@@ -925,35 +1349,41 @@ flowchart LR
                     <span class="btn" style="align-self:flex-start;margin-top:.2rem">In đơn</span>
                   </div>
                   <div class="req">
-                    <div class="top"><strong>Ra vào cổng — Khác</strong><span class="pill pill--draft">Chờ duyệt</span></div>
+                    <div class="top"><strong>Ra vào cổng — Khác</strong><span class="pill pill--info">Đang xử lý</span></div>
                     <span class="hint mono">30/07 · 10:00 → 14:00 · 3 giờ</span>
-                    <span class="btn btn--stop" style="align-self:flex-start;margin-top:.2rem">Huỷ đơn</span>
+                    <span class="hint">Chị Trân đã nhận, đang xem</span>
+                    <span class="btn btn--stop" style="align-self:flex-start;margin-top:.2rem">Rút đơn</span>
                   </div>
                   <div class="req">
-                    <div class="top"><strong>Nghỉ không lương</strong><span class="pill pill--stop">Bị từ chối</span></div>
-                    <span class="hint mono">25/07 · 8 giờ</span>
-                    <span style="color:var(--stop);font-size:var(--step--2)">Trùng đợt giao hàng, đề nghị dời sang tuần sau</span>
+                    <div class="top"><strong>Ra vào cổng — Công tác</strong><span class="pill pill--ok">Đã duyệt</span></div>
+                    <span class="hint mono">29/07 · 13:00 → 17:00</span>
+                    <span class="hint" style="color:var(--warn)">Bảo vệ chưa bấm Cho vào — nhập giờ vào lại thực tế trước hết ngày mai</span>
+                    <div class="g2" style="margin-top:.25rem">
+                      <div class="fld"><label>Giờ vào lại thực tế</label><div class="inp mono">29/07 · 17:10</div></div>
+                      <div class="fld"><label>Chênh lệch</label><div class="inp" style="color:var(--warn)">Trễ 10 phút</div></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <figcaption><b>Màn hình 2 · Đơn của tôi</b> — trên điện thoại. Thấy trạng thái, ai duyệt, lúc nào; huỷ đơn còn chờ; in đơn đã duyệt.</figcaption>
+          <figcaption>
+            <b>Màn hình 2 · Tra cứu đơn</b> — thay trang “Đơn của tôi” của v0.4. Mở bằng link riêng cấp lúc gửi,
+            hoặc nhập mã đơn kèm mã CBNV. Đây cũng là nơi CBNV <strong>rút đơn</strong> và <strong>nhập giờ vào lại thực tế</strong>.
+          </figcaption>
         </figure>
 
         <figure>
           <div class="scroller">
             <div class="mock">
-              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/nghi-phep/tao-moi</span></div>
-              <div class="mock-app">
-                <div class="mock-nav">
-                  <span class="mock-brand">Nhân sự CTYHP<small>Nguyễn Văn Bình</small></span>
-                  <a href="#" class="on">Xin nghỉ phép</a>
-                  <a href="#">Ra vào cổng</a>
-                  <a href="#">Đơn của tôi</a>
-                </div>
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/don?loai=nghi-phep</span></div>
+              <div class="mock-app full">
                 <div class="mock-main">
                   <div class="mock-h"><strong>Đơn xin nghỉ phép</strong><span>Kính gửi Ban Giám đốc</span></div>
+                  <div class="fld">
+                    <label>Loại đơn</label>
+                    <div class="radios"><span class="radio on">Xin nghỉ phép</span><span class="radio">Ra vào cổng</span></div>
+                  </div>
                   <div class="g3">
                     <div class="fld"><label>Họ và tên</label><div class="inp ro">Nguyễn Văn Bình</div></div>
                     <div class="fld"><label>Chức vụ</label><div class="inp ro">Công nhân</div></div>
@@ -987,22 +1417,28 @@ flowchart LR
               </div>
             </div>
           </div>
-          <figcaption><b>Màn hình 3 · Tạo đơn nghỉ phép</b> — dòng xanh là số giờ hệ thống tính ngay khi chọn ngày, thay ô “Tổng thời gian nghỉ” phải viết tay.</figcaption>
+          <figcaption>
+            <b>Màn hình 3 · Trường động — nghỉ phép</b> — cùng một địa chỉ <code>/don</code>. Dòng xanh là số giờ hệ thống
+            tính ngay khi chọn ngày, thay ô “Tổng thời gian nghỉ” phải viết tay.
+          </figcaption>
         </figure>
 
         <figure>
           <div class="scroller">
             <div class="mock">
-              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/ra-vao-cong/tao-moi</span></div>
-              <div class="mock-app">
-                <div class="mock-nav">
-                  <span class="mock-brand">Nhân sự CTYHP<small>Nguyễn Văn Bình</small></span>
-                  <a href="#">Xin nghỉ phép</a>
-                  <a href="#" class="on">Ra vào cổng</a>
-                  <a href="#">Đơn của tôi</a>
-                </div>
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/don?loai=ra-vao-cong</span></div>
+              <div class="mock-app full">
                 <div class="mock-main">
-                  <div class="mock-h"><strong>Giấy xin phép ra vào cổng</strong></div>
+                  <div class="mock-h"><strong>Giấy xin phép ra vào cổng</strong><span>Cùng một form, trường khác</span></div>
+                  <div class="fld">
+                    <label>Loại đơn</label>
+                    <div class="radios"><span class="radio">Xin nghỉ phép</span><span class="radio on">Ra vào cổng</span></div>
+                  </div>
+                  <div class="g3">
+                    <div class="fld"><label>Họ và tên</label><div class="inp ro">Trần Thị Lan</div></div>
+                    <div class="fld"><label>Chức vụ</label><div class="inp ro">Công nhân</div></div>
+                    <div class="fld"><label>Bộ phận</label><div class="inp ro">Sản xuất</div></div>
+                  </div>
                   <div class="fld">
                     <label>Lý do xin phép</label>
                     <div class="radios"><span class="radio">Đi công tác</span><span class="radio">Nghỉ phép</span><span class="radio on">Khác</span></div>
@@ -1015,32 +1451,121 @@ flowchart LR
                   <div class="calc"><span>Số giờ vắng trong giờ làm</span><b>3 giờ</b><span class="why">đã trừ nghỉ trưa 12:00–13:00</span></div>
                   <div class="fld"><label>Diễn giải</label><div class="inp ta"><span class="ph">Ghi rõ nội dung…</span></div></div>
                   <div class="btns"><span class="btn btn--pri">Gửi đơn</span></div>
-                  <div class="mock-h" style="margin-top:.3rem"><strong style="font-size:var(--step--1)">Sau khi về — cập nhật giờ thực tế</strong></div>
-                  <div class="g2">
-                    <div class="fld"><label>Giờ vào lại thực tế</label><div class="inp mono">30/07/2026 · 14:20</div></div>
-                    <div class="fld"><label>Chênh lệch</label><div class="inp" style="color:var(--warn)">Trễ 20 phút — phải ghi lý do</div></div>
+                  <div class="note note--info" style="margin-top:.3rem;font-size:var(--step--2)">
+                    Giờ ra và giờ vào <strong>thực tế</strong> do bảo vệ bấm tại cổng. Bảo vệ không bấm thì bạn tự nhập
+                    ở trang tra cứu, muộn nhất hết ngày làm việc kế tiếp.
                   </div>
-                  <div class="fld"><label>Lý do vào trễ</label><div class="inp">Chờ kết quả xét nghiệm lâu hơn dự kiến</div></div>
                 </div>
               </div>
             </div>
           </div>
-          <figcaption><b>Màn hình 4 · Giấy ra vào cổng</b> — hai ô “vào sớm / vào trễ” trên giấy thay bằng: nhập giờ thực tế, hệ thống tự tính chênh lệch.</figcaption>
+          <figcaption>
+            <b>Màn hình 4 · Trường động — ra vào cổng</b> — hai ô “vào sớm / vào trễ” trên giấy nay do bốt bảo vệ
+            và hệ thống tự sinh ra, CBNV không phải khai.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock sm">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/admin</span></div>
+              <div class="mock-app full">
+                <div class="mock-main" style="gap:.9rem;padding:1.4rem 1.2rem">
+                  <div style="display:flex;flex-direction:column;gap:.2rem">
+                    <strong style="font-size:var(--step-1)">Vùng quản trị</strong>
+                    <span class="hint">Duyệt đơn · chấm công · tạo đơn hộ</span>
+                  </div>
+                  <span class="btn-sso">
+                    <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
+                      <rect x="1.5" y="4" width="17" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M2.2 5 10 11 17.8 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                    Đăng nhập bằng email công ty
+                  </span>
+                  <p class="hint" style="margin:0">Chọn tài khoản <span class="mono">@ctyhp.vn</span> của bạn. Không cần nhập email, không cần mật khẩu.</p>
+                  <div class="inp" style="background:var(--stop-soft);border-color:var(--stop-soft);color:var(--stop)">
+                    Tài khoản ngoài công ty sẽ bị từ chối
+                  </div>
+                  <p class="hint" style="margin:0;border-top:1px solid var(--rule-soft);padding-top:.7rem">
+                    Bạn là CBNV muốn gửi đơn? Không cần đăng nhập —
+                    <span style="color:var(--accent);font-weight:650">mở form công khai</span>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption>
+            <b>Màn hình 5 · Đăng nhập vùng quản trị</b> — chỉ dành cho bốn chị, chị Khoa và quản xưởng. CBNV thường
+            không bao giờ thấy màn hình này.
+          </figcaption>
         </figure>
 
         <figure>
           <div class="scroller">
             <div class="mock">
-              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/duyet-don</span></div>
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/admin/tong-quan</span></div>
               <div class="mock-app">
                 <div class="mock-nav">
-                  <span class="mock-brand">Nhân sự CTYHP<small>Chị Diệu · Người duyệt</small></span>
-                  <a href="#" class="on">Chờ duyệt <span class="badge">7</span></a>
-                  <a href="#">Đã xử lý</a>
-                  <a href="#">Đơn của tôi</a>
+                  <span class="mock-brand">Quản trị CTYHP<small>Chị Diệu · Người duyệt</small></span>
+                  <a href="#" class="on">Tổng quan</a>
+                  <a href="#">Duyệt đơn <span class="badge">7</span></a>
+                  <a href="#">Chấm công</a>
+                  <a href="#">Tạo đơn hộ</a>
                 </div>
                 <div class="mock-main">
-                  <div class="mock-h"><strong>Chờ duyệt</strong><span>7 đơn · toàn công ty</span></div>
+                  <div class="mock-h"><strong>Tổng quan</strong><span>Hôm nay 30/07/2026 · 09:40</span></div>
+                  <div class="totals">
+                    <div><span class="k">Chờ duyệt</span><span class="v">7</span></div>
+                    <div><span class="k">Quá 2 giờ</span><span class="v" style="color:var(--stop)">2</span></div>
+                    <div><span class="k">Tôi đang giữ</span><span class="v">1</span></div>
+                    <div><span class="k">Ra cổng hôm nay</span><span class="v">5</span></div>
+                    <div><span class="k">Chưa chấm công</span><span class="v" style="color:var(--warn)">12</span></div>
+                    <div><span class="k">Giờ nghỉ kỳ này</span><span class="v">216</span></div>
+                  </div>
+                  <div class="note" style="font-size:var(--step--2)">
+                    <strong>2 đơn quá hạn 2 giờ chưa ai nhận.</strong> Nhóm Chat đã được nhắc lần hai lúc 09:12.
+                  </div>
+                  <h3 style="margin:.4rem 0 .1rem">Đơn cần chú ý</h3>
+                  <div style="overflow-x:auto">
+                    <table class="mt">
+                      <thead><tr><th>Mã đơn</th><th>Người gửi</th><th>Loại</th><th>Chờ</th><th>Tình trạng</th></tr></thead>
+                      <tbody>
+                        <tr><td class="mono">RC-2607-0311</td><td>Phạm Thu Hà</td><td>Ra cổng</td><td class="mono">2g 28p</td><td><span class="pill pill--stop">Chưa ai nhận</span></td></tr>
+                        <tr><td class="mono">NP-2607-0309</td><td>Lê Minh Tuấn</td><td>Nghỉ phép</td><td class="mono">2g 05p</td><td><span class="pill pill--stop">Chưa ai nhận</span></td></tr>
+                        <tr><td class="mono">NP-2607-0148</td><td>Nguyễn Văn Bình</td><td>Nghỉ phép</td><td class="mono">28p</td><td><span class="pill pill--info">Chị Diệu đang giữ</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption>
+            <b>Màn hình 6 · Tổng quan</b> — màn hình mới của v0.5. Mở ra là biết ngay có gì đang tắc: đơn quá hạn,
+            đơn mình đang giữ, đơn chưa chấm công.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/admin/duyet-don</span></div>
+              <div class="mock-app">
+                <div class="mock-nav">
+                  <span class="mock-brand">Quản trị CTYHP<small>Chị Diệu · Người duyệt</small></span>
+                  <a href="#">Tổng quan</a>
+                  <a href="#" class="on">Duyệt đơn <span class="badge">7</span></a>
+                  <a href="#">Chấm công</a>
+                  <a href="#">Tạo đơn hộ</a>
+                </div>
+                <div class="mock-main">
+                  <div class="mock-h"><strong>Hàng chờ duyệt</strong><span>7 đơn · toàn công ty</span></div>
+                  <div class="radios">
+                    <span class="radio on">Tất cả đơn chờ <b>7</b></span>
+                    <span class="radio">Tôi đã nhận <b>1</b></span>
+                    <span class="radio">Tôi đã duyệt</span>
+                    <span class="radio" style="color:var(--stop)">Quá hạn <b>2</b></span>
+                  </div>
                   <div class="filters">
                     <span class="chip">Nghỉ phép <b>4</b></span>
                     <span class="chip">Ra vào cổng <b>3</b></span>
@@ -1048,33 +1573,112 @@ flowchart LR
                   </div>
                   <div style="overflow-x:auto">
                     <table class="mt">
-                      <thead><tr><th>Người gửi</th><th>Phòng ban</th><th>Loại đơn</th><th>Thời gian</th><th>Giờ</th><th></th></tr></thead>
+                      <thead><tr><th>Mã đơn</th><th>Người gửi</th><th>Loại đơn</th><th>Thời gian</th><th>Giờ</th><th>Chờ</th><th></th></tr></thead>
                       <tbody>
-                        <tr><td>Nguyễn Văn Bình</td><td>Sản xuất</td><td>Nghỉ phép · Phép năm</td><td class="mono">30/07 → 01/08</td><td class="mono">24</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
-                        <tr><td>Trần Thị Lan</td><td>Sản xuất</td><td>Ra cổng · Khác</td><td class="mono">30/07 · 10:00→14:00</td><td class="mono">3</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
-                        <tr><td>Lê Minh Tuấn</td><td>Kỹ thuật</td><td>Nghỉ phép · Ốm đau</td><td class="mono">31/07</td><td class="mono">8</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
-                        <tr><td>Phạm Thu Hà</td><td>Kế toán</td><td>Ra cổng · Công tác</td><td class="mono">30/07 · 13:00→17:00</td><td class="mono">4</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
+                        <tr>
+                          <td class="mono">NP-2607-0148</td><td>Nguyễn Văn Bình</td><td>Nghỉ phép · Phép năm</td>
+                          <td class="mono">30/07 → 01/08</td><td class="mono">24</td><td class="mono">28p</td>
+                          <td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span> <span class="hint">bạn đang giữ · còn 2p</span></td>
+                        </tr>
+                        <tr style="color:var(--ink-3)">
+                          <td class="mono">RC-2607-0152</td><td>Trần Thị Lan</td><td>Ra cổng · Khác</td>
+                          <td class="mono">30/07 · 10:00→14:00</td><td class="mono">3</td><td class="mono">12p</td>
+                          <td><span class="pill pill--info">Chị Trân đang xử lý</span></td>
+                        </tr>
+                        <tr>
+                          <td class="mono">NP-2607-0309</td><td>Lê Minh Tuấn</td><td>Nghỉ phép · Ốm đau</td>
+                          <td class="mono">31/07</td><td class="mono">8</td><td class="mono" style="color:var(--stop)">2g 05p</td>
+                          <td><span class="btn btn--pri">Nhận xử lý</span></td>
+                        </tr>
+                        <tr>
+                          <td class="mono">RC-2607-0311</td><td>Phạm Thu Hà</td><td>Ra cổng · Công tác</td>
+                          <td class="mono">30/07 · 13:00→17:00</td><td class="mono">4</td><td class="mono" style="color:var(--stop)">2g 28p</td>
+                          <td><span class="btn btn--pri">Nhận xử lý</span></td>
+                        </tr>
+                        <tr style="color:var(--ink-3)">
+                          <td class="mono">NP-2607-0140</td><td>Chị Diệu</td><td>Nghỉ phép · Phép năm</td>
+                          <td class="mono">05/08</td><td class="mono">8</td><td class="mono">1g</td>
+                          <td><span class="pill pill--mute">Đơn của bạn — ba chị còn lại xử lý</span></td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
-                  <p class="hint">Bấm một dòng để xem toàn bộ đơn. Từ chối thì mở ô ghi lý do — không bắt buộc.</p>
+                  <div class="note" style="font-size:var(--step--2)">
+                    <strong>Đơn RC-2607-0152 chị Trân vừa nhận lúc 09:38.</strong> Bảng tự cập nhật, bạn không cần tải lại trang.
+                  </div>
+                  <p class="hint">Bấm một dòng để xem toàn bộ đơn. Phải <em>Nhận xử lý</em> mới hiện nút Duyệt / Từ chối. Từ chối thì mở ô ghi lý do — không bắt buộc.</p>
                 </div>
               </div>
             </div>
           </div>
-          <figcaption><b>Màn hình 5 · Hàng chờ duyệt</b> — một hàng chờ chung, số đơn hiện trên menu. Chị nào bấm Duyệt trước thì đơn chốt theo chị đó.</figcaption>
+          <figcaption>
+            <b>Màn hình 7 · Hàng chờ duyệt</b> — bốn tab ở trên. Dòng xám là đơn người khác đang giữ hoặc đơn của
+            chính mình. Dòng đỏ ở cột <em>Chờ</em> là đơn đã quá mốc 2 giờ.
+          </figcaption>
         </figure>
 
         <figure>
           <div class="scroller">
             <div class="mock">
-              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/cham-cong</span></div>
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/bao-ve</span></div>
+              <div class="mock-app full">
+                <div class="mock-main">
+                  <div class="mock-h"><strong>Bốt cổng chính · 30/07/2026</strong><span>Đơn ra vào cổng đã duyệt hôm nay · 5</span></div>
+                  <div class="filters">
+                    <span class="chip">Tìm theo tên <b>…</b></span>
+                    <span class="chip">Chưa ra <b>2</b></span>
+                    <span class="chip">Đang ở ngoài <b>1</b></span>
+                    <span class="chip">Đã về <b>2</b></span>
+                  </div>
+                  <div style="overflow-x:auto">
+                    <table class="mt">
+                      <thead><tr><th>Giờ ra</th><th>CBNV</th><th>Bộ phận</th><th>Vào lại (dự kiến)</th><th>Tình trạng</th><th></th></tr></thead>
+                      <tbody>
+                        <tr>
+                          <td class="mono">10:00</td><td><strong>Trần Thị Lan</strong></td><td>Sản xuất</td><td class="mono">14:00</td>
+                          <td><span class="pill pill--draft">Chưa ra</span></td>
+                          <td><span class="btn btn--pri">Cho ra</span></td>
+                        </tr>
+                        <tr>
+                          <td class="mono">08:30</td><td><strong>Phạm Thu Hà</strong></td><td>Kế toán</td><td class="mono">11:30</td>
+                          <td><span class="pill pill--info">Đang ở ngoài · ra 08:34</span></td>
+                          <td><span class="btn btn--ok">Cho vào</span></td>
+                        </tr>
+                        <tr>
+                          <td class="mono">07:50</td><td><strong>Lê Minh Tuấn</strong></td><td>Kỹ thuật</td><td class="mono">09:00</td>
+                          <td><span class="pill pill--ok">Đã về · 07:52 → 09:05</span></td>
+                          <td><span class="hint">hoàn tác được 5 phút</span></td>
+                        </tr>
+                        <tr>
+                          <td class="mono">13:00</td><td><strong>Nguyễn Văn Bình</strong></td><td>Sản xuất</td><td class="mono">17:00</td>
+                          <td><span class="pill pill--draft">Chưa ra</span></td>
+                          <td><span class="btn btn--pri">Cho ra</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="hint">Bấm một lần là ghi giờ ngay, không nhập tay. Bảng chỉ có đơn <strong>đã duyệt</strong> của hôm nay — không có lý do xin phép, không có đơn nghỉ phép.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption>
+            <b>Màn hình 8 · Bốt bảo vệ</b> — màn hình mới của v0.5, vào bằng mã PIN của bốt. Hai nút lớn thay cho
+            ô ký “Bảo vệ tiếp nhận” trên giấy.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/admin/cham-cong</span></div>
               <div class="mock-app">
                 <div class="mock-nav">
-                  <span class="mock-brand">Nhân sự CTYHP<small>Chị Khoa · C&amp;B</small></span>
+                  <span class="mock-brand">Quản trị CTYHP<small>Chị Khoa · C&amp;B</small></span>
+                  <a href="#">Tổng quan</a>
                   <a href="#" class="on">Chấm công</a>
                   <a href="#">Đã chấm công</a>
-                  <a href="#">Đơn của tôi</a>
+                  <a href="#">Mã PIN bốt</a>
                 </div>
                 <div class="mock-main">
                   <div class="mock-h"><strong>Chấm công — đơn đã duyệt</strong><span>Kỳ 01/07 – 31/07/2026</span></div>
@@ -1086,117 +1690,238 @@ flowchart LR
                   <div class="totals">
                     <div><span class="k">Đã duyệt</span><span class="v">38</span></div>
                     <div><span class="k">Chưa chấm</span><span class="v" style="color:var(--warn)">12</span></div>
+                    <div><span class="k">Thiếu giờ cổng</span><span class="v" style="color:var(--stop)">3</span></div>
                     <div><span class="k">Giờ nghỉ phép</span><span class="v">216</span></div>
                     <div><span class="k">Giờ ra cổng</span><span class="v">47</span></div>
                   </div>
                   <div style="overflow-x:auto">
                     <table class="mt">
-                      <thead><tr><th>CBNV</th><th>Phòng ban</th><th>Loại</th><th>Thời gian</th><th>Giờ tính</th><th>Giờ chốt</th><th>Duyệt</th><th>Chấm công</th></tr></thead>
+                      <thead><tr><th>CBNV</th><th>Bộ phận</th><th>Loại</th><th>Thời gian</th><th>Giờ cổng</th><th>Giờ tính</th><th>Giờ chốt</th><th>Duyệt</th><th>Chấm công</th></tr></thead>
                       <tbody>
-                        <tr><td>Nguyễn Văn Bình</td><td>Sản xuất</td><td>Phép năm</td><td class="mono">30/07 → 01/08</td><td class="mono">24</td><td class="mono">24</td><td>Chị Diệu</td><td><span class="btn btn--ok">Đánh dấu</span></td></tr>
-                        <tr><td>Trần Thị Lan</td><td>Sản xuất</td><td>Ra cổng</td><td class="mono">30/07 · 10:00→14:20</td><td class="mono">3,3</td><td class="mono" style="color:var(--warn)">3,0 ✎</td><td>Chị Trân</td><td><span class="btn btn--ok">Đánh dấu</span></td></tr>
-                        <tr><td>Lê Minh Tuấn</td><td>Kỹ thuật</td><td>Ốm đau</td><td class="mono">31/07</td><td class="mono">8</td><td class="mono">8</td><td>Chị Hạnh</td><td><span class="pill pill--ok">Đã chấm</span></td></tr>
-                        <tr><td>Phạm Thu Hà</td><td>Kế toán</td><td>Ra cổng</td><td class="mono">30/07 · 13:00→17:00</td><td class="mono">4</td><td class="mono">4</td><td>Chị Phúc</td><td><span class="pill pill--ok">Đã chấm</span></td></tr>
+                        <tr><td>Nguyễn Văn Bình</td><td>Sản xuất</td><td>Phép năm</td><td class="mono">30/07 → 01/08</td><td>—</td><td class="mono">24</td><td class="mono">24</td><td>Chị Diệu</td><td><span class="btn btn--ok">Đánh dấu</span></td></tr>
+                        <tr><td>Trần Thị Lan</td><td>Sản xuất</td><td>Ra cổng</td><td class="mono">30/07 · 10:00→14:00</td><td class="mono">10:02→14:20</td><td class="mono">3,3</td><td class="mono" style="color:var(--warn)">3,0 ✎</td><td>Chị Trân</td><td><span class="btn btn--ok">Đánh dấu</span></td></tr>
+                        <tr><td>Lê Minh Tuấn</td><td>Kỹ thuật</td><td>Ốm đau</td><td class="mono">31/07</td><td>—</td><td class="mono">8</td><td class="mono">8</td><td>Chị Hạnh</td><td><span class="pill pill--ok">Đã chấm</span></td></tr>
+                        <tr><td>Phạm Thu Hà</td><td>Kế toán</td><td>Ra cổng</td><td class="mono">30/07 · 13:00→17:00</td><td class="mono" style="color:var(--stop)">thiếu</td><td class="mono">4</td><td class="mono">4</td><td>Chị Phúc</td><td><span class="pill pill--ok">Đã chấm</span></td></tr>
                       </tbody>
                     </table>
                   </div>
-                  <p class="hint">Cột <em>Giờ tính</em> khoá. Cột <em>Giờ chốt</em> sửa được — dấu ✎ là dòng đã sửa tay, mở ra xem số cũ, ai sửa, lúc nào.</p>
+                  <div class="note" style="font-size:var(--step--2)">
+                    <strong>Sửa Giờ chốt 3,3 → 3,0 cho Trần Thị Lan.</strong>
+                    <div class="fld" style="margin-top:.35rem">
+                      <label>Lý do điều chỉnh — bắt buộc</label>
+                      <div class="inp">Trễ 20 phút do chờ kết quả xét nghiệm, đã xác minh với bộ phận</div>
+                    </div>
+                    <span class="hint" style="margin-top:.3rem">Lưu số cũ · số mới · người sửa · thời điểm · lý do. Không ghi lý do thì không lưu được.</span>
+                  </div>
+                  <p class="hint">Cột <em>Giờ cổng</em> là giờ bảo vệ bấm. Cột <em>Giờ tính</em> khóa. Cột <em>Giờ chốt</em> sửa được — dấu ✎ là dòng đã sửa tay, mở ra xem số cũ, ai sửa, lúc nào, vì sao.</p>
                 </div>
               </div>
             </div>
           </div>
-          <figcaption><b>Màn hình 6 · Chấm công</b> — của chị Khoa. Hai cột giờ tách riêng để giữ cả số máy tính và số Nhân sự chốt.</figcaption>
+          <figcaption>
+            <b>Màn hình 9 · Chấm công</b> — của chị Khoa. Thêm cột <em>Giờ cổng</em> để đối chiếu số bảo vệ bấm với số
+            CBNV khai, và ô <em>Lý do điều chỉnh</em> bắt buộc mỗi khi Giờ chốt khác Giờ tính.
+          </figcaption>
         </figure>
 
       </div>
     </section>
 
-    <!-- X -->
-    <section class="sec" id="s10">
-      <h2><em>X</em>Quy tắc nghiệp vụ</h2>
+    <!-- XIII -->
+    <section class="sec" id="s13">
+      <h2><em>XIII</em>Quy tắc nghiệp vụ</h2>
       <ol class="rules">
-        <li><b class="n">1</b><span><strong>Chỉ tài khoản công ty.</strong> Tên miền ngoài <code>@ctyhp.vn</code> bị từ chối ngay khi chọn tài khoản.</span></li>
-        <li><b class="n">2</b><span><strong>Bốn chị có thẩm quyền trên toàn bộ CBNV,</strong> không phân theo phòng ban.</span></li>
-        <li><b class="n">3</b><span><strong>Một chị duyệt là đủ.</strong> Ba chị còn lại thấy đơn đã đóng, không duyệt lại được.</span></li>
-        <li><b class="n">4</b><span><strong>Không ai tự duyệt đơn của mình</strong> — đơn của một trong bốn chị do ba chị còn lại xử lý.</span></li>
-        <li><b class="n">5</b><span><strong>Từ chối thì ghi thêm lý do</strong> — không bắt buộc, nhưng có lý do thì CBNV biết cần sửa gì.</span></li>
-        <li><b class="n">6</b><span><strong>Đơn đã duyệt không sửa nội dung.</strong> Muốn đổi thì chị Khoa huỷ kèm lý do, CBNV gửi đơn mới.</span></li>
-        <li><b class="n">7</b><span><strong>Giờ hệ thống tính khoá; giờ chốt sửa được,</strong> mỗi lần sửa lưu số cũ, số mới, người sửa, thời điểm.</span></li>
-        <li><b class="n">8</b><span><strong>Không xoá dữ liệu.</strong> Huỷ chỉ đổi trạng thái; mọi thao tác lưu người và thời điểm.</span></li>
-        <li><b class="n">9</b><span><strong>Thông báo Google Chat không chứa lý do nghỉ.</strong></span></li>
-        <li><b class="n">10</b><span><strong>Người này không đọc được đơn người khác,</strong> ràng buộc ở tầng cơ sở dữ liệu.</span></li>
+        <li><b class="n">1</b><span><strong>Gửi đơn không cần đăng nhập; đọc đơn thì cần.</strong> Form công khai chỉ cho gửi. Muốn mở một đơn phải có mã đơn kèm mã CBNV, hoặc link riêng cấp lúc gửi.</span></li>
+        <li><b class="n">2</b><span><strong>Tên phải chọn trong danh sách, không tự gõ.</strong> Danh sách lấy từ Google Directory; người đã rời công ty không còn hiện ra.</span></li>
+        <li><b class="n">3</b><span><strong>Mã CBNV phải khớp với tên đã chọn.</strong> Sai 5 lần thì khóa gửi 15 phút. Một mã tối đa <strong>5 đơn mỗi ngày</strong>.</span></li>
+        <li><b class="n">4</b><span><strong>Vùng quản trị chỉ vào bằng tài khoản công ty.</strong> Tên miền ngoài <code>@ctyhp.vn</code> bị từ chối ngay khi chọn tài khoản.</span></li>
+        <li><b class="n">5</b><span><strong>Bốn chị có thẩm quyền trên toàn bộ CBNV,</strong> không phân theo phòng ban.</span></li>
+        <li><b class="n">6</b><span><strong>Quản xưởng tạo đơn hộ được, duyệt thì không.</strong> Chỉ tạo cho người thuộc bộ phận mình; đơn ghi rõ ai tạo hộ và vẫn phải qua bốn chị.</span></li>
+        <li><b class="n">7</b><span><strong>Phải Nhận xử lý trước khi duyệt.</strong> Nhận rồi không quyết trong 30 phút thì đơn tự về hàng chờ.</span></li>
+        <li><b class="n">8</b><span><strong>Một chị duyệt là đủ.</strong> Thao tác trên bản dữ liệu cũ bị chặn kèm thông báo ai vừa duyệt, lúc nào.</span></li>
+        <li><b class="n">9</b><span><strong>Không ai tự duyệt đơn của mình.</strong> Đơn của một trong bốn chị bị ẩn nút Duyệt, ba chị còn lại xử lý — hệ thống so theo email tài khoản.</span></li>
+        <li><b class="n">10</b><span><strong>Từ chối thì ghi thêm lý do</strong> — không bắt buộc, nhưng có lý do thì CBNV biết cần sửa gì.</span></li>
+        <li><b class="n">11</b><span><strong>CBNV rút được đơn còn chờ,</strong> kể cả khi đã có người nhận xử lý. Rút xong bắn cập nhật vào nhóm Chat để không ai duyệt đơn đã rút.</span></li>
+        <li><b class="n">12</b><span><strong>Đơn đã duyệt không sửa nội dung.</strong> Muốn đổi thì chị Khoa hủy kèm lý do, CBNV gửi đơn mới.</span></li>
+        <li><b class="n">13</b><span><strong>Giờ bảo vệ bấm tại cổng thắng giờ CBNV tự khai.</strong> Bấm sai hoàn tác trong 5 phút; quá 5 phút thì chị Khoa sửa kèm lý do.</span></li>
+        <li><b class="n">14</b><span><strong>Bảo vệ chỉ thấy đơn ra vào cổng đã duyệt của hôm nay,</strong> không thấy lý do xin phép, không thấy đơn nghỉ phép.</span></li>
+        <li><b class="n">15</b><span><strong>Hạn nhập giờ vào lại thực tế là hết ngày làm việc kế tiếp.</strong> Quá hạn CBNV bị khóa; chỉ chị Khoa sửa được.</span></li>
+        <li><b class="n">16</b><span><strong>Sửa Giờ chốt phải ghi lý do điều chỉnh</strong> tối thiểu 10 ký tự. Mỗi lần sửa lưu số cũ, số mới, người sửa, thời điểm, lý do.</span></li>
+        <li><b class="n">17</b><span><strong>Giờ hệ thống tính thì khóa,</strong> không ai sửa được — kể cả chị Khoa.</span></li>
+        <li><b class="n">18</b><span><strong>Không xoá dữ liệu.</strong> Rút và hủy chỉ đổi trạng thái; mọi thao tác lưu người và thời điểm.</span></li>
+        <li><b class="n">19</b><span><strong>Thông báo Google Chat không chứa lý do nghỉ,</strong> ở cả nhóm Duyệt và nhóm Bảo vệ.</span></li>
+        <li><b class="n">20</b><span><strong>Nhắc SLA chỉ đếm giờ làm việc.</strong> Ngoài giờ và Chủ nhật dừng đếm, không nhắc vào lúc nghỉ.</span></li>
       </ol>
+      <div class="note" style="margin-top:1rem">
+        <strong>Điểm yếu cần biết rõ:</strong> mã CBNV là thứ có thể bị người khác biết. Hệ thống chống mạo danh bằng
+        ba lớp — giới hạn số đơn mỗi mã mỗi ngày, bốn chị duyệt là người biết rõ CBNV nên đơn bất thường sẽ bị chặn,
+        và mọi đơn đều tra cứu được nên người bị mạo danh phát hiện ra. Đây là cái giá của việc bỏ đăng nhập; nếu Ban
+        Giám đốc thấy chưa đủ thì phương án thay thế là quay lại đăng nhập cho người có email và chỉ mở form công khai
+        cho khối sản xuất.
+      </div>
     </section>
 
-    <!-- XI -->
-    <section class="sec" id="s11">
-      <h2><em>XI</em>Kỹ thuật và thứ tự làm</h2>
+    <!-- XIV -->
+    <section class="sec" id="s14">
+      <h2><em>XIV</em>Dữ liệu gốc và đồng bộ Directory</h2>
+      <p>
+        Không đăng nhập nghĩa là app không nhận được thông tin người dùng lúc gửi đơn, nên toàn bộ danh sách
+        CBNV và phòng ban phải có sẵn trong cơ sở dữ liệu trước. Nguồn là <strong>Google Workspace Directory</strong>.
+      </p>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Trường trong app</th><th class="c1">Lấy từ Directory</th><th>Ghi chú</th></tr></thead>
+          <tbody>
+            <tr><td>Họ và tên</td><td><span class="mono">name.fullName</span></td><td>Dùng để tìm và chọn trên form công khai</td></tr>
+            <tr><td>Email</td><td><span class="mono">primaryEmail</span></td><td>Chỉ để nhận diện người duyệt và quản xưởng; CBNV không cần</td></tr>
+            <tr><td>Chức vụ</td><td><span class="mono">organizations[].title</span></td><td>Trống thì hiện “—”, PNS bổ sung trong Directory</td></tr>
+            <tr><td>Phòng / Ban / Bộ phận</td><td><span class="mono">organizations[].department</span> hoặc đơn vị tổ chức</td><td>Chốt dùng một trong hai, không dùng lẫn</td></tr>
+            <tr><td>Trạng thái làm việc</td><td><span class="mono">suspended</span> · <span class="mono">archived</span></td><td>Người đã nghỉ: ẩn khỏi danh sách chọn, giữ nguyên đơn cũ</td></tr>
+            <tr><td><strong>Mã CBNV</strong></td><td><span class="pill pill--stop">Không có sẵn</span></td><td>Phải có nguồn khác — xem ô lưu ý dưới</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Cách đồng bộ</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Hạng mục</th><th>Quy định Phase 1</th></tr></thead>
+          <tbody>
+            <tr><td>Nhịp đồng bộ</td><td>Tự động mỗi đêm 01:00, cộng thêm nút <strong>Đồng bộ ngay</strong> trong vùng quản trị</td></tr>
+            <tr><td>Chiều đồng bộ</td><td>Một chiều — Directory là bản gốc, app không ghi ngược lại</td></tr>
+            <tr><td>Người mới</td><td>Thêm vào danh sách chọn ngay sau lần đồng bộ kế tiếp</td></tr>
+            <tr><td>Người nghỉ việc</td><td>Ẩn khỏi danh sách chọn, chặn gửi đơn mới; đơn cũ và số liệu chấm công giữ nguyên</td></tr>
+            <tr><td>Đổi phòng ban</td><td>Đơn đã gửi giữ phòng ban <strong>lúc gửi</strong>, không đổi theo — để số liệu kỳ cũ không bị lệch</td></tr>
+            <tr><td>Đồng bộ lỗi</td><td>Giữ nguyên danh sách lần trước và bắn tin vào nhóm Duyệt, không để danh sách rỗng</td></tr>
+            <tr><td>Bốn chị và quản xưởng</td><td>Đánh dấu vai trò trong app, không lấy từ Directory. Phase 1 do nhóm phát triển nạp</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:1rem">
+        <strong>Điều kiện tiên quyết chưa có:</strong> Google Directory không chứa mã CBNV, mà mã CBNV lại là thứ
+        thay mật khẩu ở form công khai. Cần PNS chọn một trong hai cách — nạp mã vào một trường tùy chỉnh của
+        Directory, hoặc gửi một file danh sách <em>mã CBNV ↔ họ tên</em> để app nạp và tự đối chiếu mỗi đêm.
+        Chưa có mã thì chưa chạy được vùng nhân viên.
+      </div>
+    </section>
+
+    <!-- XV -->
+    <section class="sec" id="s15">
+      <h2><em>XV</em>Kỹ thuật và thứ tự làm</h2>
       <div class="tw">
         <table>
           <thead><tr><th class="c2">Hạng mục</th><th class="c1">Chọn</th><th>Vì sao</th></tr></thead>
           <tbody>
             <tr><td>Giao diện</td><td>Next.js 16 · React 19 · Ant Design 6</td><td>Bộ công cụ nhóm đang thành thạo; biểu mẫu, bảng, bộ lọc, chọn ngày có sẵn</td></tr>
-            <tr><td>Đăng nhập</td><td>Đăng nhập bằng tài khoản Google Workspace của công ty, giới hạn tên miền <code>ctyhp.vn</code></td><td>Bấm một nút là vào, không nhập email, không mật khẩu. Tên miền được kiểm cả ở trình đăng nhập và ở tầng cơ sở dữ liệu</td></tr>
-            <tr><td>Dữ liệu</td><td>Supabase — Postgres, phân quyền ở tầng dữ liệu</td><td>Phân quyền đặt trong cơ sở dữ liệu nên chắc chắn hơn là chỉ ẩn trên giao diện</td></tr>
-            <tr><td>Thông báo</td><td>Google Chat — gửi tin vào một nhóm qua webhook</td><td>Chỉ cần tạo nhóm và lấy một đường link. Nhắn riêng từng người thuộc Phase 2</td></tr>
+            <tr><td>Vùng nhân viên</td><td>Trang công khai, không phiên đăng nhập; nhận diện bằng tên + mã CBNV; link theo dõi mang mã dài khó đoán</td><td>Công nhân không có email công ty vẫn gửi được đơn, quét QR là vào</td></tr>
+            <tr><td>Vùng quản trị</td><td>Đăng nhập bằng Google Workspace của công ty, giới hạn tên miền <code>ctyhp.vn</code></td><td>Bấm một nút là vào. Tên miền kiểm cả ở trình đăng nhập và ở tầng cơ sở dữ liệu</td></tr>
+            <tr><td>Vùng bốt bảo vệ</td><td>Mã PIN của bốt, phiên 30 ngày trên máy đó</td><td>Bốt dùng chung máy, đổi ca liên tục; bảo vệ không có email công ty</td></tr>
+            <tr><td>Dữ liệu</td><td>Supabase — Postgres, phân quyền ở tầng dữ liệu</td><td>Ba vùng ba quyền khác nhau; đặt trong cơ sở dữ liệu chắc hơn là chỉ ẩn trên giao diện</td></tr>
+            <tr><td>Chống duyệt trùng</td><td>Số phiên bản trên mỗi đơn, kiểm tại tầng dữ liệu; bảng nghe thay đổi theo thời gian thực</td><td>Bốn người mở cùng một hàng chờ nên khóa phải nằm dưới cùng, không nằm ở giao diện</td></tr>
+            <tr><td>Chống lạm dụng form công khai</td><td>Giới hạn số lần gửi theo mã CBNV và theo thiết bị; khóa tạm khi nhập sai mã nhiều lần</td><td>Form không đăng nhập nên phải có phanh</td></tr>
+            <tr><td>Thông báo</td><td>Google Chat — hai nhóm, mỗi nhóm một webhook</td><td>Chỉ cần tạo nhóm và lấy đường link. Nhắn riêng từng người thuộc Phase 2</td></tr>
+            <tr><td>Nhắc theo mốc</td><td>Việc chạy định kỳ mỗi 15 phút, đối chiếu mốc 1h và 2h theo giờ làm việc</td><td>Không cần hạ tầng hàng đợi riêng cho Phase 1</td></tr>
+            <tr><td>Dữ liệu gốc</td><td>Đồng bộ một chiều từ Google Workspace Directory, chạy hằng đêm</td><td>Không phải nhập tay danh sách CBNV và phòng ban</td></tr>
             <tr><td>Nơi chạy</td><td>Vercel, một địa chỉ web nội bộ riêng</td><td>Mở bằng trình duyệt trên máy tính và điện thoại, không phải cài gì</td></tr>
             <tr><td>Bản in</td><td>In từ trình duyệt theo bố cục mẫu giấy, lưu PDF</td><td>Giữ dấu tiếng Việt chính xác</td></tr>
             <tr><td>App kế toán</td><td>Tách hoàn toàn: dự án · cơ sở dữ liệu · tài khoản riêng</td><td>CBNV vào app này không chạm được dữ liệu kế toán</td></tr>
           </tbody>
         </table>
       </div>
+
       <h3>Thứ tự làm</h3>
       <div class="tw">
         <table>
           <thead><tr><th class="c3">Bước</th><th>Nội dung</th></tr></thead>
           <tbody>
-            <tr><td class="num">1</td><td>Dựng nền: dự án, cơ sở dữ liệu, đăng nhập bằng tài khoản công ty, một địa chỉ web chạy thử</td></tr>
-            <tr><td class="num">2</td><td>Cấu trúc dữ liệu và phân quyền; nạp phòng ban, bốn chị người duyệt, chị Khoa</td></tr>
-            <tr><td class="num">3</td><td>Hai biểu mẫu và trang “Đơn của tôi”, kèm phần tự tính giờ</td></tr>
-            <tr><td class="num">4</td><td>Hàng chờ duyệt: một trong bốn chị, chặn tự duyệt, từ chối kèm lý do</td></tr>
-            <tr><td class="num">5</td><td>Màn hình chấm công: lọc, hai cột giờ, tải Excel, đánh dấu</td></tr>
-            <tr><td class="num">6</td><td>Thông báo Google Chat</td></tr>
-            <tr><td class="num">7</td><td>Bản in theo bố cục mẫu giấy</td></tr>
-            <tr><td class="num">8</td><td>Chạy thử trọn một đơn từ lúc gửi đến lúc chấm công, đưa lên mạng kèm hướng dẫn một trang</td></tr>
+            <tr><td class="num">1</td><td>Dựng nền: dự án, cơ sở dữ liệu, một địa chỉ web chạy thử; đăng nhập Google cho vùng quản trị</td></tr>
+            <tr><td class="num">2</td><td>Đồng bộ Directory và nạp mã CBNV; cấu trúc dữ liệu và phân quyền cho ba vùng; nạp bốn chị, chị Khoa, quản xưởng</td></tr>
+            <tr><td class="num">3</td><td>Form công khai một route với trường động, nhận diện bằng tên + mã CBNV, kèm phần tự tính giờ</td></tr>
+            <tr><td class="num">4</td><td>Trang tra cứu đơn: theo dõi, rút đơn, nhập giờ vào lại thực tế; sinh mã đơn và link riêng; mã QR</td></tr>
+            <tr><td class="num">5</td><td>Hàng chờ duyệt: nút Nhận xử lý, khóa theo phiên bản, tự cập nhật, bốn tab, chặn tự duyệt</td></tr>
+            <tr><td class="num">6</td><td>Màn hình bốt bảo vệ: mã PIN, bảng đơn trong ngày, nút Cho ra / Cho vào, hoàn tác 5 phút</td></tr>
+            <tr><td class="num">7</td><td>Màn hình chấm công: lọc, cột Giờ cổng, hai cột giờ, lý do điều chỉnh bắt buộc, tải Excel, đánh dấu</td></tr>
+            <tr><td class="num">8</td><td>Màn hình tổng quan cho Quản lý và PNS; quản xưởng tạo đơn hộ</td></tr>
+            <tr><td class="num">9</td><td>Hai nhóm Google Chat và việc nhắc SLA mốc 1h · 2h</td></tr>
+            <tr><td class="num">10</td><td>Bản in theo bố cục mẫu giấy</td></tr>
+            <tr><td class="num">11</td><td>Chạy thử trọn một đơn: gửi trên điện thoại → duyệt → bảo vệ bấm tại cổng → chấm công; đưa lên mạng kèm hướng dẫn một trang và mã QR dán xưởng</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note note--info" style="margin-top:1rem">
-        <strong>Còn thiếu để bắt đầu:</strong> danh sách các phòng / ban / bộ phận. Trong lúc chờ, nhóm dùng danh sách tạm và thay bằng danh sách thật sau.
+        <strong>Còn thiếu để bắt đầu:</strong> ① danh sách các phòng / ban / bộ phận chính thức; ② <strong>nguồn mã
+        CBNV</strong> để form công khai đối chiếu; ③ danh sách quản xưởng được phép tạo đơn hộ; ④ mã PIN cho bốt và
+        xác nhận bốt có máy nối mạng. Thiếu ② thì bước 3 không chạy được. Trong lúc chờ, nhóm dùng danh sách tạm và
+        thay bằng danh sách thật sau.
       </div>
     </section>
 
-    <!-- XII -->
-    <section class="sec" id="s12">
-      <h2><em>XII</em>Rủi ro</h2>
+    <!-- XVI -->
+    <section class="sec" id="s16">
+      <h2><em>XVI</em>Rủi ro</h2>
       <div class="tw">
         <table>
           <thead><tr><th class="c1">Rủi ro</th><th class="c3">Mức</th><th>Cách xử lý</th></tr></thead>
           <tbody>
             <tr>
-              <td>CBNV chưa có tài khoản email công ty thì chưa vào app được</td>
+              <td>Chưa có nguồn mã CBNV thì vùng nhân viên không chạy được</td>
               <td><span class="pill pill--stop">Cao</span></td>
-              <td>Nhân sự cấp email công ty trước khi triển khai. Nếu số lượng lớn hoặc không cấp được, phải bổ sung cách đăng nhập khác — thuộc Phase 2</td>
+              <td>PNS nạp mã vào Directory hoặc gửi file danh sách mã ↔ họ tên. Đây là việc phải xong trước bước 3</td>
             </tr>
             <tr>
-              <td>Bảo vệ vẫn cần thấy đơn tại cổng</td>
+              <td>Người khác biết mã CBNV rồi gửi đơn mạo danh</td>
+              <td><span class="pill pill--stop">Cao</span></td>
+              <td>Giới hạn 5 đơn mỗi mã mỗi ngày; khóa 15 phút khi nhập sai nhiều lần; bốn chị duyệt là người biết rõ CBNV; mọi đơn tra cứu được nên người bị mạo danh phát hiện. Nếu vẫn chưa đủ thì quay lại đăng nhập cho người có email công ty</td>
+            </tr>
+            <tr>
+              <td>Mã PIN bốt bị lan ra ngoài, người không phải bảo vệ cũng mở được bảng</td>
               <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>CBNV cho bảo vệ xem trên điện thoại hoặc in một bản. Màn hình cho bảo vệ thuộc Phase 2</td>
+              <td>Bảng chỉ có đơn đã duyệt trong ngày, không có lý do nghỉ nên thiệt hại giới hạn. Chị Khoa đổi PIN được bất cứ lúc nào; đăng nhập đích danh cho từng bảo vệ thuộc Phase 2</td>
+            </tr>
+            <tr>
+              <td>Bốt bảo vệ không có máy nối mạng, hoặc mất mạng giữa ca</td>
+              <td><span class="pill pill--draft">Trung bình</span></td>
+              <td>Xác nhận hạ tầng bốt trước khi triển khai. Mất mạng thì ghi sổ ca như hiện nay, chị Khoa nhập bù kèm lý do. Bản chạy offline thuộc Phase 2</td>
+            </tr>
+            <tr>
+              <td>Bảo vệ quên bấm nút, giờ ra vào thành số CBNV tự khai</td>
+              <td><span class="pill pill--draft">Trung bình</span></td>
+              <td>Màn chấm công có ô đếm <em>Thiếu giờ cổng</em> để chị Khoa thấy ngay; đơn thiếu giờ cổng bị đánh dấu chứ không lặng lẽ đi qua</td>
+            </tr>
+            <tr>
+              <td>Bốn chị đều bận, đơn nằm chờ quá lâu</td>
+              <td><span class="pill pill--draft">Trung bình</span></td>
+              <td>Nhắc mốc 1h và 2h vào nhóm Chat, tab <em>Quá hạn</em> và ô đếm trên màn tổng quan. Phase 1 chưa leo cấp lên trên</td>
+            </tr>
+            <tr>
+              <td>Chị nhận đơn rồi đi vắng, đơn bị giữ chết</td>
+              <td><span class="pill pill--mute">Thấp</span></td>
+              <td>Tự nhả về hàng chờ sau 30 phút; ba chị còn lại thấy lại nút Nhận xử lý</td>
             </tr>
             <tr>
               <td>Phase 1 chưa trừ ngày lễ tự động</td>
               <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Chị Khoa sửa số giờ chốt khi kỳ nghỉ trùng ngày lễ. Bổ sung danh sách ngày lễ ở Phase 2</td>
+              <td>Chị Khoa sửa số giờ chốt kèm lý do khi kỳ nghỉ trùng ngày lễ. Bổ sung danh sách ngày lễ ở Phase 2</td>
             </tr>
             <tr>
-              <td>Thông báo vào nhóm chung nên người ngoài nhóm duyệt cũng thấy ai đang xin nghỉ</td>
+              <td>Thông báo vào nhóm chung nên người trong nhóm thấy ai đang xin nghỉ</td>
               <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Tin nhắn chỉ ghi tên, loại đơn, thời gian, đường link — không ghi lý do. Nhóm chat nên chỉ gồm bốn chị và chị Khoa</td>
+              <td>Tin chỉ ghi tên, loại đơn, thời gian, đường link — không ghi lý do. Nhóm Duyệt chỉ gồm bốn chị và chị Khoa; nhóm Bảo vệ chỉ nhận đơn ra vào cổng</td>
             </tr>
             <tr>
-              <td>Thêm hoặc sửa phòng ban, người duyệt phải nhờ nhóm phát triển</td>
+              <td>Directory thiếu chức vụ hoặc phòng ban nên form hiện “—”</td>
+              <td><span class="pill pill--draft">Trung bình</span></td>
+              <td>Rà soát Directory trước khi triển khai. Đơn vẫn gửi được với ô trống, chị Khoa sửa sau; ô trống hiện cảnh báo cho PNS</td>
+            </tr>
+            <tr>
+              <td>Form công khai bị gửi rác từ ngoài công ty</td>
               <td><span class="pill pill--mute">Thấp</span></td>
-              <td>Ít xảy ra. Màn hình quản trị cho Nhân sự thuộc Phase 2</td>
+              <td>Phải khớp tên với mã CBNV mới gửi được; giới hạn theo mã và theo thiết bị. Đơn rác không khớp mã thì không vào được cơ sở dữ liệu</td>
+            </tr>
+            <tr>
+              <td>Thêm hoặc sửa quản xưởng, người duyệt phải nhờ nhóm phát triển</td>
+              <td><span class="pill pill--mute">Thấp</span></td>
+              <td>Ít xảy ra. Màn hình quản trị vai trò cho Nhân sự thuộc Phase 2</td>
             </tr>
           </tbody>
         </table>
