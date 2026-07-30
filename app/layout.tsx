@@ -1,6 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import Providers from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,6 +12,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+/**
+ * Root layout, deliberately empty of UI framework.
+ *
+ * Ant Design ships a large client bundle, and putting its registry here would
+ * charge that cost to the public form — the one screen that opens on a worker's
+ * phone on factory wifi, with a 60 KB budget. The registry therefore lives in
+ * `app/admin/layout.tsx` and `app/bao-ve/layout.tsx`, which are the zones allowed
+ * to pay for it.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,11 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body>
-        <AntdRegistry>
-          <Providers>{children}</Providers>
-        </AntdRegistry>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

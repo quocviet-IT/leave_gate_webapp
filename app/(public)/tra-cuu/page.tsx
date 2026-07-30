@@ -1,10 +1,10 @@
-import ScreenSkeleton from "@/components/ScreenSkeleton";
+import PublicNotice from "@/components/PublicNotice";
 
 export const metadata = { title: "Tra cứu đơn — Nhân sự CTYHP" };
 
 export default function LookupPage() {
   return (
-    <ScreenSkeleton
+    <PublicNotice
       title="Tra cứu đơn"
       step={4}
       prdSection="XII · XIII"

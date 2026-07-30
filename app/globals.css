@@ -26,6 +26,47 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ---- public-zone notices (no Ant Design here, by budget) ---- */
+
+.tagline {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.15em 0.5em;
+  border-radius: 2px;
+  background: #f7f9fc;
+  color: var(--ink-3);
+  border: 1px solid var(--rule);
+}
+
+.tagline--accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-soft);
+}
+
+.notice-h {
+  margin: 0 0 0.4rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.notice-warn {
+  margin: 0;
+  background: #f8f0e0;
+  border-left: 3px solid #8d6220;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+
+.notice-warn strong {
+  color: #8d6220;
+}
+
 /* ---- landing: the three zones ---- */
 
 .hub {

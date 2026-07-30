@@ -20,6 +20,7 @@ const NAV: NavItem[] = [
   { key: "/admin", label: "Tổng quan", roles: ["approver", "cnb", "supervisor"] },
   { key: "/admin/duyet-don", label: "Duyệt đơn", roles: ["approver"] },
   { key: "/admin/cham-cong", label: "Chấm công", roles: ["cnb"] },
+  { key: "/admin/nhan-su", label: "Nhân sự", roles: ["cnb"] },
   { key: "/admin/tao-don-ho", label: "Tạo đơn hộ", roles: ["supervisor"] },
 ];
 

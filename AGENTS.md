@@ -18,6 +18,12 @@ What exists for real:
   everywhere, role helpers, per-month code sequence, version-bump trigger.
 - Route tree for all three zones, with the admin auth boundary enforced.
 - Google sign-in for the admin zone.
+- Employee master data: a paste-import for C&B at `/admin/nhan-su`, and a bounded
+  public name search that never returns the employee number.
+- Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
+  `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
+  pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
+  `npm run measure:js` against a production server proves it.
 
 What is a labelled placeholder: the screens themselves. Each unbuilt route
 renders `components/ScreenSkeleton.tsx`, which names the build step from PRD
@@ -28,7 +34,7 @@ time, in the PRD's order.
 
 1. ~~Foundation: project, database, admin sign-in~~ — done
 2. Staff master data: C&B pastes the list, the public form can search it; roles
-   for supervisors. (Google Directory sync replaces the paste in P9.)
+   for supervisors — **done** (P1). Google Directory sync replaces the paste in P9.
 3. Public form, one route, dynamic fields — **blocked: no employee-code source**
 4. Lookup page: track, withdraw, real return time; codes, tokens, QR
 5. Approval queue: claim, version lock, realtime, four tabs

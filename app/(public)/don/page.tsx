@@ -1,10 +1,10 @@
-import ScreenSkeleton from "@/components/ScreenSkeleton";
+import PublicNotice from "@/components/PublicNotice";
 
 export const metadata = { title: "Gửi đơn — Nhân sự CTYHP" };
 
 export default function NewRequestPage() {
   return (
-    <ScreenSkeleton
+    <PublicNotice
       title="Gửi đơn — form công khai"
       step={3}
       prdSection="X · XII"

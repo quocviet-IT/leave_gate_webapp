@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { isLookupToken } from "@/lib/domain/codes";
-import ScreenSkeleton from "@/components/ScreenSkeleton";
+import PublicNotice from "@/components/PublicNotice";
 
 export const metadata = { title: "Đơn của tôi — Nhân sự CTYHP" };
 
@@ -18,7 +18,7 @@ export default async function LookupByTokenPage({
   if (!isLookupToken(token)) notFound();
 
   return (
-    <ScreenSkeleton
+    <PublicNotice
       title="Đơn của tôi — mở bằng link riêng"
       step={4}
       prdSection="XII · XIII"
