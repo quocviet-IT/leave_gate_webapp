@@ -1,0 +1,1212 @@
+<title>PRD — Hệ thống Xin nghỉ phép & Ra vào cổng</title>
+
+<style>
+  :root {
+    --ink:        #17202e;
+    --ink-2:      #45516a;
+    --ink-3:      #79849b;
+    --paper:      #eef1f6;
+    --surface:    #ffffff;
+    --surface-2:  #f7f9fc;
+    --rule:       #dbe1ea;
+    --rule-soft:  #eaeef4;
+    --accent:     #2a4b9b;
+    --accent-soft:#e9edf9;
+    --ok:         #2c6d51;
+    --ok-soft:    #e7f2ec;
+    --warn:       #8d6220;
+    --warn-soft:  #f8f0e0;
+    --stop:       #9e3128;
+    --stop-soft:  #f9eae8;
+
+    --font-display: "Times New Roman", Cambria, "Nimbus Roman", Georgia, serif;
+    --font-body: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --font-data: "Cascadia Mono", Consolas, "SF Mono", ui-monospace, "Liberation Mono", monospace;
+
+    --step--2: 0.7rem;
+    --step--1: 0.8125rem;
+    --step-0:  0.94rem;
+    --step-1:  1.06rem;
+    --step-2:  1.3rem;
+    --step-3:  1.6rem;
+    --step-4:  2.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink:        #e6eaf2;
+      --ink-2:      #aeb8ca;
+      --ink-3:      #7c8799;
+      --paper:      #0b101b;
+      --surface:    #131a28;
+      --surface-2:  #182031;
+      --rule:       #263047;
+      --rule-soft:  #1e2637;
+      --accent:     #90a8f0;
+      --accent-soft:#1a2340;
+      --ok:         #63bd94;
+      --ok-soft:    #15291f;
+      --warn:       #d3a35f;
+      --warn-soft:  #2b2211;
+      --stop:       #e58d84;
+      --stop-soft:  #2d1917;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ink:        #e6eaf2;
+    --ink-2:      #aeb8ca;
+    --ink-3:      #7c8799;
+    --paper:      #0b101b;
+    --surface:    #131a28;
+    --surface-2:  #182031;
+    --rule:       #263047;
+    --rule-soft:  #1e2637;
+    --accent:     #90a8f0;
+    --accent-soft:#1a2340;
+    --ok:         #63bd94;
+    --ok-soft:    #15291f;
+    --warn:       #d3a35f;
+    --warn-soft:  #2b2211;
+    --stop:       #e58d84;
+    --stop-soft:  #2d1917;
+  }
+
+  :root[data-theme="light"] {
+    --ink:        #17202e;
+    --ink-2:      #45516a;
+    --ink-3:      #79849b;
+    --paper:      #eef1f6;
+    --surface:    #ffffff;
+    --surface-2:  #f7f9fc;
+    --rule:       #dbe1ea;
+    --rule-soft:  #eaeef4;
+    --accent:     #2a4b9b;
+    --accent-soft:#e9edf9;
+    --ok:         #2c6d51;
+    --ok-soft:    #e7f2ec;
+    --warn:       #8d6220;
+    --warn-soft:  #f8f0e0;
+    --stop:       #9e3128;
+    --stop-soft:  #f9eae8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ shell: sticky index + full-width content ============ */
+
+  .shell {
+    max-width: 1560px;
+    margin: 0 auto;
+    padding: 0 clamp(0.9rem, 2.5vw, 2.25rem) 5rem;
+    display: grid;
+    grid-template-columns: 14.5rem minmax(0, 1fr);
+    gap: 0 clamp(1.5rem, 3vw, 3.5rem);
+    align-items: start;
+  }
+
+  .index {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding: 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .index-mark {
+    font-family: var(--font-display);
+    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .index-mark b { font-size: var(--step-1); font-weight: 700; }
+  .index-mark span { font-family: var(--font-body); font-size: var(--step--2); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .index nav { display: flex; flex-direction: column; }
+  .index nav a {
+    display: grid;
+    grid-template-columns: 2.1rem 1fr;
+    gap: 0.5rem;
+    padding: 0.32rem 0.5rem 0.32rem 0;
+    text-decoration: none;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    border-left: 2px solid transparent;
+    padding-left: 0.6rem;
+  }
+  .index nav a em {
+    font-family: var(--font-display);
+    font-style: normal;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .index nav a:hover { color: var(--accent); border-left-color: var(--accent); }
+  .index nav a:hover em { color: var(--accent); }
+
+  .main { padding: 2.5rem 0 0; min-width: 0; display: flex; flex-direction: column; }
+
+  @media (max-width: 62rem) {
+    .shell { grid-template-columns: minmax(0, 1fr); }
+    .index { position: static; max-height: none; padding: 1.75rem 0 0; }
+    .index nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+    .main { padding-top: 1.5rem; }
+  }
+
+  /* ============ masthead ============ */
+
+  .masthead {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.1rem;
+    align-items: center;
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .eyebrow .kind { color: var(--accent); font-weight: 700; }
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: 700;
+    line-height: 1.1;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .masthead .lede {
+    margin: 0;
+    max-width: 68ch;
+    color: var(--ink-2);
+    font-size: var(--step-1);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .stats div { background: var(--surface-2); padding: 0.7rem 0.9rem; display: flex; flex-direction: column; gap: 0.1rem; }
+  .stats .k { font-size: var(--step--2); letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-3); }
+  .stats .v { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: var(--step-0); }
+  .stats .v.big { font-size: var(--step-2); font-weight: 650; }
+
+  /* ============ pills ============ */
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.35em;
+    font-size: var(--step--2); font-weight: 650; letter-spacing: 0.03em;
+    padding: 0.15em 0.55em; border-radius: 2px;
+    border: 1px solid var(--rule); white-space: nowrap;
+  }
+  .pill--draft { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-soft); }
+  .pill--ok    { background: var(--ok-soft);   color: var(--ok);   border-color: var(--ok-soft); }
+  .pill--stop  { background: var(--stop-soft); color: var(--stop); border-color: var(--stop-soft); }
+  .pill--info  { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
+  .pill--mute  { background: var(--surface-2); color: var(--ink-3); }
+
+  /* ============ key points ============ */
+
+  .keys {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .keys > div {
+    background: var(--surface);
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column; gap: 0.35rem;
+  }
+  .keys .kh {
+    font-size: var(--step--2); letter-spacing: 0.11em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700;
+  }
+  .keys .kb { color: var(--ink-2); font-size: var(--step--1); }
+  .keys .kb strong { color: var(--ink); font-weight: 650; }
+
+  /* ============ sections ============ */
+
+  section.sec { margin-top: 3.5rem; scroll-margin-top: 1.5rem; }
+  .sec > h2 {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 1.1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: baseline; gap: 0.8rem;
+    text-wrap: balance;
+  }
+  .sec > h2 em {
+    font-style: normal; color: var(--accent);
+    font-size: var(--step-2); font-variant-numeric: tabular-nums;
+    flex: 0 0 auto;
+  }
+  .sec h3 {
+    font-size: var(--step--1); font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 1.75rem 0 0.7rem;
+  }
+  .sec > p { margin: 0 0 1rem; max-width: 74ch; color: var(--ink-2); }
+  .stack { display: flex; flex-direction: column; gap: 1rem; }
+
+  /* ============ tables ============ */
+
+  .tw { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
+  th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  thead th {
+    background: var(--surface-2);
+    font-size: var(--step--2); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 700;
+    border-bottom: 1px solid var(--rule); white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .mono, td.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+  td.num { white-space: nowrap; }
+  td.pf { font-family: var(--font-display); font-size: var(--step-0); color: var(--ink-2); }
+  .sub { display: block; color: var(--ink-3); font-size: var(--step--2); }
+  th.c1 { width: 26%; } th.c2 { width: 9rem; } th.c3 { width: 6rem; }
+
+  /* ============ cards ============ */
+
+  .duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--rule);
+    padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.7rem;
+  }
+  .card--in { border-top: 3px solid var(--ok); }
+  .card--out { border-top: 3px solid var(--ink-3); }
+  .card h4 {
+    margin: 0; font-size: var(--step--2); letter-spacing: 0.11em;
+    text-transform: uppercase; font-weight: 700;
+  }
+  .card--in h4 { color: var(--ok); }
+  .card--out h4 { color: var(--ink-3); }
+  .card ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.35rem; font-size: var(--step--1); color: var(--ink-2); }
+
+  .rules { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .rules li { background: var(--surface); padding: 0.85rem 1rem; display: grid; grid-template-columns: 1.6rem 1fr; gap: 0.6rem; font-size: var(--step--1); color: var(--ink-2); }
+  .rules li b.n { font-family: var(--font-data); color: var(--accent); font-weight: 700; }
+  .rules li strong { color: var(--ink); font-weight: 650; }
+
+  /* ============ notes ============ */
+
+  .note {
+    background: var(--warn-soft); border-left: 3px solid var(--warn);
+    padding: 0.8rem 1rem; font-size: var(--step--1); color: var(--ink-2);
+  }
+  .note strong { color: var(--warn); }
+  .note--info { background: var(--accent-soft); border-left-color: var(--accent); }
+  .note--info strong { color: var(--accent); }
+
+  /* ============ diagram ============ */
+
+  .frame { background: var(--surface); border: 1px solid var(--rule); padding: 1.25rem; overflow-x: auto; }
+  pre.mermaid { margin: 0; background: transparent; border: 0; }
+
+  figure { margin: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+  figcaption { font-size: var(--step--1); color: var(--ink-3); max-width: 78ch; }
+  figcaption b { color: var(--ink-2); font-weight: 650; }
+  .scroller { overflow-x: auto; }
+
+  /* ============ paper form replicas (always light — it is paper) ============ */
+
+  .paper-doc {
+    background: #fff; color: #101010;
+    border: 1px solid #b9bec7;
+    box-shadow: 0 10px 26px -20px rgba(16,24,40,.55);
+    font-family: var(--font-display);
+    font-size: 14px; line-height: 2.05;
+    padding: 1.9rem 1.7rem 1.4rem;
+    min-width: 38rem;
+  }
+  .paper-doc .t { text-align: center; font-weight: 700; font-size: 1.2rem; margin: 0 0 .3rem; }
+  .paper-doc .s { text-align: center; margin: 0 0 .9rem; font-size: .92rem; }
+  .paper-doc .r { display: flex; align-items: baseline; gap: .3rem; flex-wrap: wrap; }
+  .paper-doc .d { flex: 1 1 4rem; min-width: 2.2rem; border-bottom: 1.4px dotted #4a4a4a; transform: translateY(-.25em); }
+  .paper-doc .d.sm { flex: 0 0 3.1rem; }
+  .paper-doc .d.md { flex: 0 0 7rem; }
+  .paper-doc .cb { white-space: nowrap; margin-right: 2rem; }
+  .paper-doc .cb::before {
+    content: ""; display: inline-block; width: .7em; height: .7em;
+    border: 1.3px solid #101010; margin-right: .42em;
+  }
+  .paper-doc .o { display: flex; flex-wrap: wrap; }
+  .paper-doc .sg { display: grid; grid-template-columns: repeat(4,1fr); gap: .5rem; font-weight: 700; margin-top: .85rem; }
+  .paper-doc .sp { height: 3rem; }
+  .paper-doc .sd { display: grid; grid-template-columns: repeat(4,1fr); gap: .5rem; text-align: center; }
+  .paper-doc .n { margin-top: 1.3rem; font-style: italic; font-size: 12px; line-height: 1.5; }
+  .paper-doc .b { display: flex; flex-direction: column; }
+
+  /* ============ UI mockups ============ */
+
+  .mock {
+    border: 1px solid var(--rule); border-radius: 7px; overflow: hidden;
+    background: var(--surface); font-size: var(--step--1); line-height: 1.45;
+    min-width: 36rem;
+  }
+  .mock.sm { min-width: 20rem; max-width: 25rem; }
+  .mock-bar {
+    display: flex; align-items: center; gap: .45rem;
+    padding: .45rem .65rem; background: var(--surface-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .mock-bar i { width: .5rem; height: .5rem; border-radius: 50%; background: var(--rule); display: inline-block; }
+  .mock-url {
+    flex: 1; font-family: var(--font-data); font-size: var(--step--2); color: var(--ink-3);
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 999px;
+    padding: .08rem .65rem; margin-left: .35rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .mock-app { display: grid; grid-template-columns: 10.5rem minmax(0,1fr); }
+  .mock-app.full { grid-template-columns: minmax(0,1fr); }
+  .mock-nav { background: var(--surface-2); border-right: 1px solid var(--rule); padding: .8rem 0; display: flex; flex-direction: column; gap: .05rem; }
+  .mock-brand { padding: 0 .85rem .65rem; display: flex; flex-direction: column; line-height: 1.3; font-weight: 700; font-size: var(--step--1); }
+  .mock-brand small { font-weight: 400; color: var(--ink-3); font-size: var(--step--2); }
+  .mock-nav a {
+    padding: .35rem .85rem; color: var(--ink-2); text-decoration: none;
+    display: flex; justify-content: space-between; align-items: center; gap: .4rem;
+    font-size: var(--step--2);
+  }
+  .mock-nav a.on { background: var(--accent-soft); color: var(--accent); font-weight: 650; box-shadow: inset 2px 0 0 var(--accent); }
+  .badge { background: var(--stop); color: #fff; font-family: var(--font-data); font-size: var(--step--2); font-weight: 700; border-radius: 999px; padding: 0 .4em; min-width: 1.25em; text-align: center; }
+  .mock-main { padding: .9rem 1rem 1.1rem; display: flex; flex-direction: column; gap: .7rem; min-width: 0; }
+  .mock-h { display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; flex-wrap: wrap; padding-bottom: .5rem; border-bottom: 1px solid var(--rule-soft); }
+  .mock-h strong { font-size: var(--step-0); font-weight: 650; }
+  .mock-h span { color: var(--ink-3); font-size: var(--step--2); }
+  .hint { color: var(--ink-3); font-size: var(--step--2); margin: 0; }
+
+  .fld { display: flex; flex-direction: column; gap: .2rem; }
+  .fld > label { font-size: var(--step--2); color: var(--ink-3); letter-spacing: .04em; text-transform: uppercase; }
+  .inp {
+    border: 1px solid var(--rule); border-radius: 4px; padding: .3rem .5rem;
+    background: var(--surface); color: var(--ink); min-height: 1.8rem;
+    display: flex; align-items: center; gap: .4rem; font-size: var(--step--2);
+  }
+  .inp.ro { background: var(--surface-2); color: var(--ink-3); }
+  .inp.ta { min-height: 2.8rem; align-items: flex-start; }
+  .inp .ph { color: var(--ink-3); }
+  .g2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem,1fr)); gap: .6rem; }
+  .g3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(7rem,1fr)); gap: .6rem; }
+
+  .radios { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .radio { border: 1px solid var(--rule); border-radius: 4px; padding: .15rem .5rem; color: var(--ink-2); font-size: var(--step--2); }
+  .radio.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); font-weight: 650; }
+
+  .calc {
+    background: var(--ok-soft); border: 1px solid var(--ok-soft); border-radius: 4px;
+    padding: .45rem .65rem; color: var(--ok);
+    display: flex; flex-wrap: wrap; gap: .2rem .7rem; align-items: baseline; font-size: var(--step--2);
+  }
+  .calc b { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: var(--step--1); }
+  .calc .why { color: var(--ink-3); }
+
+  .btns { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .btn { border-radius: 4px; padding: .25rem .75rem; font-size: var(--step--2); font-weight: 650; border: 1px solid var(--rule); color: var(--ink-2); background: var(--surface); }
+  .btn--pri { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn--ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .btn--stop { color: var(--stop); border-color: var(--stop-soft); }
+  @media (prefers-color-scheme: dark) { .btn--pri, .btn--ok { color: #0b101b; } }
+  :root[data-theme="dark"] .btn--pri, :root[data-theme="dark"] .btn--ok { color: #0b101b; }
+  :root[data-theme="light"] .btn--pri, :root[data-theme="light"] .btn--ok { color: #fff; }
+
+  .btn-sso {
+    display: inline-flex; align-items: center; gap: .55rem;
+    border: 1px solid var(--rule); border-radius: 5px;
+    padding: .5rem .9rem; background: var(--surface);
+    font-size: var(--step--1); font-weight: 650; color: var(--ink);
+    box-shadow: 0 1px 2px rgba(16,24,40,.06);
+  }
+  .btn-sso svg { flex: 0 0 auto; }
+
+  .mt { width: 100%; border-collapse: collapse; font-size: var(--step--2); }
+  .mt th, .mt td { padding: .35rem .45rem; border-bottom: 1px solid var(--rule-soft); white-space: nowrap; }
+  .mt thead th { background: var(--surface-2); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-size: .64rem; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+  .chip { border: 1px solid var(--rule); border-radius: 4px; padding: .15rem .5rem; font-size: var(--step--2); color: var(--ink-2); background: var(--surface-2); display: inline-flex; gap: .3rem; }
+  .chip b { font-family: var(--font-data); color: var(--ink); }
+
+  .totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(7rem,1fr)); gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule-soft); }
+  .totals div { background: var(--surface-2); padding: .4rem .55rem; display: flex; flex-direction: column; }
+  .totals .k { font-size: .62rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); }
+  .totals .v { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: var(--step-1); font-weight: 650; }
+
+  .req { display: flex; flex-direction: column; gap: .25rem; border: 1px solid var(--rule); border-radius: 5px; padding: .55rem .65rem; }
+  .req .top { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+  .req .top strong { font-size: var(--step--1); }
+
+  .gchat { border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); max-width: 23rem; overflow: hidden; }
+  .gchat-head { display: flex; align-items: center; gap: .45rem; padding: .5rem .7rem; background: var(--surface-2); border-bottom: 1px solid var(--rule); font-size: var(--step--2); color: var(--ink-3); }
+  .gchat-head .who { color: var(--ink); font-weight: 650; font-size: var(--step--1); }
+  .gchat-head .bot { background: var(--accent-soft); color: var(--accent); border-radius: 2px; padding: 0 .35em; font-size: .62rem; font-weight: 700; letter-spacing: .04em; }
+  .gchat-body { padding: .7rem; display: flex; flex-direction: column; gap: .45rem; font-size: var(--step--1); }
+  .gchat-body .t { font-weight: 650; }
+  .gchat-kv { display: grid; grid-template-columns: 6rem 1fr; gap: .15rem .5rem; font-size: var(--step--2); }
+  .gchat-kv .k { color: var(--ink-3); }
+  .gchat-foot { border-top: 1px solid var(--rule-soft); padding: .5rem .7rem; }
+
+  .grid-figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr)); gap: 1.75rem; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: var(--font-data); font-size: .88em; background: var(--surface-2); border: 1px solid var(--rule-soft); padding: .05em .3em; border-radius: 2px; }
+
+  .signoff {
+    margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem,1fr)); gap: 2rem;
+  }
+  .signoff div { display: flex; flex-direction: column; gap: .4rem; }
+  .signoff .role { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .signoff .line { height: 3.25rem; border-bottom: 1px dotted var(--rule); }
+  .signoff .date { font-family: var(--font-display); font-size: var(--step--1); color: var(--ink-3); }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .shell { grid-template-columns: minmax(0,1fr); max-width: none; padding: 0; }
+    .index { display: none; }
+    .masthead, .card, .tw, .frame, .mock, .paper-doc, .rules { border-color: #999; box-shadow: none; }
+    .sec { break-inside: avoid; margin-top: 2rem; }
+    .tw, .card, .note, figure, .rules { break-inside: avoid; }
+    .grid-figs { grid-template-columns: minmax(0,1fr); }
+  }
+</style>
+
+<div class="shell">
+
+  <!-- ================= INDEX ================= -->
+  <aside class="index">
+    <div class="index-mark">
+      <b>Nghỉ phép &amp; Ra vào cổng</b>
+      <span>PRD · Phase 1 · v0.4</span>
+    </div>
+    <nav>
+      <a href="#s1"><em>I</em><span>Vấn đề</span></a>
+      <a href="#s2"><em>II</em><span>Mục tiêu</span></a>
+      <a href="#s3"><em>III</em><span>Phạm vi</span></a>
+      <a href="#s4"><em>IV</em><span>Người dùng</span></a>
+      <a href="#s5"><em>V</em><span>Luồng &amp; thông báo</span></a>
+      <a href="#s6"><em>VI</em><span>Mẫu giấy</span></a>
+      <a href="#s7"><em>VII</em><span>Trường dữ liệu</span></a>
+      <a href="#s8"><em>VIII</em><span>Tính thời gian</span></a>
+      <a href="#s9"><em>IX</em><span>Giao diện</span></a>
+      <a href="#s10"><em>X</em><span>Quy tắc</span></a>
+      <a href="#s11"><em>XI</em><span>Kỹ thuật</span></a>
+      <a href="#s12"><em>XII</em><span>Rủi ro</span></a>
+    </nav>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+
+    <header class="masthead">
+      <div class="eyebrow">
+        <span>Công ty CTYHP</span>
+        <span class="kind">Tài liệu mô tả yêu cầu sản phẩm</span>
+        <span class="pill pill--draft">Bản nháp — chờ phê duyệt</span>
+      </div>
+
+      <h1>Hệ thống Xin nghỉ phép &amp; Giấy ra vào cổng</h1>
+
+      <p class="lede">
+        Thay hai mẫu đơn giấy đang lưu hành bằng một web app nội bộ. CBNV gửi đơn trên điện thoại,
+        một trong bốn chị duyệt, Google Chat thông báo ngay, đơn đã duyệt tự chảy về màn hình chấm công.
+      </p>
+
+      <div class="stats">
+        <div><span class="k">Loại đơn</span><span class="v big">2</span></div>
+        <div><span class="k">Người duyệt</span><span class="v big">4</span></div>
+        <div><span class="k">Cần duyệt</span><span class="v big">1 / 4</span></div>
+        <div><span class="k">Màn hình</span><span class="v big">6</span></div>
+        <div><span class="k">Phiên bản</span><span class="v">0.4 — nháp</span></div>
+        <div><span class="k">Bàn giao</span><span class="v">30/07/2026</span></div>
+      </div>
+    </header>
+
+    <div class="keys">
+      <div>
+        <span class="kh">Đăng nhập</span>
+        <span class="kb">Một nút <strong>Đăng nhập bằng email công ty</strong>. Không nhập email, không mật khẩu. Tài khoản ngoài <code>@ctyhp.vn</code> bị chặn.</span>
+      </div>
+      <div>
+        <span class="kh">Duyệt</span>
+        <span class="kb">Hàng chờ chung toàn công ty. <strong>Chị Diệu · chị Phúc · chị Trân · chị Hạnh</strong> — một chị duyệt là đơn có hiệu lực.</span>
+      </div>
+      <div>
+        <span class="kh">Chấm công</span>
+        <span class="kb"><strong>Chị Khoa (C&amp;B)</strong> nhận đơn đã duyệt kèm số giờ hệ thống tính sẵn. Lọc theo kỳ, tải Excel.</span>
+      </div>
+    </div>
+
+    <!-- I -->
+    <section class="sec" id="s1">
+      <h2><em>I</em>Vấn đề hiện tại</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c2">Bước</th><th>Trên giấy hiện nay</th><th>Trên app</th></tr></thead>
+          <tbody>
+            <tr><td>Tạo đơn</td><td>In mẫu, viết tay họ tên · chức vụ · phòng ban mỗi lần</td><td>Ba trường này tự điền từ tài khoản</td></tr>
+            <tr><td>Lấy chữ ký</td><td>Mang giấy đi tìm người ký; người ký đi vắng thì đợi</td><td>Đơn vào hàng chờ của cả bốn chị, kèm thông báo Google Chat</td></tr>
+            <tr><td>Tính số giờ</td><td>Nhân sự tính tay, tự trừ Chủ nhật và giờ nghỉ trưa</td><td>Hệ thống tính sẵn, Nhân sự chỉ kiểm lại</td></tr>
+            <tr><td>Bằng chứng</td><td>Chữ ký tay, khó tra lại</td><td>Lưu tên người duyệt và thời điểm, không sửa được</td></tr>
+            <tr><td>Về Nhân sự</td><td>Nộp giấy cho bảo vệ → bảo vệ chuyển về Nhân sự</td><td>Hiện ngay trên màn hình chấm công</td></tr>
+            <tr><td>Chấm công</td><td>Gom và nhập tay từng tờ</td><td>Lọc theo kỳ rồi tải một file Excel</td></tr>
+            <tr><td>Lưu trữ</td><td>Tập giấy, thất lạc là mất</td><td>Lưu trong cơ sở dữ liệu, in PDF khi cần</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- II -->
+    <section class="sec" id="s2">
+      <h2><em>II</em>Mục tiêu và cách đo</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Mục tiêu</th><th>Cách đo</th><th class="c3">Mốc</th></tr></thead>
+          <tbody>
+            <tr><td>Bỏ in và ký tay hai mẫu đơn</td><td>Tỉ lệ đơn tạo trên app so với tổng số đơn trong kỳ</td><td class="num">≥ 95%</td></tr>
+            <tr><td>Duyệt nhanh hơn</td><td>Thời gian trung bình từ lúc gửi đến lúc có người duyệt, trong giờ làm</td><td class="num">≤ 2 giờ</td></tr>
+            <tr><td>Nhân sự không nhập tay, không tính tay</td><td>Thời gian tạo dữ liệu chấm công cho một kỳ</td><td class="num">≤ 5 phút</td></tr>
+            <tr><td>Không mất đơn</td><td>Số đơn đã gửi mà không tra được trạng thái</td><td class="num">0</td></tr>
+            <tr><td>Dùng được ngay, không cần đào tạo</td><td>CBNV tự gửi đơn đầu tiên mà không hỏi ai</td><td class="num">≤ 3 phút</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:1rem">
+        <strong>Lưu ý:</strong> Phase 1 chưa bỏ được 100% giấy ở cổng — khâu “Bảo vệ tiếp nhận” chưa đưa vào app.
+        CBNV cho bảo vệ xem đơn đã duyệt trên điện thoại, hoặc in một bản khi bảo vệ yêu cầu.
+      </div>
+    </section>
+
+    <!-- III -->
+    <section class="sec" id="s3">
+      <h2><em>III</em>Phạm vi</h2>
+      <div class="duo">
+        <div class="card card--in">
+          <h4>Trong Phase 1</h4>
+          <ul>
+            <li>Đăng nhập một nút bằng email công ty</li>
+            <li>Đơn xin nghỉ phép</li>
+            <li>Giấy xin phép ra vào cổng</li>
+            <li>Trang “Đơn của tôi” — theo dõi, huỷ đơn còn chờ</li>
+            <li>Hàng chờ duyệt chung cho bốn chị</li>
+            <li>Duyệt, hoặc từ chối và ghi thêm lý do</li>
+            <li>Thông báo Google Chat</li>
+            <li>Tự tính số giờ theo giờ làm việc công ty</li>
+            <li>Màn hình chấm công: lọc · Excel · đánh dấu</li>
+            <li>Bản in theo bố cục mẫu giấy</li>
+            <li>Dùng được trên điện thoại</li>
+          </ul>
+        </div>
+        <div class="card card--out">
+          <h4>Để lại Phase 2</h4>
+          <ul>
+            <li>Màn hình cho bảo vệ tại cổng</li>
+            <li>Tự động trừ ngày lễ — Phase 1 chỉ trừ Chủ nhật</li>
+            <li>Theo dõi số ngày phép năm còn lại</li>
+            <li>Nối trực tiếp vào máy chấm công / bảng lương</li>
+            <li>Nhắn riêng Google Chat cho từng người</li>
+            <li>Màn hình quản trị phòng ban &amp; CBNV cho Nhân sự</li>
+            <li>Ứng dụng cài đặt trên điện thoại</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- IV -->
+    <section class="sec" id="s4">
+      <h2><em>IV</em>Người dùng và quyền</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c2">Vai trò</th><th class="c1">Ai</th><th>Làm được gì</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="pill pill--info">Người duyệt</span></td>
+              <td>
+                Chị Diệu <span class="sub mono">dieu@ctyhp.vn</span>
+                Chị Phúc <span class="sub mono">sx001@ctyhp.vn</span>
+                Chị Trân <span class="sub mono">mytran@ctyhp.vn</span>
+                Chị Hạnh <span class="sub mono">hanh@ctyhp.vn</span>
+              </td>
+              <td>
+                Duyệt hoặc từ chối đơn của <strong>toàn bộ CBNV</strong>, không phân theo phòng ban.
+                <span class="sub">Một chị duyệt là đơn có hiệu lực. Không tự duyệt đơn của mình — ba chị còn lại xử lý.</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="pill pill--info">Chấm công</span></td>
+              <td>Chị Khoa — C&amp;B Nhân sự <span class="sub mono">anhkhoa@ctyhp.vn</span></td>
+              <td>
+                Xem mọi đơn đã duyệt · sửa số giờ chốt · lọc · tải Excel · đánh dấu đã chấm công · huỷ đơn đã duyệt kèm lý do.
+              </td>
+            </tr>
+            <tr>
+              <td><span class="pill pill--mute">CBNV</span></td>
+              <td>Mọi người có email công ty</td>
+              <td>
+                Tạo · gửi · theo dõi · huỷ đơn của mình; cập nhật giờ vào lại thực tế; in đơn của mình.
+                <span class="sub">Không thấy đơn của người khác — ràng buộc đặt ở tầng cơ sở dữ liệu.</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- V -->
+    <section class="sec" id="s5">
+      <h2><em>V</em>Luồng xử lý và thông báo</h2>
+      <div class="frame">
+<pre class="mermaid">
+flowchart LR
+  A["CBNV tạo đơn"] --> B["Chờ duyệt<br/>hàng chờ chung của 4 chị"]
+  B --> C["Đã duyệt<br/>ghi tên + thời điểm"]
+  B --> D["Bị từ chối<br/>kèm lý do"]
+  B --> E["Đã huỷ<br/>CBNV tự huỷ"]
+  C --> F["Chị Khoa chấm công<br/>số giờ đã tính sẵn"]
+  F --> G["Đánh dấu đã chấm"]
+  F --> H["Tải file Excel"]
+  B -.-> N["Google Chat"]
+  C -.-> N
+  D -.-> N
+</pre>
+      </div>
+      <p style="margin-top:1rem">
+        Trạng thái đơn:
+        <span class="pill pill--draft">Chờ duyệt</span>
+        <span class="pill pill--ok">Đã duyệt</span>
+        <span class="pill pill--stop">Bị từ chối</span>
+        <span class="pill pill--mute">Đã huỷ</span>
+      </p>
+
+      <h3>Thông báo Google Chat</h3>
+      <figure>
+        <div class="scroller">
+          <div class="gchat">
+            <div class="gchat-head"><span class="who">Đơn từ CBNV</span><span class="bot">APP</span><span>· 09:12</span></div>
+            <div class="gchat-body">
+              <span class="t">Đơn xin nghỉ phép mới — chờ duyệt</span>
+              <div class="gchat-kv">
+                <span class="k">Người gửi</span><span>Nguyễn Văn Bình · Sản xuất</span>
+                <span class="k">Thời gian</span><span class="mono">30/07 → 01/08 · 24 giờ</span>
+                <span class="k">Loại</span><span>Phép năm</span>
+              </div>
+            </div>
+            <div class="gchat-foot"><span class="btn btn--pri">Mở đơn để duyệt</span></div>
+          </div>
+        </div>
+        <figcaption>
+          <b>Mô phỏng</b> — tin nhắn <strong>không kèm lý do nghỉ</strong>. Lý do có thể là chuyện sức khoẻ
+          hoặc gia đình; ai cần đọc thì mở đơn trong app.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- VI -->
+    <section class="sec" id="s6">
+      <h2><em>VI</em>Hai mẫu giấy hiện hành</h2>
+      <div class="grid-figs">
+        <figure>
+          <div class="scroller">
+            <div class="paper-doc">
+              <p class="t">ĐƠN XIN NGHỈ PHÉP</p>
+              <p class="s">Kính gửi: BAN GIÁM ĐỐC CÔNG TY</p>
+              <div class="b">
+                <div class="r"><span>Tôi tên là:</span><span class="d"></span></div>
+                <div class="r"><span>Chức vụ:</span><span class="d"></span><span>Phòng/Ban:</span><span class="d"></span></div>
+                <div class="r"><span>Nay tôi làm đơn này kính đề nghị Ban Giám đốc chấp thuận cho tôi được nghỉ phép, cụ thể:</span></div>
+                <div class="r"><span>Được nghỉ từ</span><span class="d sm"></span><span>ngày</span><span class="d md"></span><span>đến</span><span class="d sm"></span><span>ngày</span><span class="d md"></span><span>Tổng thời gian nghỉ:</span><span class="d"></span></div>
+                <div class="r"><span>Lý do:</span><span class="d"></span></div>
+                <div class="o"><span class="cb">Không lương</span><span class="cb">Phép năm</span><span class="cb">Ốm đau</span></div>
+                <div class="o"><span class="cb">Kết hôn</span><span class="cb">Thai sản</span><span class="cb">Tang chế</span></div>
+                <div class="o"><span class="cb">Trường hợp đặc biệt</span><span class="cb">Khác (bù giờ)</span></div>
+                <div class="r"><span>Công việc của tôi tạm thời bàn giao lại cho:</span><span class="d"></span></div>
+                <div class="r"><span>Đề xuất ngày làm bù (Nếu có):</span><span class="d"></span></div>
+                <div class="r"><span>Tôi cam kết việc nghỉ phép của tôi không ảnh hưởng đến công việc tôi đang phụ trách, Hết thời gian nghỉ nêu trên, tôi sẽ trở lại làm việc bình thường.</span></div>
+              </div>
+              <div class="sg"><span>BAN GIÁM ĐỐC</span><span>GSNB</span><span>TP/TBP</span><span>NGƯỜI LÀM ĐƠN</span></div>
+              <div class="sp"></div>
+              <div class="sd">
+                <span>…………………<br>Ngày…../…../…….</span><span>…………………<br>Ngày…../…../…….</span>
+                <span>…………………<br>Ngày…../…../…….</span><span>…………………<br>Ngày…../…../…….</span>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Mẫu 1</b> — Đơn xin nghỉ phép.</figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="paper-doc">
+              <p class="t">GIẤY XIN PHÉP RA VÀO CỔNG</p>
+              <div class="b">
+                <div class="r"><span>Họ và tên CBNV:</span><span class="d"></span><span>Chức vụ:</span><span class="d"></span></div>
+                <div class="r"><span>Phòng/Ban/Bộ phận:</span><span class="d"></span></div>
+                <div class="r"><span>Lý do xin phép ra vào cổng:</span><span class="cb">Đi công tác</span><span class="cb">Nghỉ phép</span><span class="cb">Khác</span></div>
+                <div class="r"><span>Diễn giải:</span><span class="d"></span></div>
+                <div class="r"><span class="d"></span></div>
+                <div class="r"><span>Thời gian ra:</span><span class="d sm"></span><span>giờ</span><span class="d sm"></span><span>phút,</span><span>Ngày</span><span class="d sm"></span><span>Tháng</span><span class="d sm"></span><span>Năm</span><span class="d sm"></span></div>
+                <div class="r"><span>Thời gian vào lại:</span><span class="d sm"></span><span>giờ</span><span class="d sm"></span><span>phút,</span><span>Ngày</span><span class="d sm"></span><span>Tháng</span><span class="d sm"></span><span>Năm</span><span class="d sm"></span></div>
+                <div class="r"><span>Thời gian vào sớm:</span><span class="d"></span><span>Thời gian vào trễ:</span><span class="d"></span></div>
+                <div class="r"><span>Lý do của việc vào sớm/vào trễ:</span><span class="d"></span></div>
+              </div>
+              <div class="sg"><span>BGĐ/GSNB</span><span>Trưởng phòng/ban</span><span>Bảo vệ tiếp nhận</span><span>CBNV đăng ký</span></div>
+              <div class="sp"></div>
+              <p class="n">Lưu ý: CB-NV phải nộp lại phiếu này cho Bảo vệ để chuyển về Phòng Nhân sự làm căn cứ tính lương</p>
+            </div>
+          </div>
+          <figcaption><b>Mẫu 2</b> — Giấy xin phép ra vào cổng.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- VII -->
+    <section class="sec" id="s7">
+      <h2><em>VII</em>Trường dữ liệu</h2>
+      <p>App giữ lại toàn bộ các trường trên mẫu giấy; chỉ thay cách thu thập và cách ký.</p>
+
+      <h3>Đơn xin nghỉ phép</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Trên mẫu giấy</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <tbody>
+            <tr><td class="pf">Tôi tên là / Chức vụ / Phòng–Ban</td><td>Tự điền từ tài khoản</td><td>tự động</td></tr>
+            <tr><td class="pf">Được nghỉ từ ngày … đến ngày …</td><td>Hai ô chọn ngày, thêm lựa chọn nghỉ nửa ngày sáng hoặc chiều</td><td>Có</td></tr>
+            <tr><td class="pf">Tổng thời gian nghỉ</td><td>Hệ thống tự tính ra ngày và giờ theo mục VIII</td><td>tự động</td></tr>
+            <tr><td class="pf">Lý do — 8 ô đánh dấu</td><td>Chọn một. Chọn <strong>Trường hợp đặc biệt</strong> hoặc <strong>Khác</strong> thì hiện ô để tự ghi rõ</td><td>Có</td></tr>
+            <tr><td class="pf">Lý do (dòng viết tay)</td><td>Ô văn bản diễn giải</td><td>Có</td></tr>
+            <tr><td class="pf">Bàn giao lại cho</td><td>Chọn một CBNV trong danh sách</td><td>Có</td></tr>
+            <tr><td class="pf">Đề xuất ngày làm bù</td><td>Ô chọn ngày</td><td>Không</td></tr>
+            <tr><td class="pf">Cam kết không ảnh hưởng công việc</td><td>Ô tích, in nguyên văn cam kết bên cạnh</td><td>Có</td></tr>
+            <tr><td class="pf">4 ô ký: BGĐ · GSNB · TP/TBP · Người làm đơn</td><td>Ô người làm đơn là tài khoản gửi đơn; ba ô còn lại thay bằng một trong bốn chị, ghi tên và thời điểm</td><td>tự động</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Giấy xin phép ra vào cổng</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Trên mẫu giấy</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <tbody>
+            <tr><td class="pf">Họ tên / Chức vụ / Phòng–Ban–Bộ phận</td><td>Tự điền từ tài khoản</td><td>tự động</td></tr>
+            <tr><td class="pf">Lý do: Đi công tác · Nghỉ phép · Khác</td><td>Chọn một. Chọn <strong>Khác</strong> thì hiện ô để tự ghi rõ</td><td>Có</td></tr>
+            <tr><td class="pf">Diễn giải</td><td>Ô văn bản</td><td>Có</td></tr>
+            <tr><td class="pf">Thời gian ra</td><td>Một ô chọn ngày và giờ</td><td>Có</td></tr>
+            <tr><td class="pf">Thời gian vào lại</td><td>Một ô chọn ngày và giờ, hiểu là dự kiến; phải sau thời gian ra</td><td>Có</td></tr>
+            <tr><td class="pf">Thời gian vào sớm / vào trễ</td><td>CBNV nhập giờ vào lại thực tế; hệ thống tự tính chênh lệch</td><td>Sau khi về</td></tr>
+            <tr><td class="pf">Lý do vào sớm / vào trễ</td><td>Ô văn bản, bắt buộc khi lệch quá 15 phút</td><td>Có điều kiện</td></tr>
+            <tr><td class="pf">— không có trên giấy</td><td>Hệ thống tính <strong>số giờ vắng trong giờ làm</strong> để chấm công dùng trực tiếp</td><td>tự động</td></tr>
+            <tr><td class="pf">Ô ký “Bảo vệ tiếp nhận”</td><td>Phase 2</td><td>—</td></tr>
+            <tr><td class="pf">3 ô ký còn lại</td><td>Một trong bốn chị người duyệt</td><td>tự động</td></tr>
+            <tr><td class="pf">Lưu ý: nộp lại cho Bảo vệ để chuyển về Nhân sự</td><td>Không cần nữa — đơn tự chảy về màn hình chấm công</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VIII -->
+    <section class="sec" id="s8">
+      <h2><em>VIII</em>Cách hệ thống tính thời gian</h2>
+      <div class="duo">
+        <div class="tw">
+          <table>
+            <thead><tr><th class="c2">Quy ước</th><th>Giá trị</th></tr></thead>
+            <tbody>
+              <tr><td>Buổi sáng</td><td class="num">08:00 – 12:00 · 4 giờ</td></tr>
+              <tr><td>Nghỉ trưa</td><td class="num">12:00 – 13:00 · không tính</td></tr>
+              <tr><td>Buổi chiều</td><td class="num">13:00 – 17:00 · 4 giờ</td></tr>
+              <tr><td>Một ngày làm việc</td><td class="num">8 giờ</td></tr>
+              <tr><td>Ngày không làm</td><td>Chủ nhật — không tính vào thời gian nghỉ</td></tr>
+              <tr><td>Ngày lễ</td><td>Phase 1 chưa trừ tự động; chị Khoa sửa số giờ chốt</td></tr>
+              <tr><td>Múi giờ</td><td class="num">UTC+7 — kể cả trong file Excel</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tw">
+          <table>
+            <thead><tr><th class="c2">Ví dụ</th><th>CBNV nhập</th><th class="c3">Tính ra</th></tr></thead>
+            <tbody>
+              <tr><td>Nghỉ phép</td><td>Thứ Năm → Thứ Bảy, không có Chủ nhật</td><td class="num">24 giờ</td></tr>
+              <tr><td>Nghỉ phép</td><td>Thứ Bảy → Thứ Ba, có 1 Chủ nhật<span class="sub">4 ngày lịch</span></td><td class="num">24 giờ<span class="sub">trừ Chủ nhật</span></td></tr>
+              <tr><td>Nghỉ phép</td><td>Nửa ngày, buổi chiều</td><td class="num">4 giờ</td></tr>
+              <tr><td>Ra cổng</td><td>Ra 10:00 → vào 14:00</td><td class="num">3 giờ<span class="sub">trừ nghỉ trưa</span></td></tr>
+              <tr><td>Ra cổng</td><td>Ra 16:00 → vào 09:00 hôm sau</td><td class="num">2 giờ<span class="sub">1 giờ chiều + 1 giờ sáng</span></td></tr>
+              <tr><td>Ra cổng</td><td>Dự kiến vào 14:00, thực tế 14:20</td><td class="num">Trễ 20 phút<span class="sub">&gt; 15 phút → phải ghi lý do</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="note note--info" style="margin-top:1rem">
+        <strong>Số hệ thống tính là số đề xuất, không phải số chốt.</strong> Chị Khoa sửa được số giờ chốt;
+        mỗi lần sửa lưu lại số cũ, số mới, người sửa, thời điểm.
+      </div>
+    </section>
+
+    <!-- IX -->
+    <section class="sec" id="s9">
+      <h2><em>IX</em>Giao diện mô phỏng</h2>
+      <div class="note">
+        <strong>Bản vẽ minh họa, không phải ảnh chụp sản phẩm đã làm.</strong> Màu sắc và cách sắp xếp có thể thay đổi khi làm thật.
+      </div>
+
+      <div class="grid-figs" style="margin-top:1.25rem">
+
+        <figure>
+          <div class="scroller">
+            <div class="mock sm">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app</span></div>
+              <div class="mock-app full">
+                <div class="mock-main" style="gap:.9rem;padding:1.4rem 1.2rem">
+                  <div style="display:flex;flex-direction:column;gap:.2rem">
+                    <strong style="font-size:var(--step-1)">Nhân sự CTYHP</strong>
+                    <span class="hint">Xin nghỉ phép &amp; ra vào cổng</span>
+                  </div>
+                  <span class="btn-sso">
+                    <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
+                      <rect x="1.5" y="4" width="17" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M2.2 5 10 11 17.8 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                    Đăng nhập bằng email công ty
+                  </span>
+                  <p class="hint" style="margin:0">Chọn tài khoản <span class="mono">@ctyhp.vn</span> của bạn. Không cần nhập email, không cần mật khẩu.</p>
+                  <div class="inp" style="background:var(--stop-soft);border-color:var(--stop-soft);color:var(--stop)">
+                    Tài khoản ngoài công ty sẽ bị từ chối
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Màn hình 1 · Đăng nhập</b> — một nút duy nhất. Bấm vào là hiện danh sách tài khoản Google của công ty để chọn. Tên miền ngoài <code>@ctyhp.vn</code> bị chặn.</figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock sm">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/don-cua-toi</span></div>
+              <div class="mock-app full">
+                <div class="mock-main">
+                  <div class="mock-h"><strong>Đơn của tôi</strong><span>Nguyễn Văn Bình</span></div>
+                  <div class="btns"><span class="btn btn--pri">Xin nghỉ phép</span><span class="btn">Xin ra vào cổng</span></div>
+                  <div class="req">
+                    <div class="top"><strong>Nghỉ phép năm</strong><span class="pill pill--ok">Đã duyệt</span></div>
+                    <span class="hint mono">30/07 → 01/08 · 24 giờ</span>
+                    <span class="hint">Chị Diệu duyệt lúc 09:31 hôm nay</span>
+                    <span class="btn" style="align-self:flex-start;margin-top:.2rem">In đơn</span>
+                  </div>
+                  <div class="req">
+                    <div class="top"><strong>Ra vào cổng — Khác</strong><span class="pill pill--draft">Chờ duyệt</span></div>
+                    <span class="hint mono">30/07 · 10:00 → 14:00 · 3 giờ</span>
+                    <span class="btn btn--stop" style="align-self:flex-start;margin-top:.2rem">Huỷ đơn</span>
+                  </div>
+                  <div class="req">
+                    <div class="top"><strong>Nghỉ không lương</strong><span class="pill pill--stop">Bị từ chối</span></div>
+                    <span class="hint mono">25/07 · 8 giờ</span>
+                    <span style="color:var(--stop);font-size:var(--step--2)">Trùng đợt giao hàng, đề nghị dời sang tuần sau</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Màn hình 2 · Đơn của tôi</b> — trên điện thoại. Thấy trạng thái, ai duyệt, lúc nào; huỷ đơn còn chờ; in đơn đã duyệt.</figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/nghi-phep/tao-moi</span></div>
+              <div class="mock-app">
+                <div class="mock-nav">
+                  <span class="mock-brand">Nhân sự CTYHP<small>Nguyễn Văn Bình</small></span>
+                  <a href="#" class="on">Xin nghỉ phép</a>
+                  <a href="#">Ra vào cổng</a>
+                  <a href="#">Đơn của tôi</a>
+                </div>
+                <div class="mock-main">
+                  <div class="mock-h"><strong>Đơn xin nghỉ phép</strong><span>Kính gửi Ban Giám đốc</span></div>
+                  <div class="g3">
+                    <div class="fld"><label>Họ và tên</label><div class="inp ro">Nguyễn Văn Bình</div></div>
+                    <div class="fld"><label>Chức vụ</label><div class="inp ro">Công nhân</div></div>
+                    <div class="fld"><label>Phòng / Ban</label><div class="inp ro">Sản xuất</div></div>
+                  </div>
+                  <div class="g3">
+                    <div class="fld"><label>Từ ngày</label><div class="inp mono">30/07/2026</div></div>
+                    <div class="fld"><label>Đến ngày</label><div class="inp mono">01/08/2026</div></div>
+                    <div class="fld"><label>Thời lượng</label><div class="inp">Cả ngày</div></div>
+                  </div>
+                  <div class="calc"><span>Tổng thời gian nghỉ</span><b>3 ngày · 24 giờ</b><span class="why">tự tính · 8 giờ/ngày · không tính Chủ nhật</span></div>
+                  <div class="fld">
+                    <label>Lý do nghỉ</label>
+                    <div class="radios">
+                      <span class="radio">Không lương</span><span class="radio on">Phép năm</span><span class="radio">Ốm đau</span>
+                      <span class="radio">Kết hôn</span><span class="radio">Thai sản</span><span class="radio">Tang chế</span>
+                      <span class="radio">Trường hợp đặc biệt</span><span class="radio">Khác (bù giờ)</span>
+                    </div>
+                  </div>
+                  <div class="fld"><label>Diễn giải</label><div class="inp ta"><span class="ph">Ghi rõ lý do nghỉ…</span></div></div>
+                  <div class="g2">
+                    <div class="fld"><label>Bàn giao cho</label><div class="inp">Trần Thị Lan — Sản xuất</div></div>
+                    <div class="fld"><label>Ngày làm bù (nếu có)</label><div class="inp"><span class="ph">Chọn ngày</span></div></div>
+                  </div>
+                  <div class="inp" style="align-items:flex-start;gap:.45rem">
+                    <span style="flex:0 0 auto;width:.8rem;height:.8rem;border:1px solid var(--accent);background:var(--accent);border-radius:2px;margin-top:.2rem"></span>
+                    <span style="color:var(--ink-2)">Tôi cam kết việc nghỉ phép không ảnh hưởng đến công việc tôi đang phụ trách.</span>
+                  </div>
+                  <div class="btns"><span class="btn btn--pri">Gửi đơn</span><span class="btn">Xoá nội dung</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Màn hình 3 · Tạo đơn nghỉ phép</b> — dòng xanh là số giờ hệ thống tính ngay khi chọn ngày, thay ô “Tổng thời gian nghỉ” phải viết tay.</figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/ra-vao-cong/tao-moi</span></div>
+              <div class="mock-app">
+                <div class="mock-nav">
+                  <span class="mock-brand">Nhân sự CTYHP<small>Nguyễn Văn Bình</small></span>
+                  <a href="#">Xin nghỉ phép</a>
+                  <a href="#" class="on">Ra vào cổng</a>
+                  <a href="#">Đơn của tôi</a>
+                </div>
+                <div class="mock-main">
+                  <div class="mock-h"><strong>Giấy xin phép ra vào cổng</strong></div>
+                  <div class="fld">
+                    <label>Lý do xin phép</label>
+                    <div class="radios"><span class="radio">Đi công tác</span><span class="radio">Nghỉ phép</span><span class="radio on">Khác</span></div>
+                  </div>
+                  <div class="fld"><label>Khác — ghi rõ</label><div class="inp">Đi khám sức khoẻ định kỳ</div></div>
+                  <div class="g2">
+                    <div class="fld"><label>Thời gian ra</label><div class="inp mono">30/07/2026 · 10:00</div></div>
+                    <div class="fld"><label>Vào lại (dự kiến)</label><div class="inp mono">30/07/2026 · 14:00</div></div>
+                  </div>
+                  <div class="calc"><span>Số giờ vắng trong giờ làm</span><b>3 giờ</b><span class="why">đã trừ nghỉ trưa 12:00–13:00</span></div>
+                  <div class="fld"><label>Diễn giải</label><div class="inp ta"><span class="ph">Ghi rõ nội dung…</span></div></div>
+                  <div class="btns"><span class="btn btn--pri">Gửi đơn</span></div>
+                  <div class="mock-h" style="margin-top:.3rem"><strong style="font-size:var(--step--1)">Sau khi về — cập nhật giờ thực tế</strong></div>
+                  <div class="g2">
+                    <div class="fld"><label>Giờ vào lại thực tế</label><div class="inp mono">30/07/2026 · 14:20</div></div>
+                    <div class="fld"><label>Chênh lệch</label><div class="inp" style="color:var(--warn)">Trễ 20 phút — phải ghi lý do</div></div>
+                  </div>
+                  <div class="fld"><label>Lý do vào trễ</label><div class="inp">Chờ kết quả xét nghiệm lâu hơn dự kiến</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Màn hình 4 · Giấy ra vào cổng</b> — hai ô “vào sớm / vào trễ” trên giấy thay bằng: nhập giờ thực tế, hệ thống tự tính chênh lệch.</figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/duyet-don</span></div>
+              <div class="mock-app">
+                <div class="mock-nav">
+                  <span class="mock-brand">Nhân sự CTYHP<small>Chị Diệu · Người duyệt</small></span>
+                  <a href="#" class="on">Chờ duyệt <span class="badge">7</span></a>
+                  <a href="#">Đã xử lý</a>
+                  <a href="#">Đơn của tôi</a>
+                </div>
+                <div class="mock-main">
+                  <div class="mock-h"><strong>Chờ duyệt</strong><span>7 đơn · toàn công ty</span></div>
+                  <div class="filters">
+                    <span class="chip">Nghỉ phép <b>4</b></span>
+                    <span class="chip">Ra vào cổng <b>3</b></span>
+                    <span class="chip">Phòng ban <b>Tất cả</b></span>
+                  </div>
+                  <div style="overflow-x:auto">
+                    <table class="mt">
+                      <thead><tr><th>Người gửi</th><th>Phòng ban</th><th>Loại đơn</th><th>Thời gian</th><th>Giờ</th><th></th></tr></thead>
+                      <tbody>
+                        <tr><td>Nguyễn Văn Bình</td><td>Sản xuất</td><td>Nghỉ phép · Phép năm</td><td class="mono">30/07 → 01/08</td><td class="mono">24</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
+                        <tr><td>Trần Thị Lan</td><td>Sản xuất</td><td>Ra cổng · Khác</td><td class="mono">30/07 · 10:00→14:00</td><td class="mono">3</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
+                        <tr><td>Lê Minh Tuấn</td><td>Kỹ thuật</td><td>Nghỉ phép · Ốm đau</td><td class="mono">31/07</td><td class="mono">8</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
+                        <tr><td>Phạm Thu Hà</td><td>Kế toán</td><td>Ra cổng · Công tác</td><td class="mono">30/07 · 13:00→17:00</td><td class="mono">4</td><td><span class="btn btn--ok">Duyệt</span> <span class="btn btn--stop">Từ chối</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="hint">Bấm một dòng để xem toàn bộ đơn. Từ chối thì mở ô ghi lý do — không bắt buộc.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Màn hình 5 · Hàng chờ duyệt</b> — một hàng chờ chung, số đơn hiện trên menu. Chị nào bấm Duyệt trước thì đơn chốt theo chị đó.</figcaption>
+        </figure>
+
+        <figure>
+          <div class="scroller">
+            <div class="mock">
+              <div class="mock-bar"><i></i><i></i><i></i><span class="mock-url">ctyhp-nhansu.vercel.app/cham-cong</span></div>
+              <div class="mock-app">
+                <div class="mock-nav">
+                  <span class="mock-brand">Nhân sự CTYHP<small>Chị Khoa · C&amp;B</small></span>
+                  <a href="#" class="on">Chấm công</a>
+                  <a href="#">Đã chấm công</a>
+                  <a href="#">Đơn của tôi</a>
+                </div>
+                <div class="mock-main">
+                  <div class="mock-h"><strong>Chấm công — đơn đã duyệt</strong><span>Kỳ 01/07 – 31/07/2026</span></div>
+                  <div class="filters">
+                    <span class="chip">Từ <b>01/07</b></span><span class="chip">Đến <b>31/07</b></span>
+                    <span class="chip">Phòng ban <b>Tất cả</b></span><span class="chip">Loại đơn <b>Tất cả</b></span>
+                    <span class="btn btn--pri">Tải Excel</span>
+                  </div>
+                  <div class="totals">
+                    <div><span class="k">Đã duyệt</span><span class="v">38</span></div>
+                    <div><span class="k">Chưa chấm</span><span class="v" style="color:var(--warn)">12</span></div>
+                    <div><span class="k">Giờ nghỉ phép</span><span class="v">216</span></div>
+                    <div><span class="k">Giờ ra cổng</span><span class="v">47</span></div>
+                  </div>
+                  <div style="overflow-x:auto">
+                    <table class="mt">
+                      <thead><tr><th>CBNV</th><th>Phòng ban</th><th>Loại</th><th>Thời gian</th><th>Giờ tính</th><th>Giờ chốt</th><th>Duyệt</th><th>Chấm công</th></tr></thead>
+                      <tbody>
+                        <tr><td>Nguyễn Văn Bình</td><td>Sản xuất</td><td>Phép năm</td><td class="mono">30/07 → 01/08</td><td class="mono">24</td><td class="mono">24</td><td>Chị Diệu</td><td><span class="btn btn--ok">Đánh dấu</span></td></tr>
+                        <tr><td>Trần Thị Lan</td><td>Sản xuất</td><td>Ra cổng</td><td class="mono">30/07 · 10:00→14:20</td><td class="mono">3,3</td><td class="mono" style="color:var(--warn)">3,0 ✎</td><td>Chị Trân</td><td><span class="btn btn--ok">Đánh dấu</span></td></tr>
+                        <tr><td>Lê Minh Tuấn</td><td>Kỹ thuật</td><td>Ốm đau</td><td class="mono">31/07</td><td class="mono">8</td><td class="mono">8</td><td>Chị Hạnh</td><td><span class="pill pill--ok">Đã chấm</span></td></tr>
+                        <tr><td>Phạm Thu Hà</td><td>Kế toán</td><td>Ra cổng</td><td class="mono">30/07 · 13:00→17:00</td><td class="mono">4</td><td class="mono">4</td><td>Chị Phúc</td><td><span class="pill pill--ok">Đã chấm</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="hint">Cột <em>Giờ tính</em> khoá. Cột <em>Giờ chốt</em> sửa được — dấu ✎ là dòng đã sửa tay, mở ra xem số cũ, ai sửa, lúc nào.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Màn hình 6 · Chấm công</b> — của chị Khoa. Hai cột giờ tách riêng để giữ cả số máy tính và số Nhân sự chốt.</figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- X -->
+    <section class="sec" id="s10">
+      <h2><em>X</em>Quy tắc nghiệp vụ</h2>
+      <ol class="rules">
+        <li><b class="n">1</b><span><strong>Chỉ tài khoản công ty.</strong> Tên miền ngoài <code>@ctyhp.vn</code> bị từ chối ngay khi chọn tài khoản.</span></li>
+        <li><b class="n">2</b><span><strong>Bốn chị có thẩm quyền trên toàn bộ CBNV,</strong> không phân theo phòng ban.</span></li>
+        <li><b class="n">3</b><span><strong>Một chị duyệt là đủ.</strong> Ba chị còn lại thấy đơn đã đóng, không duyệt lại được.</span></li>
+        <li><b class="n">4</b><span><strong>Không ai tự duyệt đơn của mình</strong> — đơn của một trong bốn chị do ba chị còn lại xử lý.</span></li>
+        <li><b class="n">5</b><span><strong>Từ chối thì ghi thêm lý do</strong> — không bắt buộc, nhưng có lý do thì CBNV biết cần sửa gì.</span></li>
+        <li><b class="n">6</b><span><strong>Đơn đã duyệt không sửa nội dung.</strong> Muốn đổi thì chị Khoa huỷ kèm lý do, CBNV gửi đơn mới.</span></li>
+        <li><b class="n">7</b><span><strong>Giờ hệ thống tính khoá; giờ chốt sửa được,</strong> mỗi lần sửa lưu số cũ, số mới, người sửa, thời điểm.</span></li>
+        <li><b class="n">8</b><span><strong>Không xoá dữ liệu.</strong> Huỷ chỉ đổi trạng thái; mọi thao tác lưu người và thời điểm.</span></li>
+        <li><b class="n">9</b><span><strong>Thông báo Google Chat không chứa lý do nghỉ.</strong></span></li>
+        <li><b class="n">10</b><span><strong>Người này không đọc được đơn người khác,</strong> ràng buộc ở tầng cơ sở dữ liệu.</span></li>
+      </ol>
+    </section>
+
+    <!-- XI -->
+    <section class="sec" id="s11">
+      <h2><em>XI</em>Kỹ thuật và thứ tự làm</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c2">Hạng mục</th><th class="c1">Chọn</th><th>Vì sao</th></tr></thead>
+          <tbody>
+            <tr><td>Giao diện</td><td>Next.js 16 · React 19 · Ant Design 6</td><td>Bộ công cụ nhóm đang thành thạo; biểu mẫu, bảng, bộ lọc, chọn ngày có sẵn</td></tr>
+            <tr><td>Đăng nhập</td><td>Đăng nhập bằng tài khoản Google Workspace của công ty, giới hạn tên miền <code>ctyhp.vn</code></td><td>Bấm một nút là vào, không nhập email, không mật khẩu. Tên miền được kiểm cả ở trình đăng nhập và ở tầng cơ sở dữ liệu</td></tr>
+            <tr><td>Dữ liệu</td><td>Supabase — Postgres, phân quyền ở tầng dữ liệu</td><td>Phân quyền đặt trong cơ sở dữ liệu nên chắc chắn hơn là chỉ ẩn trên giao diện</td></tr>
+            <tr><td>Thông báo</td><td>Google Chat — gửi tin vào một nhóm qua webhook</td><td>Chỉ cần tạo nhóm và lấy một đường link. Nhắn riêng từng người thuộc Phase 2</td></tr>
+            <tr><td>Nơi chạy</td><td>Vercel, một địa chỉ web nội bộ riêng</td><td>Mở bằng trình duyệt trên máy tính và điện thoại, không phải cài gì</td></tr>
+            <tr><td>Bản in</td><td>In từ trình duyệt theo bố cục mẫu giấy, lưu PDF</td><td>Giữ dấu tiếng Việt chính xác</td></tr>
+            <tr><td>App kế toán</td><td>Tách hoàn toàn: dự án · cơ sở dữ liệu · tài khoản riêng</td><td>CBNV vào app này không chạm được dữ liệu kế toán</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Thứ tự làm</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c3">Bước</th><th>Nội dung</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Dựng nền: dự án, cơ sở dữ liệu, đăng nhập bằng tài khoản công ty, một địa chỉ web chạy thử</td></tr>
+            <tr><td class="num">2</td><td>Cấu trúc dữ liệu và phân quyền; nạp phòng ban, bốn chị người duyệt, chị Khoa</td></tr>
+            <tr><td class="num">3</td><td>Hai biểu mẫu và trang “Đơn của tôi”, kèm phần tự tính giờ</td></tr>
+            <tr><td class="num">4</td><td>Hàng chờ duyệt: một trong bốn chị, chặn tự duyệt, từ chối kèm lý do</td></tr>
+            <tr><td class="num">5</td><td>Màn hình chấm công: lọc, hai cột giờ, tải Excel, đánh dấu</td></tr>
+            <tr><td class="num">6</td><td>Thông báo Google Chat</td></tr>
+            <tr><td class="num">7</td><td>Bản in theo bố cục mẫu giấy</td></tr>
+            <tr><td class="num">8</td><td>Chạy thử trọn một đơn từ lúc gửi đến lúc chấm công, đưa lên mạng kèm hướng dẫn một trang</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note note--info" style="margin-top:1rem">
+        <strong>Còn thiếu để bắt đầu:</strong> danh sách các phòng / ban / bộ phận. Trong lúc chờ, nhóm dùng danh sách tạm và thay bằng danh sách thật sau.
+      </div>
+    </section>
+
+    <!-- XII -->
+    <section class="sec" id="s12">
+      <h2><em>XII</em>Rủi ro</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th class="c1">Rủi ro</th><th class="c3">Mức</th><th>Cách xử lý</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>CBNV chưa có tài khoản email công ty thì chưa vào app được</td>
+              <td><span class="pill pill--stop">Cao</span></td>
+              <td>Nhân sự cấp email công ty trước khi triển khai. Nếu số lượng lớn hoặc không cấp được, phải bổ sung cách đăng nhập khác — thuộc Phase 2</td>
+            </tr>
+            <tr>
+              <td>Bảo vệ vẫn cần thấy đơn tại cổng</td>
+              <td><span class="pill pill--draft">Trung bình</span></td>
+              <td>CBNV cho bảo vệ xem trên điện thoại hoặc in một bản. Màn hình cho bảo vệ thuộc Phase 2</td>
+            </tr>
+            <tr>
+              <td>Phase 1 chưa trừ ngày lễ tự động</td>
+              <td><span class="pill pill--draft">Trung bình</span></td>
+              <td>Chị Khoa sửa số giờ chốt khi kỳ nghỉ trùng ngày lễ. Bổ sung danh sách ngày lễ ở Phase 2</td>
+            </tr>
+            <tr>
+              <td>Thông báo vào nhóm chung nên người ngoài nhóm duyệt cũng thấy ai đang xin nghỉ</td>
+              <td><span class="pill pill--draft">Trung bình</span></td>
+              <td>Tin nhắn chỉ ghi tên, loại đơn, thời gian, đường link — không ghi lý do. Nhóm chat nên chỉ gồm bốn chị và chị Khoa</td>
+            </tr>
+            <tr>
+              <td>Thêm hoặc sửa phòng ban, người duyệt phải nhờ nhóm phát triển</td>
+              <td><span class="pill pill--mute">Thấp</span></td>
+              <td>Ít xảy ra. Màn hình quản trị cho Nhân sự thuộc Phase 2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="signoff">
+      <div><span class="role">Người soạn</span><span class="line"></span><span class="date">Ngày …… / …… / ………</span></div>
+      <div><span class="role">Người phê duyệt</span><span class="line"></span><span class="date">Ngày …… / …… / ………</span></div>
+    </footer>
+
+  </main>
+</div>

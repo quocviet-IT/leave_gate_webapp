@@ -1,0 +1,1726 @@
+<title>Demo — Xin nghỉ phép &amp; Ra vào cổng</title>
+
+<style>
+  :root {
+    --ink:#17202e; --ink-2:#45516a; --ink-3:#79849b;
+    --paper:#eef1f6; --surface:#ffffff; --surface-2:#f7f9fc; --surface-3:#eff3f9;
+    --rule:#dbe1ea; --rule-soft:#eaeef4;
+    --accent:#2a4b9b; --accent-2:#3a60bb; --accent-soft:#e9edf9;
+    --ok:#2c6d51; --ok-soft:#e7f2ec;
+    --warn:#8d6220; --warn-soft:#f8f0e0;
+    --stop:#9e3128; --stop-soft:#f9eae8;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 12px 28px -22px rgba(16,24,40,.45);
+    --bar-bg:#17202e; --bar-fg:#ffffff;
+    --font-display:"Times New Roman",Cambria,"Nimbus Roman",Georgia,serif;
+    --font-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --font-data:"Cascadia Mono",Consolas,"SF Mono",ui-monospace,"Liberation Mono",monospace;
+    --s--2:.7rem; --s--1:.8125rem; --s0:.94rem; --s1:1.06rem; --s2:1.3rem; --s3:1.65rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink:#e6eaf2; --ink-2:#aeb8ca; --ink-3:#7c8799;
+      --paper:#0b101b; --surface:#131a28; --surface-2:#182031; --surface-3:#1d2637;
+      --rule:#263047; --rule-soft:#1e2637;
+      --accent:#90a8f0; --accent-2:#a7bbf7; --accent-soft:#1a2340;
+      --ok:#63bd94; --ok-soft:#15291f;
+      --warn:#d3a35f; --warn-soft:#2b2211;
+      --stop:#e58d84; --stop-soft:#2d1917;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 30px -24px rgba(0,0,0,.8);
+      --bar-bg:#1d2637; --bar-fg:#e6eaf2;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink:#e6eaf2; --ink-2:#aeb8ca; --ink-3:#7c8799;
+    --paper:#0b101b; --surface:#131a28; --surface-2:#182031; --surface-3:#1d2637;
+    --rule:#263047; --rule-soft:#1e2637;
+    --accent:#90a8f0; --accent-2:#a7bbf7; --accent-soft:#1a2340;
+    --ok:#63bd94; --ok-soft:#15291f;
+    --warn:#d3a35f; --warn-soft:#2b2211;
+    --stop:#e58d84; --stop-soft:#2d1917;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 30px -24px rgba(0,0,0,.8);
+    --bar-bg:#1d2637; --bar-fg:#e6eaf2;
+  }
+  :root[data-theme="light"] {
+    --ink:#17202e; --ink-2:#45516a; --ink-3:#79849b;
+    --paper:#eef1f6; --surface:#ffffff; --surface-2:#f7f9fc; --surface-3:#eff3f9;
+    --rule:#dbe1ea; --rule-soft:#eaeef4;
+    --accent:#2a4b9b; --accent-2:#3a60bb; --accent-soft:#e9edf9;
+    --ok:#2c6d51; --ok-soft:#e7f2ec;
+    --warn:#8d6220; --warn-soft:#f8f0e0;
+    --stop:#9e3128; --stop-soft:#f9eae8;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 12px 28px -22px rgba(16,24,40,.45);
+    --bar-bg:#17202e; --bar-fg:#ffffff;
+  }
+
+  *,*::before,*::after { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:var(--s0); line-height:1.55; -webkit-font-smoothing:antialiased; }
+  button { font:inherit; color:inherit; cursor:pointer; }
+  input,select,textarea { font:inherit; color:inherit; }
+  h1,h2,h3,h4 { margin:0; }
+  a { color:var(--accent); }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* ---------- demo bar ---------- */
+  .demobar {
+    background:var(--bar-bg); color:var(--bar-fg); font-size:var(--s--2);
+    display:flex; align-items:center; gap:.6rem 1rem; flex-wrap:wrap;
+    padding:.45rem clamp(.7rem,2.5vw,1.5rem);
+    letter-spacing:.02em;
+  }
+  .demobar b { letter-spacing:.12em; text-transform:uppercase; color:var(--bar-fg); }
+  .demobar span { color:rgba(255,255,255,.7); }
+  .demobar .sp { flex:1; }
+  .demobar button {
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
+    color:var(--bar-fg); border-radius:4px; padding:.15rem .6rem; font-size:var(--s--2); font-weight:600;
+  }
+  .demobar button:hover { background:rgba(255,255,255,.22); }
+
+  /* ---------- app shell ---------- */
+  .shell { display:grid; grid-template-columns:15rem minmax(0,1fr); min-height:calc(100vh - 2rem); }
+  .side {
+    background:var(--surface-2); border-right:1px solid var(--rule);
+    padding:1.25rem 0; display:flex; flex-direction:column; gap:1.25rem;
+  }
+  .brand { padding:0 1.1rem; display:flex; flex-direction:column; gap:.15rem; }
+  .brand b { font-family:var(--font-display); font-size:var(--s1); line-height:1.2; }
+  .brand span { font-size:var(--s--2); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .who { padding:.7rem 1.1rem; margin:0 .6rem; background:var(--surface); border:1px solid var(--rule); border-radius:6px; display:flex; flex-direction:column; gap:.15rem; }
+  .who b { font-size:var(--s--1); }
+  .who span { font-size:var(--s--2); color:var(--ink-3); }
+  .who .roles { display:flex; gap:.25rem; flex-wrap:wrap; margin-top:.2rem; }
+  nav.menu { display:flex; flex-direction:column; }
+  nav.menu button {
+    background:none; border:0; border-left:2px solid transparent;
+    text-align:left; padding:.5rem 1.1rem; color:var(--ink-2);
+    display:flex; justify-content:space-between; align-items:center; gap:.5rem;
+    font-size:var(--s--1);
+  }
+  nav.menu button:hover { color:var(--accent); background:var(--surface-3); }
+  nav.menu button.on { background:var(--accent-soft); color:var(--accent); font-weight:650; border-left-color:var(--accent); }
+  nav.menu .sect { padding:.9rem 1.1rem .25rem; font-size:var(--s--2); letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); }
+  .side .foot { margin-top:auto; padding:0 1.1rem; }
+
+  .main { padding:clamp(1rem,2.5vw,2rem) clamp(1rem,2.5vw,2.25rem) 4rem; min-width:0; }
+  .page { max-width:1180px; display:flex; flex-direction:column; gap:1.1rem; }
+  .page-head { display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; flex-wrap:wrap; padding-bottom:.75rem; border-bottom:1px solid var(--rule); }
+  .page-head h2 { font-family:var(--font-display); font-size:var(--s3); font-weight:700; line-height:1.15; }
+  .page-head p { margin:.2rem 0 0; color:var(--ink-3); font-size:var(--s--1); }
+
+  @media (max-width: 60rem) {
+    .shell { grid-template-columns:minmax(0,1fr); }
+    .side { border-right:0; border-bottom:1px solid var(--rule); padding:1rem 0; }
+    nav.menu { display:grid; grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr)); }
+    nav.menu .sect { grid-column:1/-1; }
+    .side .foot { margin-top:.5rem; }
+  }
+
+  /* ---------- generic bits ---------- */
+  .card { background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:1.1rem 1.2rem; display:flex; flex-direction:column; gap:.85rem; }
+  .card.pad0 { padding:0; overflow:hidden; }
+  .card-h { padding:.8rem 1.1rem; background:var(--surface-2); border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap; }
+  .card-h b { font-size:var(--s--1); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); }
+
+  .pill { display:inline-flex; align-items:center; gap:.3em; font-size:var(--s--2); font-weight:650; padding:.12em .55em; border-radius:3px; border:1px solid transparent; white-space:nowrap; }
+  .pill.pending { background:var(--warn-soft); color:var(--warn); }
+  .pill.approved { background:var(--ok-soft); color:var(--ok); }
+  .pill.rejected { background:var(--stop-soft); color:var(--stop); }
+  .pill.cancelled { background:var(--surface-3); color:var(--ink-3); }
+  .pill.info { background:var(--accent-soft); color:var(--accent); }
+  .pill.mute { background:var(--surface-3); color:var(--ink-3); }
+
+  .btn { border:1px solid var(--rule); background:var(--surface); border-radius:5px; padding:.35rem .85rem; font-size:var(--s--1); font-weight:600; color:var(--ink-2); }
+  .btn:hover { border-color:var(--accent); color:var(--accent); }
+  .btn.pri { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.pri:hover { background:var(--accent-2); border-color:var(--accent-2); color:#fff; }
+  .btn.ok { background:var(--ok); border-color:var(--ok); color:#fff; }
+  .btn.ok:hover { filter:brightness(1.1); color:#fff; }
+  .btn.danger { color:var(--stop); border-color:var(--stop-soft); }
+  .btn.danger:hover { border-color:var(--stop); color:var(--stop); }
+  .btn.sm { padding:.2rem .6rem; font-size:var(--s--2); }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  @media (prefers-color-scheme: dark) { .btn.pri, .btn.pri:hover, .btn.ok, .btn.ok:hover { color:#0b101b; } }
+  :root[data-theme="dark"] .btn.pri, :root[data-theme="dark"] .btn.pri:hover,
+  :root[data-theme="dark"] .btn.ok, :root[data-theme="dark"] .btn.ok:hover { color:#0b101b; }
+  :root[data-theme="light"] .btn.pri, :root[data-theme="light"] .btn.pri:hover,
+  :root[data-theme="light"] .btn.ok, :root[data-theme="light"] .btn.ok:hover { color:#fff; }
+  .btnrow { display:flex; gap:.5rem; flex-wrap:wrap; }
+
+  .fld { display:flex; flex-direction:column; gap:.25rem; }
+  .fld > label { font-size:var(--s--2); letter-spacing:.05em; text-transform:uppercase; color:var(--ink-3); }
+  .fld .err { color:var(--stop); font-size:var(--s--2); }
+  input[type=text], input[type=date], input[type=datetime-local], select, textarea {
+    background:var(--surface); border:1px solid var(--rule); border-radius:5px;
+    padding:.4rem .55rem; font-size:var(--s--1); width:100%;
+  }
+  input:focus, select:focus, textarea:focus { border-color:var(--accent); outline:none; box-shadow:0 0 0 3px var(--accent-soft); }
+  textarea { resize:vertical; min-height:4.5rem; }
+  .ro { background:var(--surface-2); border:1px solid var(--rule); border-radius:5px; padding:.4rem .55rem; font-size:var(--s--1); color:var(--ink-3); }
+  .g2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(11rem,1fr)); gap:.8rem; }
+  .g3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); gap:.8rem; }
+
+  .opts { display:flex; flex-wrap:wrap; gap:.4rem; }
+  .opt { border:1px solid var(--rule); background:var(--surface); border-radius:5px; padding:.28rem .7rem; font-size:var(--s--1); color:var(--ink-2); }
+  .opt:hover { border-color:var(--accent); color:var(--accent); }
+  .opt.on { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); font-weight:650; }
+
+  .calc { background:var(--ok-soft); border:1px solid var(--ok-soft); border-radius:6px; padding:.55rem .8rem; color:var(--ok); display:flex; flex-wrap:wrap; gap:.25rem .8rem; align-items:baseline; font-size:var(--s--1); }
+  .calc b { font-family:var(--font-data); font-variant-numeric:tabular-nums; font-size:var(--s1); }
+  .calc .why { color:var(--ink-3); font-size:var(--s--2); }
+  .calc.warn { background:var(--warn-soft); border-color:var(--warn-soft); color:var(--warn); }
+
+  .chk { display:flex; gap:.55rem; align-items:flex-start; font-size:var(--s--1); color:var(--ink-2); background:var(--surface-2); border:1px solid var(--rule); border-radius:6px; padding:.6rem .7rem; }
+  .chk input { margin-top:.2rem; accent-color:var(--accent); }
+
+  .tw { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:var(--s--1); }
+  th,td { text-align:left; padding:.55rem .8rem; border-bottom:1px solid var(--rule-soft); vertical-align:middle; }
+  thead th { background:var(--surface-2); font-size:var(--s--2); letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3); font-weight:700; white-space:nowrap; border-bottom:1px solid var(--rule); }
+  tbody tr:hover { background:var(--surface-2); }
+  tbody tr:last-child td { border-bottom:0; }
+  .mono { font-family:var(--font-data); font-variant-numeric:tabular-nums; }
+  td.nw { white-space:nowrap; }
+  .sub { display:block; color:var(--ink-3); font-size:var(--s--2); }
+
+  .totals { display:grid; grid-template-columns:repeat(auto-fit,minmax(8rem,1fr)); gap:1px; background:var(--rule-soft); border:1px solid var(--rule-soft); border-radius:6px; overflow:hidden; }
+  .totals div { background:var(--surface); padding:.6rem .8rem; display:flex; flex-direction:column; }
+  .totals .k { font-size:var(--s--2); letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3); }
+  .totals .v { font-family:var(--font-data); font-variant-numeric:tabular-nums; font-size:var(--s2); font-weight:650; }
+
+  .empty { padding:2.5rem 1rem; text-align:center; color:var(--ink-3); font-size:var(--s--1); }
+  .badge { background:var(--stop); color:#fff; font-family:var(--font-data); font-size:var(--s--2); font-weight:700; border-radius:999px; padding:0 .42em; min-width:1.3em; text-align:center; }
+
+  .reqcard { border:1px solid var(--rule); border-radius:7px; background:var(--surface); padding:.75rem .85rem; display:flex; flex-direction:column; gap:.4rem; }
+  .reqcard .top { display:flex; justify-content:space-between; gap:.6rem; align-items:center; }
+  .reqcard .top b { font-size:var(--s--1); }
+  .reqlist { display:grid; grid-template-columns:repeat(auto-fill,minmax(19rem,1fr)); gap:.8rem; }
+
+  .kv { display:grid; grid-template-columns:11rem minmax(0,1fr); gap:.4rem .9rem; font-size:var(--s--1); }
+  .kv .k { color:var(--ink-3); font-size:var(--s--2); letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem; }
+  @media (max-width:34rem) { .kv { grid-template-columns:minmax(0,1fr); gap:.1rem; } .kv .k { margin-top:.5rem; } }
+
+  .timeline { display:flex; flex-direction:column; gap:0; }
+  .tl { display:grid; grid-template-columns:1.1rem minmax(0,1fr); gap:.7rem; padding-bottom:.9rem; position:relative; }
+  .tl:not(:last-child)::before { content:""; position:absolute; left:.48rem; top:1rem; bottom:0; width:1px; background:var(--rule); }
+  .tl .dot { width:.6rem; height:.6rem; border-radius:50%; background:var(--accent); margin-top:.42rem; margin-left:.1rem; }
+  .tl.done .dot { background:var(--ok); }
+  .tl.stop .dot { background:var(--stop); }
+  .tl.mute .dot { background:var(--ink-3); }
+  .tl b { font-size:var(--s--1); display:block; }
+  .tl span { font-size:var(--s--2); color:var(--ink-3); }
+
+  .note { border-left:3px solid var(--warn); background:var(--warn-soft); padding:.7rem .9rem; font-size:var(--s--1); color:var(--ink-2); border-radius:0 5px 5px 0; }
+  .note.info { border-left-color:var(--accent); background:var(--accent-soft); }
+  .note.bad { border-left-color:var(--stop); background:var(--stop-soft); }
+  .note b { color:var(--ink); }
+
+  /* ---------- login ---------- */
+  .login { padding:clamp(1.5rem,4vw,3.5rem) clamp(1rem,3vw,2rem) 4rem; }
+  .login-inner { max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:clamp(1.5rem,3vw,2.25rem); }
+  .login-head { display:flex; flex-direction:column; gap:.6rem; }
+  .login-head .eyebrow { font-size:var(--s--2); letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700; }
+  .login-head h1 { font-family:var(--font-display); font-size:clamp(1.9rem,4.5vw,2.6rem); font-weight:700; line-height:1.1; text-wrap:balance; }
+  .login-head p { margin:0; max-width:68ch; color:var(--ink-2); font-size:var(--s1); }
+  .login-grid { display:grid; grid-template-columns:22rem minmax(0,1fr); gap:clamp(1rem,2.5vw,1.75rem); align-items:start; }
+  @media (max-width:64rem) { .login-grid { grid-template-columns:minmax(0,1fr); } }
+  .login-card {
+    background:var(--surface); border:1px solid var(--rule); border-top:3px solid var(--accent);
+    border-radius:9px; box-shadow:var(--shadow); padding:1.5rem 1.4rem;
+    display:flex; flex-direction:column; gap:1.1rem; position:sticky; top:1rem;
+  }
+  @media (max-width:64rem) { .login-card { position:static; } }
+  .login-card .lc-t { font-family:var(--font-display); font-size:var(--s2); }
+  .login-card .sub { color:var(--ink-3); font-size:var(--s--1); }
+  .lc-foot { font-size:var(--s--2); color:var(--ink-3); border-top:1px solid var(--rule-soft); padding-top:.8rem; }
+  .lc-foot b { color:var(--ink-2); }
+
+  /* ---------- guides ---------- */
+  .guides { display:flex; flex-direction:column; gap:1rem; }
+  .guides-h { display:flex; flex-direction:column; gap:.1rem; padding-bottom:.6rem; border-bottom:1px solid var(--rule); }
+  .guides-h b { font-family:var(--font-display); font-size:var(--s2); }
+  .guides-h span { font-size:var(--s--2); color:var(--ink-3); }
+  .gcard { background:var(--surface); border:1px solid var(--rule); border-radius:9px; padding:1.1rem 1.25rem; display:flex; flex-direction:column; gap:.7rem; }
+  .gcard > header { display:flex; align-items:center; gap:.5rem .7rem; flex-wrap:wrap; }
+  .gcard > header b { font-size:var(--s0); }
+  .gcard > header .mono { font-size:var(--s--2); color:var(--ink-3); }
+  .gjob { margin:0; font-size:var(--s--1); color:var(--ink-2); }
+  ol.gsteps { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.55rem; counter-reset:g; }
+  ol.gsteps > li { display:grid; grid-template-columns:1.55rem minmax(0,1fr); gap:.65rem; font-size:var(--s--1); color:var(--ink-2); line-height:1.6; }
+  .gn { font-family:var(--font-data); font-variant-numeric:tabular-nums; font-weight:700; color:var(--accent); text-align:right; font-size:var(--s--1); }
+  ul.gtips { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.5rem; font-size:var(--s--1); color:var(--ink-2); line-height:1.6; }
+  .gcard--tips { background:var(--surface-2); }
+  .gbtn {
+    display:inline-block; border:1px solid var(--rule); background:var(--surface-3);
+    border-radius:4px; padding:0 .35em; font-size:.94em; font-weight:650; color:var(--ink);
+    white-space:nowrap; line-height:1.5;
+  }
+  .gfield { font-style:italic; color:var(--ink); font-weight:600; }
+  .sso {
+    display:flex; align-items:center; justify-content:center; gap:.6rem;
+    border:1px solid var(--rule); background:var(--surface); border-radius:6px;
+    padding:.7rem 1rem; font-size:var(--s0); font-weight:650; width:100%;
+    box-shadow:0 1px 2px rgba(16,24,40,.06);
+  }
+  .sso:hover { border-color:var(--accent); color:var(--accent); }
+  .acct { display:flex; flex-direction:column; gap:.5rem; }
+  .acct button { display:flex; align-items:center; gap:.7rem; text-align:left; border:1px solid var(--rule); background:var(--surface); border-radius:6px; padding:.6rem .7rem; width:100%; }
+  .acct button:hover { border-color:var(--accent); background:var(--surface-2); }
+  .avatar { flex:0 0 auto; width:2.1rem; height:2.1rem; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center; font-weight:700; font-size:var(--s--1); }
+  .avatar.out { background:var(--stop-soft); color:var(--stop); }
+  .acct .who2 { display:flex; flex-direction:column; min-width:0; }
+  .acct .who2 b { font-size:var(--s--1); }
+  .acct .who2 span { font-size:var(--s--2); color:var(--ink-3); font-family:var(--font-data); overflow:hidden; text-overflow:ellipsis; }
+  /* ---------- modal ---------- */
+  .scrim { position:fixed; inset:0; background:rgba(10,14,22,.55); display:grid; place-items:center; padding:1rem; z-index:60; }
+  .modal { background:var(--surface); border:1px solid var(--rule); border-radius:9px; box-shadow:var(--shadow); width:100%; max-width:30rem; max-height:88vh; overflow:auto; }
+  .modal-h { padding:.9rem 1.1rem; border-bottom:1px solid var(--rule); font-family:var(--font-display); font-size:var(--s2); font-weight:700; }
+  .modal-b { padding:1.1rem; display:flex; flex-direction:column; gap:.8rem; font-size:var(--s--1); }
+  .modal-f { padding:.8rem 1.1rem; border-top:1px solid var(--rule); display:flex; justify-content:flex-end; gap:.5rem; flex-wrap:wrap; background:var(--surface-2); }
+
+  /* ---------- google chat drawer ---------- */
+  .chatbtn { position:fixed; right:1rem; bottom:1rem; z-index:50; display:flex; align-items:center; gap:.5rem; background:var(--accent); color:#fff; border:0; border-radius:999px; padding:.6rem 1rem; font-size:var(--s--1); font-weight:650; box-shadow:var(--shadow); }
+  .chatbtn .badge { background:rgba(255,255,255,.25); }
+  .drawer { position:fixed; right:0; top:0; bottom:0; width:min(24rem,100vw); background:var(--surface); border-left:1px solid var(--rule); box-shadow:-20px 0 40px -30px rgba(0,0,0,.5); z-index:70; display:flex; flex-direction:column; }
+  .drawer-h { padding:.8rem 1rem; border-bottom:1px solid var(--rule); background:var(--surface-2); display:flex; align-items:center; gap:.6rem; }
+  .drawer-h b { font-size:var(--s--1); }
+  .drawer-h span { font-size:var(--s--2); color:var(--ink-3); }
+  .drawer-h .x { margin-left:auto; background:none; border:0; color:var(--ink-3); font-size:var(--s1); line-height:1; padding:.2rem .4rem; }
+  .drawer-b { padding:1rem; overflow-y:auto; display:flex; flex-direction:column; gap:.8rem; }
+  .cmsg { border:1px solid var(--rule); border-radius:8px; overflow:hidden; }
+  .cmsg-h { display:flex; align-items:center; gap:.4rem; padding:.45rem .65rem; background:var(--surface-2); border-bottom:1px solid var(--rule-soft); font-size:var(--s--2); color:var(--ink-3); }
+  .cmsg-h b { color:var(--ink); font-size:var(--s--1); }
+  .cmsg-h .bot { background:var(--accent-soft); color:var(--accent); border-radius:2px; padding:0 .35em; font-size:.62rem; font-weight:700; letter-spacing:.04em; }
+  .cmsg-b { padding:.65rem; display:flex; flex-direction:column; gap:.4rem; font-size:var(--s--1); }
+  .cmsg-b .t { font-weight:650; }
+  .cmsg-kv { display:grid; grid-template-columns:5.5rem 1fr; gap:.12rem .5rem; font-size:var(--s--2); }
+  .cmsg-kv .k { color:var(--ink-3); }
+
+  /* ---------- print replica ---------- */
+  #printArea { display:none; }
+  .paper { background:#fff; color:#101010; font-family:var(--font-display); font-size:14px; line-height:2; padding:2rem; }
+  .paper .t { text-align:center; font-weight:700; font-size:1.25rem; margin:0 0 .3rem; }
+  .paper .s { text-align:center; margin:0 0 1rem; font-size:.95rem; }
+  .paper .r { display:flex; align-items:baseline; gap:.3rem; flex-wrap:wrap; }
+  .paper .v { border-bottom:1px dotted #666; flex:1 1 4rem; min-width:2.5rem; font-weight:600; }
+  .paper .v.sm { flex:0 0 5rem; } .paper .v.md { flex:0 0 9rem; }
+  .paper .cb { white-space:nowrap; margin-right:2rem; }
+  .paper .cb::before { content:"☐"; margin-right:.35em; }
+  .paper .cb.on::before { content:"☑"; font-weight:700; }
+  .paper .o { display:flex; flex-wrap:wrap; }
+  .paper .sg { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; font-weight:700; margin-top:1rem; text-align:center; }
+  .paper .sgv { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; text-align:center; font-size:12.5px; line-height:1.5; min-height:3.5rem; padding-top:.5rem; }
+  .paper .n { margin-top:1.4rem; font-style:italic; font-size:12px; }
+  .paper .stamp { border:1.5px solid #1a6b45; color:#1a6b45; display:inline-block; padding:.1rem .5rem; font-size:11px; font-weight:700; letter-spacing:.06em; transform:rotate(-3deg); }
+
+  @media print {
+    body > *:not(#printArea) { display:none !important; }
+    #printArea { display:block !important; }
+    .paper { padding:0; }
+  }
+</style>
+
+<div class="demobar">
+  <b>Bản demo</b>
+  <span>Dữ liệu chỉ lưu trong trình duyệt này — bấm thử thoải mái, không ảnh hưởng gì.</span>
+  <span class="sp"></span>
+  <button type="button" data-act="reseed">Nạp lại dữ liệu mẫu</button>
+  <button type="button" data-act="logout">Đổi người dùng</button>
+</div>
+
+<div id="app"></div>
+<div id="overlay"></div>
+<div id="printArea"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ================= CONSTANTS ================= */
+
+  const KEY = "ctyhp-hr-demo-v2";
+  const WORK = [[8, 12], [13, 17]];          // 08:00–12:00, 13:00–17:00
+  const HOURS_PER_DAY = 8;
+  const DIFF_LIMIT_MIN = 15;                 // lệch quá 15 phút → bắt buộc ghi lý do
+
+  const LEAVE_TYPES = [
+    { id: "khong-luong", label: "Không lương" },
+    { id: "phep-nam",    label: "Phép năm" },
+    { id: "om-dau",      label: "Ốm đau" },
+    { id: "ket-hon",     label: "Kết hôn" },
+    { id: "thai-san",    label: "Thai sản" },
+    { id: "tang-che",    label: "Tang chế" },
+    { id: "dac-biet",    label: "Trường hợp đặc biệt", needsText: true },
+    { id: "khac",        label: "Khác (bù giờ)",       needsText: true }
+  ];
+  const PURPOSES = [
+    { id: "cong-tac", label: "Đi công tác" },
+    { id: "nghi-phep", label: "Nghỉ phép" },
+    { id: "khac", label: "Khác", needsText: true }
+  ];
+  const DEPTS = ["Sản xuất", "Kỹ thuật", "Kế toán", "Nhân sự", "Kinh doanh", "Kho vận"];
+
+  const USERS = {
+    viet: { id:"viet", name:"Tạ Quốc Việt",   email:"viet@ctyhp.vn",   position:"Nhân viên",       dept:"Sản xuất", roles:["employee"] },
+    lan:  { id:"lan",  name:"Trần Thị Lan",    email:"lan@ctyhp.vn",    position:"Tổ trưởng",       dept:"Sản xuất", roles:["employee"] },
+    tuan: { id:"tuan", name:"Lê Minh Tuấn",    email:"tuan@ctyhp.vn",   position:"Kỹ thuật viên",   dept:"Kỹ thuật", roles:["employee"] },
+    ha:   { id:"ha",   name:"Phạm Thu Hà",     email:"ha@ctyhp.vn",     position:"Kế toán viên",    dept:"Kế toán",  roles:["employee"] },
+    dieu: { id:"dieu", name:"Chị Diệu",        email:"dieu@ctyhp.vn",   position:"Trưởng phòng",    dept:"Hành chính", roles:["employee","approver"] },
+    phuc: { id:"phuc", name:"Chị Phúc",        email:"sx001@ctyhp.vn",  position:"Trưởng bộ phận",  dept:"Sản xuất", roles:["employee","approver"] },
+    tran: { id:"tran", name:"Chị Trân",        email:"mytran@ctyhp.vn", position:"Trưởng bộ phận",  dept:"Kinh doanh", roles:["employee","approver"] },
+    hanh: { id:"hanh", name:"Chị Hạnh",        email:"hanh@ctyhp.vn",   position:"Giám sát nội bộ", dept:"Hành chính", roles:["employee","approver"] },
+    khoa: { id:"khoa", name:"Chị Khoa",        email:"anhkhoa@ctyhp.vn",position:"C&B",             dept:"Nhân sự",  roles:["employee","admin"] }
+  };
+  const APPROVERS = ["dieu", "phuc", "tran", "hanh"];
+
+  const LOGIN_CHOICES = ["viet", "dieu", "khoa"];
+
+  /* ================= HELPERS ================= */
+
+  const $  = (s, r = document) => r.querySelector(s);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  const pad = n => String(n).padStart(2, "0");
+
+  const parseDate = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+  const fmtDate = s => { if (!s) return "—"; const [y,m,d] = s.split("-"); return `${d}/${m}/${y}`; };
+  const fmtDateShort = s => { if (!s) return "—"; const [,m,d] = s.split("-"); return `${d}/${m}`; };
+  const fmtDT = s => { if (!s) return "—"; const [dt, tm] = s.split("T"); const [y,m,d] = dt.split("-"); return `${d}/${m}/${y} ${tm}`; };
+  const fmtDTShort = s => { if (!s) return "—"; const [dt, tm] = s.split("T"); const [,m,d] = dt.split("-"); return `${d}/${m} ${tm}`; };
+  const fmtStamp = iso => { const d = new Date(iso); return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+  const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+  const nowDTLocal = h => { const d = new Date(); if (h != null) d.setHours(h, 0, 0, 0); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+
+  function fmtHours(h) {
+    if (h == null) return "—";
+    const total = Math.round(h * 60);
+    const hh = Math.floor(total / 60), mm = total % 60;
+    if (mm === 0) return `${hh} giờ`;
+    return `${hh} giờ ${pad(mm)}`;
+  }
+  const fmtDays = h => (h == null ? "—" : (h / HOURS_PER_DAY).toLocaleString("vi-VN", { maximumFractionDigits: 2 }));
+
+  /* ---- tính thời gian: nghỉ phép ---- */
+  // Không tính Chủ nhật. Một ngày làm việc = 8 giờ. Nửa ngày = 4 giờ.
+  function leaveDays(fromISO, toISO) {
+    const a = parseDate(fromISO), b = parseDate(toISO);
+    if (b < a) return 0;
+    let n = 0;
+    for (const d = new Date(a); d <= b; d.setDate(d.getDate() + 1)) {
+      if (d.getDay() !== 0) n++;      // 0 = Chủ nhật
+    }
+    return n;
+  }
+  function leaveHours(fromISO, toISO, half) {
+    if (!fromISO || !toISO) return null;
+    const days = leaveDays(fromISO, toISO);
+    if (days === 0) return 0;
+    if (half && fromISO === toISO) return HOURS_PER_DAY / 2;
+    return days * HOURS_PER_DAY;
+  }
+  function sundaysInRange(fromISO, toISO) {
+    const a = parseDate(fromISO), b = parseDate(toISO);
+    let n = 0;
+    for (const d = new Date(a); d <= b; d.setDate(d.getDate() + 1)) if (d.getDay() === 0) n++;
+    return n;
+  }
+
+  /* ---- tính thời gian: ra vào cổng ---- */
+  // Số giờ vắng = phần giao của [ra, vào] với khung giờ làm việc, không tính nghỉ trưa và Chủ nhật.
+  function gateHours(outStr, backStr) {
+    if (!outStr || !backStr) return null;
+    const out = new Date(outStr), back = new Date(backStr);
+    if (back <= out) return 0;
+    let mins = 0;
+    const day = new Date(out.getFullYear(), out.getMonth(), out.getDate());
+    const last = new Date(back.getFullYear(), back.getMonth(), back.getDate());
+    while (day <= last) {
+      if (day.getDay() !== 0) {
+        for (const [h1, h2] of WORK) {
+          const w1 = new Date(day); w1.setHours(h1, 0, 0, 0);
+          const w2 = new Date(day); w2.setHours(h2, 0, 0, 0);
+          const s = Math.max(out.getTime(), w1.getTime());
+          const e = Math.min(back.getTime(), w2.getTime());
+          if (e > s) mins += (e - s) / 60000;
+        }
+      }
+      day.setDate(day.getDate() + 1);
+    }
+    return Math.round(mins) / 60;
+  }
+  function diffMinutes(plannedStr, actualStr) {
+    if (!plannedStr || !actualStr) return null;
+    return Math.round((new Date(actualStr) - new Date(plannedStr)) / 60000);
+  }
+  function diffLabel(min) {
+    if (min == null) return "—";
+    if (min === 0) return "Đúng giờ";
+    const a = Math.abs(min);
+    const txt = a >= 60 ? `${Math.floor(a / 60)} giờ ${pad(a % 60)} phút` : `${a} phút`;
+    return min > 0 ? `Trễ ${txt}` : `Sớm ${txt}`;
+  }
+
+  /* ================= STATE ================= */
+
+  let S = null;
+
+  function seed() {
+    const d = new Date();
+    // Dữ liệu mẫu tránh Chủ nhật, để số giờ minh hoạ không bị ra 0.
+    const workday = offset => {
+      const x = new Date(d); x.setDate(x.getDate() + offset);
+      while (x.getDay() === 0) x.setDate(x.getDate() + (offset < 0 ? -1 : 1));
+      return x;
+    };
+    const iso = offset => { const x = workday(offset); return `${x.getFullYear()}-${pad(x.getMonth()+1)}-${pad(x.getDate())}`; };
+    const dt = (offset, h, m) => `${iso(offset)}T${pad(h)}:${pad(m ?? 0)}`;
+    const stamp = (offset, h, m) => { const x = workday(offset); x.setHours(h, m ?? 0, 0, 0); return x.toISOString(); };
+
+    const R = [];
+    let seqL = 0, seqG = 0;
+    const mk = o => {
+      const kind = o.kind;
+      const code = kind === "leave" ? `NP-${pad(++seqL)}` : `RC-${pad(++seqG)}`;
+      const r = Object.assign({
+        id: code, code, status: "pending", decidedBy: null, decidedAt: null, rejectReason: "",
+        hoursEdits: [], timekept: false, timekeptBy: null, timekeptAt: null,
+        actualBackAt: null, diffReason: ""
+      }, o);
+      r.hoursSystem = kind === "leave"
+        ? leaveHours(r.fromDate, r.toDate, r.halfDay)
+        : gateHours(r.outAt, r.actualBackAt || r.backAt);
+      r.hoursFinal = r.hoursSystem;
+      R.push(r);
+      return r;
+    };
+
+    mk({ kind:"leave", userId:"tuan", createdAt:stamp(-6, 8, 30), fromDate:iso(-5), toDate:iso(-5), halfDay:null,
+         leaveType:"om-dau", typeText:"", reason:"Bị sốt, có giấy khám của phòng khám.", handoverTo:"ha", makeupDate:"",
+         status:"approved", decidedBy:"hanh", decidedAt:stamp(-6, 9, 10), timekept:true, timekeptBy:"khoa", timekeptAt:stamp(-5, 16, 0) });
+
+    mk({ kind:"leave", userId:"ha", createdAt:stamp(-4, 8, 5), fromDate:iso(-3), toDate:iso(-2), halfDay:null,
+         leaveType:"phep-nam", typeText:"", reason:"Về quê giải quyết việc gia đình.", handoverTo:"lan", makeupDate:"",
+         status:"approved", decidedBy:"dieu", decidedAt:stamp(-4, 10, 22), timekept:true, timekeptBy:"khoa", timekeptAt:stamp(-2, 17, 0) });
+
+    mk({ kind:"leave", userId:"viet", createdAt:stamp(-3, 14, 12), fromDate:iso(-2), toDate:iso(-2), halfDay:null,
+         leaveType:"khong-luong", typeText:"", reason:"Xin nghỉ thêm một ngày.", handoverTo:"lan", makeupDate:"",
+         status:"rejected", decidedBy:"phuc", decidedAt:stamp(-3, 15, 40),
+         rejectReason:"Trùng đợt giao hàng, đề nghị dời sang tuần sau." });
+
+    mk({ kind:"leave", userId:"lan", createdAt:stamp(-1, 8, 40), fromDate:iso(1), toDate:iso(3), halfDay:null,
+         leaveType:"phep-nam", typeText:"", reason:"Nghỉ phép năm theo kế hoạch.", handoverTo:"viet", makeupDate:"",
+         status:"approved", decidedBy:"tran", decidedAt:stamp(-1, 9, 5) });
+
+    mk({ kind:"leave", userId:"tuan", createdAt:stamp(0, 8, 15), fromDate:iso(2), toDate:iso(2), halfDay:"pm",
+         leaveType:"dac-biet", typeText:"Đưa con đi nhập học", reason:"Xin nghỉ buổi chiều.", handoverTo:"ha", makeupDate:"" });
+
+    mk({ kind:"gate", userId:"ha", createdAt:stamp(-4, 8, 0), purpose:"cong-tac", purposeText:"",
+         note:"Đi ngân hàng làm thủ tục chuyển khoản.", outAt:dt(-4, 13, 0), backAt:dt(-4, 17, 0),
+         actualBackAt:dt(-4, 17, 0), diffReason:"",
+         status:"approved", decidedBy:"phuc", decidedAt:stamp(-4, 8, 20), timekept:true, timekeptBy:"khoa", timekeptAt:stamp(-3, 9, 0) });
+
+    mk({ kind:"gate", userId:"lan", createdAt:stamp(-1, 8, 47), purpose:"khac", purposeText:"Đi khám sức khoẻ định kỳ",
+         note:"Khám tại bệnh viện quận.", outAt:dt(-1, 10, 0), backAt:dt(-1, 14, 0),
+         actualBackAt:dt(-1, 14, 20), diffReason:"Chờ kết quả xét nghiệm lâu hơn dự kiến.",
+         status:"approved", decidedBy:"tran", decidedAt:stamp(-1, 9, 2) });
+
+    mk({ kind:"gate", userId:"viet", createdAt:stamp(0, 9, 12), purpose:"khac", purposeText:"Ra ngoài lấy hồ sơ",
+         note:"Về nhà lấy giấy tờ còn thiếu để bổ sung cho Nhân sự.", outAt:dt(0, 10, 0), backAt:dt(0, 14, 0) });
+
+    mk({ kind:"gate", userId:"tuan", createdAt:stamp(0, 7, 55), purpose:"cong-tac", purposeText:"",
+         note:"Sang xưởng đối tác kiểm tra máy.", outAt:dt(0, 16, 0), backAt:dt(1, 9, 0) });
+
+    return {
+      currentUser: null,
+      route: { name: "home" },
+      requests: R,
+      chat: [
+        { id:1, at:stamp(0, 9, 12), kind:"new",   reqId:"RC-03" },
+        { id:2, at:stamp(0, 8, 15), kind:"new",   reqId:"NP-05" },
+        { id:3, at:stamp(-1, 9, 2), kind:"approved", reqId:"RC-02" }
+      ],
+      chatSeq: 4,
+      chatOpen: false,
+      chatSeen: 3,
+      seqL, seqG
+    };
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) { const p = JSON.parse(raw); if (p && p.requests) return p; }
+    } catch (e) { /* bỏ qua, dùng dữ liệu mẫu */ }
+    return seed();
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* hết chỗ lưu — vẫn chạy được */ }
+  }
+
+  /* ================= DOMAIN ACTIONS ================= */
+
+  const me = () => (S.currentUser ? USERS[S.currentUser] : null);
+  const has = role => !!me() && me().roles.includes(role);
+  const byId = id => S.requests.find(r => r.id === id);
+  const pendingCount = () => S.requests.filter(r => r.status === "pending").length;
+  const untimekept = () => S.requests.filter(r => r.status === "approved" && !r.timekept).length;
+
+  const kindLabel = r => (r.kind === "leave" ? "Nghỉ phép" : "Ra vào cổng");
+  function detailLabel(r) {
+    if (r.kind === "leave") {
+      const t = LEAVE_TYPES.find(x => x.id === r.leaveType);
+      return t ? (t.needsText && r.typeText ? `${t.label} — ${r.typeText}` : t.label) : "—";
+    }
+    const p = PURPOSES.find(x => x.id === r.purpose);
+    return p ? (p.needsText && r.purposeText ? `${p.label} — ${r.purposeText}` : p.label) : "—";
+  }
+  function periodLabel(r) {
+    if (r.kind === "leave") {
+      const half = r.halfDay ? (r.halfDay === "am" ? " (buổi sáng)" : " (buổi chiều)") : "";
+      return r.fromDate === r.toDate ? fmtDate(r.fromDate) + half : `${fmtDate(r.fromDate)} → ${fmtDate(r.toDate)}`;
+    }
+    return `${fmtDTShort(r.outAt)} → ${fmtDTShort(r.actualBackAt || r.backAt)}`;
+  }
+  const STATUS_LABEL = { pending:"Chờ duyệt", approved:"Đã duyệt", rejected:"Bị từ chối", cancelled:"Đã huỷ" };
+
+  function pushChat(kind, reqId) {
+    S.chat.unshift({ id: S.chatSeq++, at: new Date().toISOString(), kind, reqId });
+  }
+
+  function submitRequest(data) {
+    const code = data.kind === "leave" ? `NP-${pad(++S.seqL)}` : `RC-${pad(++S.seqG)}`;
+    const r = Object.assign({
+      id: code, code, userId: S.currentUser, createdAt: new Date().toISOString(),
+      status: "pending", decidedBy: null, decidedAt: null, rejectReason: "",
+      hoursEdits: [], timekept: false, timekeptBy: null, timekeptAt: null,
+      actualBackAt: null, diffReason: ""
+    }, data);
+    r.hoursSystem = r.kind === "leave" ? leaveHours(r.fromDate, r.toDate, r.halfDay) : gateHours(r.outAt, r.backAt);
+    r.hoursFinal = r.hoursSystem;
+    S.requests.unshift(r);
+    pushChat("new", r.id);
+    save();
+    return r;
+  }
+
+  function decide(id, ok, reason) {
+    const r = byId(id);
+    if (!r || r.status !== "pending") return { err: "Đơn này đã được xử lý." };
+    if (!has("approver")) return { err: "Bạn không có quyền duyệt." };
+    if (r.userId === S.currentUser) return { err: "Không thể tự duyệt đơn của chính mình. Ba người duyệt còn lại sẽ xử lý đơn này." };
+    r.status = ok ? "approved" : "rejected";
+    r.decidedBy = S.currentUser;
+    r.decidedAt = new Date().toISOString();
+    r.rejectReason = ok ? "" : (reason || "");
+    pushChat(ok ? "approved" : "rejected", r.id);
+    save();
+    return { ok: true };
+  }
+
+  function cancel(id) {
+    const r = byId(id);
+    if (!r) return;
+    if (r.status === "pending" && r.userId === S.currentUser) { r.status = "cancelled"; save(); return { ok:true }; }
+    if (r.status === "approved" && has("admin")) { r.status = "cancelled"; save(); return { ok:true }; }
+    return { err: "Chỉ huỷ được đơn đang chờ duyệt của mình." };
+  }
+
+  function setActualBack(id, actual, reason) {
+    const r = byId(id);
+    if (!r || r.kind !== "gate") return { err: "Không tìm thấy đơn." };
+    const min = diffMinutes(r.backAt, actual);
+    if (Math.abs(min) > DIFF_LIMIT_MIN && !reason.trim())
+      return { err: `Lệch ${Math.abs(min)} phút so với giờ dự kiến — quá ${DIFF_LIMIT_MIN} phút nên phải ghi lý do.` };
+    r.actualBackAt = actual;
+    r.diffReason = reason.trim();
+    const before = r.hoursSystem;
+    r.hoursSystem = gateHours(r.outAt, actual);
+    if (!r.hoursEdits.length && r.hoursFinal === before) r.hoursFinal = r.hoursSystem;
+    save();
+    return { ok: true };
+  }
+
+  function editFinalHours(id, hours) {
+    const r = byId(id);
+    if (!r || !has("admin")) return { err: "Chỉ người chấm công sửa được giờ chốt." };
+    const v = Number(hours);
+    if (!isFinite(v) || v < 0 || v > 400) return { err: "Số giờ không hợp lệ." };
+    r.hoursEdits.push({ from: r.hoursFinal, to: v, by: S.currentUser, at: new Date().toISOString() });
+    r.hoursFinal = v;
+    save();
+    return { ok: true };
+  }
+
+  function toggleTimekept(id) {
+    const r = byId(id);
+    if (!r || !has("admin")) return;
+    r.timekept = !r.timekept;
+    r.timekeptBy = r.timekept ? S.currentUser : null;
+    r.timekeptAt = r.timekept ? new Date().toISOString() : null;
+    save();
+  }
+
+  /* ================= CSV EXPORT ================= */
+
+  function exportCSV(rows) {
+    const head = ["Mã đơn","CBNV","Phòng ban","Loại đơn","Chi tiết","Bắt đầu","Kết thúc",
+                  "Giờ hệ thống tính","Giờ chốt","Đã sửa tay","Người duyệt","Thời điểm duyệt","Đã chấm công"];
+    const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const lines = [head.map(q).join(",")];
+    rows.forEach(r => {
+      const u = USERS[r.userId];
+      const start = r.kind === "leave" ? fmtDate(r.fromDate) : fmtDT(r.outAt);
+      const end   = r.kind === "leave" ? fmtDate(r.toDate)   : fmtDT(r.actualBackAt || r.backAt);
+      lines.push([
+        r.code, u.name, u.dept, kindLabel(r), detailLabel(r), start, end,
+        String(r.hoursSystem ?? "").replace(".", ","),
+        String(r.hoursFinal ?? "").replace(".", ","),
+        r.hoursEdits.length ? "Có" : "",
+        r.decidedBy ? USERS[r.decidedBy].name : "",
+        r.decidedAt ? fmtStamp(r.decidedAt) : "",
+        r.timekept ? "Đã chấm" : "Chưa"
+      ].map(q).join(","));
+    });
+    const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `cham-cong-${todayISO()}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  /* ================= MODAL ================= */
+
+  let modalState = null;
+  function openModal(cfg) { modalState = cfg; renderOverlay(); }
+  function closeModal() { modalState = null; renderOverlay(); }
+
+  function renderOverlay() {
+    const box = $("#overlay");
+    let html = "";
+    if (modalState) {
+      html += `<div class="scrim" data-scrim><div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-h">${esc(modalState.title)}</div>
+        <div class="modal-b">${modalState.body}</div>
+        <div class="modal-f">
+          <button type="button" class="btn" data-act="modal-close">${esc(modalState.cancelText || "Đóng")}</button>
+          ${modalState.confirmText ? `<button type="button" class="btn ${modalState.tone || "pri"}" data-act="modal-ok">${esc(modalState.confirmText)}</button>` : ""}
+        </div></div></div>`;
+    }
+    if (S.chatOpen) {
+      html += renderChatDrawer();
+    }
+    box.innerHTML = html;
+    if (modalState && modalState.focus) { const el = $(modalState.focus, box); if (el) el.focus(); }
+  }
+
+  /* ================= GOOGLE CHAT DRAWER ================= */
+
+  const CHAT_TITLE = {
+    new: "chờ duyệt", approved: "đã được duyệt", rejected: "bị từ chối"
+  };
+  function renderChatDrawer() {
+    const msgs = S.chat.slice(0, 30).map(m => {
+      const r = byId(m.reqId);
+      if (!r) return "";
+      const u = USERS[r.userId];
+      const t = `${r.kind === "leave" ? "Đơn xin nghỉ phép" : "Giấy ra vào cổng"} — ${CHAT_TITLE[m.kind]}`;
+      const extra = m.kind === "approved" && r.decidedBy
+        ? `<div class="cmsg-kv"><span class="k">Người duyệt</span><span>${esc(USERS[r.decidedBy].name)}</span></div>` : "";
+      return `<div class="cmsg">
+        <div class="cmsg-h"><b>Đơn từ CBNV</b><span class="bot">APP</span><span>· ${fmtStamp(m.at).slice(-5)}</span></div>
+        <div class="cmsg-b">
+          <span class="t">${esc(t)}</span>
+          <div class="cmsg-kv">
+            <span class="k">Người gửi</span><span>${esc(u.name)} · ${esc(u.dept)}</span>
+            <span class="k">Thời gian</span><span class="mono">${esc(periodLabel(r))} · ${esc(fmtHours(r.hoursSystem))}</span>
+            <span class="k">Mã đơn</span><span class="mono">${esc(r.code)}</span>
+          </div>
+          ${extra}
+          <button type="button" class="btn sm pri" data-act="open-req" data-id="${r.id}" style="align-self:flex-start">Mở đơn</button>
+        </div></div>`;
+    }).join("");
+    return `<div class="drawer" role="dialog" aria-label="Google Chat">
+      <div class="drawer-h"><b>Google Chat</b><span>Nhóm duyệt đơn</span><button type="button" class="x" data-act="chat-close" aria-label="Đóng">✕</button></div>
+      <div class="drawer-b">
+        <div class="note info" style="margin:0">
+          <b>Mô phỏng.</b> Đây là các tin app sẽ gửi vào nhóm Google Chat. Tin nhắn cố tình không chứa lý do nghỉ.
+        </div>
+        ${msgs || '<div class="empty">Chưa có thông báo.</div>'}
+      </div></div>`;
+  }
+
+  /* ================= VIEWS ================= */
+
+  /* ---- Hướng dẫn theo từng vai trò ---- */
+
+  const B = s => `<span class="gbtn">${esc(s)}</span>`;   // tên nút bấm
+  const F = s => `<i class="gfield">${esc(s)}</i>`;       // tên ô nhập
+
+  const GUIDES = {
+    employee: {
+      role: "CBNV — người gửi đơn",
+      who: "Tạ Quốc Việt", email: "viet@ctyhp.vn",
+      job: "Gửi đơn, theo dõi trạng thái, in đơn đã duyệt.",
+      steps: [
+        `Màn đăng nhập bấm ${B("Đăng nhập bằng email công ty")}, rồi chọn dòng ${B("Tạ Quốc Việt — CBNV")}.`,
+        `Menu trái bấm ${B("Xin nghỉ phép")}. Chọn ${F("Nghỉ từ ngày")} và ${F("Đến ngày")} — dòng xanh bên dưới tự hiện tổng số ngày và số giờ, đã trừ Chủ nhật.`,
+        `Vẫn ở đơn nghỉ phép: chọn một ô ${F("Lý do nghỉ")}. Chọn ${B("Trường hợp đặc biệt")} hoặc ${B("Khác (bù giờ)")} thì hiện thêm ô để tự ghi rõ. Nhập ${F("Diễn giải")}, chọn ${F("Bàn giao công việc cho")}, tích dòng cam kết, rồi bấm ${B("Gửi đơn")}.`,
+        `Menu trái bấm ${B("Xin ra vào cổng")}. Chọn ${B("Khác")} để thấy ô nhập tự do, chọn ${F("Thời gian ra")} và ${F("Thời gian vào lại")} — dòng xanh hiện số giờ vắng, đã trừ nghỉ trưa. Bấm ${B("Gửi đơn")}.`,
+        `Menu trái bấm ${B("Đơn của tôi")}. Đơn ${B("Chờ duyệt")} có nút ${B("Huỷ đơn")}; đơn ${B("Đã duyệt")} có nút ${B("In đơn")}.`,
+        `Với giấy ra vào cổng đã duyệt, bấm ${B("Nhập giờ vào lại thực tế")}. Thử nhập lệch hơn 15 phút so với giờ dự kiến để thấy app bắt buộc ghi lý do.`
+      ]
+    },
+    approver: {
+      role: "Người duyệt",
+      who: "Chị Diệu", email: "dieu@ctyhp.vn",
+      job: "Duyệt hoặc từ chối đơn của toàn bộ CBNV. Một trong bốn chị xử lý là đủ.",
+      steps: [
+        `Thanh đen trên cùng bấm ${B("Đổi người dùng")}, rồi chọn ${B("Chị Diệu — Người duyệt")}.`,
+        `Vào thẳng màn ${B("Chờ duyệt")}. Con số đỏ cạnh chữ Chờ duyệt trên menu là số đơn đang chờ.`,
+        `Mỗi dòng có hai nút: ${B("Duyệt")} và ${B("Từ chối")}. Bấm ${B("Từ chối")} sẽ mở ô ghi lý do — không bắt buộc, nhưng có lý do thì CBNV biết cần sửa gì.`,
+        `Bấm ${B("Xem")} để mở toàn bộ nội dung đơn, kèm mục ${F("Diễn tiến")} ghi lại từng bước xử lý.`,
+        `Menu trái bấm ${B("Đã xử lý")} để xem lại những đơn chị đã duyệt hoặc từ chối.`,
+        `Thử quy tắc kiểm soát: bấm ${B("Xin nghỉ phép")} tự gửi một đơn, rồi quay lại ${B("Chờ duyệt")} — đơn đó hiện nhãn ${F("Đơn của bạn")} và không có nút Duyệt, vì không ai tự duyệt đơn của chính mình.`
+      ]
+    },
+    admin: {
+      role: "Người chấm công",
+      who: "Chị Khoa — C&B Nhân sự", email: "anhkhoa@ctyhp.vn",
+      job: "Nhận đơn đã duyệt, chốt số giờ, đánh dấu đã chấm công, xuất dữ liệu cho bảng lương.",
+      steps: [
+        `Thanh đen trên cùng bấm ${B("Đổi người dùng")}, rồi chọn ${B("Chị Khoa — Người chấm công")}.`,
+        `Vào thẳng màn ${B("Chấm công")}. Lọc bằng ${F("Từ ngày")}, ${F("Đến ngày")}, ${F("Phòng ban")}, ${F("Loại đơn")}, ${F("Trạng thái chấm công")}. Bốn ô số liệu phía trên đổi theo bộ lọc.`,
+        `Cột ${F("Giờ hệ thống tính")} khoá, không sửa được. Muốn chỉnh thì bấm ${B("Sửa")} ở cột ${F("Giờ chốt")} — hệ thống lưu số cũ, số mới, người sửa và thời điểm; dòng đã sửa có dấu ✎.`,
+        `Bấm ${B("Đánh dấu")} để ghi nhận đã chấm công cho một đơn. Đổi ý thì bấm ${B("Bỏ")}.`,
+        `Bấm ${B("Tải Excel (CSV)")} — file tải về mở được bằng Excel, giữ đúng dấu tiếng Việt, chỉ gồm những đơn đang khớp bộ lọc.`,
+        `Bấm ${B("Xem")} một đơn để đọc mục ${F("Diễn tiến")}: ai duyệt, ai sửa giờ, ai chấm công và lúc nào.`
+      ]
+    }
+  };
+
+  const COMMON_TIPS = [
+    `Nút ${B("Google Chat")} góc dưới phải: xem đúng những tin app sẽ gửi vào nhóm duyệt đơn. Tin nhắn cố tình không chứa lý do nghỉ.`,
+    `Menu trái bấm ${B("Hướng dẫn")} để đọc lại các bước dành cho vai trò đang đăng nhập.`,
+    `Thanh đen bấm ${B("Nạp lại dữ liệu mẫu")} để đưa demo về trạng thái ban đầu.`,
+    `Thử chặn tài khoản ngoài công ty: ở màn đăng nhập bấm ${B("Tài khoản cá nhân")} — hệ thống từ chối vì không thuộc tên miền @ctyhp.vn.`
+  ];
+
+  function guideCard(key) {
+    const g = GUIDES[key];
+    const steps = g.steps.map((s, i) => `<li><span class="gn">${i + 1}</span><span>${s}</span></li>`).join("");
+    return `<section class="gcard">
+      <header>
+        <span class="pill info">${esc(g.role)}</span>
+        <b>${esc(g.who)}</b>
+        <span class="mono">${esc(g.email)}</span>
+      </header>
+      <p class="gjob">${esc(g.job)}</p>
+      <ol class="gsteps">${steps}</ol>
+    </section>`;
+  }
+
+  function guideBlock(keys) {
+    return keys.map(k => guideCard(k)).join("") + `<section class="gcard gcard--tips">
+      <header><span class="pill mute">Dùng chung</span></header>
+      <ul class="gtips">${COMMON_TIPS.map(t => `<li>${t}</li>`).join("")}</ul>
+    </section>`;
+  }
+
+  function viewHelp() {
+    const keys = ["employee", "approver", "admin"].filter(k => k === "employee" || has(k));
+    return `<div class="page">
+      <div class="page-head">
+        <div><h2>Hướng dẫn sử dụng</h2><p>Các bước dành cho vai trò bạn đang đăng nhập</p></div>
+      </div>
+      <div class="guides">${guideBlock(keys)}</div>
+    </div>`;
+  }
+
+  function viewLogin() {
+    const accts = LOGIN_CHOICES.map(id => {
+      const u = USERS[id];
+      const role = u.roles.includes("admin") ? "Người chấm công"
+                 : u.roles.includes("approver") ? "Người duyệt" : "CBNV";
+      return `<button type="button" data-act="login" data-id="${id}">
+        <span class="avatar">${esc(u.name.trim().slice(-1).toUpperCase())}</span>
+        <span class="who2"><b>${esc(u.name)} — ${esc(role)}</b><span>${esc(u.email)}</span></span>
+      </button>`;
+    }).join("");
+
+    return `<div class="login"><div class="login-inner">
+      <header class="login-head">
+        <span class="eyebrow">Công ty CTYHP · Bản demo để đánh giá</span>
+        <h1>Xin nghỉ phép &amp; Giấy ra vào cổng</h1>
+        <p>Thay hai mẫu đơn giấy bằng một web app nội bộ. Bản demo này chạy đầy đủ chức năng —
+           gửi đơn, duyệt, chấm công, xuất Excel, in đơn — để đánh giá trước khi triển khai thật.</p>
+      </header>
+
+      <div class="login-grid">
+        <div class="login-card">
+          <div>
+            <b class="lc-t">Đăng nhập</b>
+            <p class="sub" style="margin:.3rem 0 0">Chỉ tài khoản <span class="mono">@ctyhp.vn</span> vào được. Không nhập email, không mật khẩu.</p>
+          </div>
+          ${S.showPicker ? `
+            <div>
+              <p class="sub" style="margin:0 0 .5rem">Chọn tài khoản để tiếp tục</p>
+              <div class="acct">
+                ${accts}
+                <button type="button" data-act="login-bad">
+                  <span class="avatar out">G</span>
+                  <span class="who2"><b>Tài khoản cá nhân</b><span>taquocviet@gmail.com</span></span>
+                </button>
+              </div>
+            </div>
+            ${S.loginError ? `<div class="note bad" style="margin:0">${esc(S.loginError)}</div>` : ""}
+          ` : `
+            <button type="button" class="sso" data-act="show-picker">
+              <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+                <rect x="1.5" y="4" width="17" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M2.2 5 10 11 17.8 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              Đăng nhập bằng email công ty
+            </button>
+          `}
+          <div class="lc-foot">
+            Ba tài khoản trong danh sách tương ứng ba vai trò của hệ thống. Đổi vai trò bất cứ lúc nào
+            bằng nút <b>Đổi người dùng</b> trên thanh đen.
+          </div>
+        </div>
+
+        <div class="guides">
+          <div class="guides-h">
+            <b>Hướng dẫn theo từng vai trò</b>
+            <span>Bấm đúng các nút được in đậm dưới đây</span>
+          </div>
+          ${guideBlock(["employee", "approver", "admin"])}
+        </div>
+      </div>
+    </div></div>`;
+  }
+
+  function menuFor() {
+    const items = [];
+    items.push({ sect: "Của tôi" });
+    items.push({ id: "home", label: "Đơn của tôi" });
+    items.push({ id: "new-leave", label: "Xin nghỉ phép" });
+    items.push({ id: "new-gate", label: "Xin ra vào cổng" });
+    if (has("approver")) {
+      items.push({ sect: "Duyệt đơn" });
+      items.push({ id: "approve", label: "Chờ duyệt", badge: pendingCount() });
+      items.push({ id: "handled", label: "Đã xử lý" });
+    }
+    if (has("admin")) {
+      items.push({ sect: "Nhân sự" });
+      items.push({ id: "timekeeping", label: "Chấm công", badge: untimekept() });
+    }
+    items.push({ sect: "Trợ giúp" });
+    items.push({ id: "help", label: "Hướng dẫn" });
+    return items;
+  }
+
+  function viewShell(inner) {
+    const u = me();
+    const roleTags = [
+      { r: "approver", l: "Người duyệt" },
+      { r: "admin", l: "Chấm công" }
+    ].filter(x => u.roles.includes(x.r)).map(x => `<span class="pill info">${x.l}</span>`).join("") ||
+      `<span class="pill mute">CBNV</span>`;
+
+    const menu = menuFor().map(it => {
+      if (it.sect) return `<span class="sect">${esc(it.sect)}</span>`;
+      const on = S.route.name === it.id ? " on" : "";
+      const b = it.badge ? `<span class="badge">${it.badge}</span>` : "";
+      return `<button type="button" class="${on.trim()}" data-act="go" data-route="${it.id}">${esc(it.label)}${b}</button>`;
+    }).join("");
+
+    const unseen = Math.max(0, S.chat.length - S.chatSeen);
+
+    return `<div class="shell">
+      <aside class="side">
+        <div class="brand"><b>Nhân sự CTYHP</b><span>Nghỉ phép &amp; Ra vào cổng</span></div>
+        <div class="who">
+          <b>${esc(u.name)}</b>
+          <span>${esc(u.position)} · ${esc(u.dept)}</span>
+          <span class="mono">${esc(u.email)}</span>
+          <span class="roles">${roleTags}</span>
+        </div>
+        <nav class="menu">${menu}</nav>
+        <div class="foot"><button type="button" class="btn sm" data-act="logout" style="width:100%">Đăng xuất</button></div>
+      </aside>
+      <main class="main">${inner}</main>
+    </div>
+    <button type="button" class="chatbtn" data-act="chat-open">
+      Google Chat ${unseen ? `<span class="badge">${unseen}</span>` : ""}
+    </button>`;
+  }
+
+  /* ---- Đơn của tôi ---- */
+  function viewHome() {
+    const mine = S.requests.filter(r => r.userId === S.currentUser)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    const cards = mine.map(r => {
+      const acts = [];
+      if (r.status === "pending") acts.push(`<button type="button" class="btn sm danger" data-act="cancel" data-id="${r.id}">Huỷ đơn</button>`);
+      if (r.status === "approved") acts.push(`<button type="button" class="btn sm" data-act="print" data-id="${r.id}">In đơn</button>`);
+      if (r.kind === "gate" && r.status === "approved" && !r.actualBackAt)
+        acts.push(`<button type="button" class="btn sm pri" data-act="actual" data-id="${r.id}">Nhập giờ vào lại thực tế</button>`);
+      acts.push(`<button type="button" class="btn sm" data-act="open-req" data-id="${r.id}">Chi tiết</button>`);
+
+      let extra = "";
+      if (r.status === "rejected" && r.rejectReason)
+        extra = `<span style="color:var(--stop);font-size:var(--s--2)">Lý do: ${esc(r.rejectReason)}</span>`;
+      else if (r.status === "approved")
+        extra = `<span class="sub">${esc(USERS[r.decidedBy].name)} duyệt lúc ${fmtStamp(r.decidedAt)}</span>`;
+      else if (r.status === "pending")
+        extra = `<span class="sub">Đang chờ một trong bốn người duyệt xử lý</span>`;
+
+      const diff = r.kind === "gate" && r.actualBackAt
+        ? `<span class="sub">Vào lại thực tế ${fmtDTShort(r.actualBackAt)} · ${diffLabel(diffMinutes(r.backAt, r.actualBackAt))}</span>` : "";
+
+      return `<div class="reqcard">
+        <div class="top"><b>${esc(kindLabel(r))} — ${esc(detailLabel(r))}</b><span class="pill ${r.status}">${STATUS_LABEL[r.status]}</span></div>
+        <span class="mono sub">${esc(r.code)} · ${esc(periodLabel(r))} · ${esc(fmtHours(r.hoursSystem))}</span>
+        ${extra}${diff}
+        <div class="btnrow" style="margin-top:.2rem">${acts.join("")}</div>
+      </div>`;
+    }).join("");
+
+    return `<div class="page">
+      <div class="page-head">
+        <div><h2>Đơn của tôi</h2><p>${mine.length} đơn · sắp xếp theo thời điểm gửi</p></div>
+        <div class="btnrow">
+          <button type="button" class="btn pri" data-act="go" data-route="new-leave">Xin nghỉ phép</button>
+          <button type="button" class="btn" data-act="go" data-route="new-gate">Xin ra vào cổng</button>
+        </div>
+      </div>
+      ${mine.length ? `<div class="reqlist">${cards}</div>` : `<div class="card"><div class="empty">Bạn chưa có đơn nào. Bấm <b>Xin nghỉ phép</b> hoặc <b>Xin ra vào cổng</b> để tạo đơn đầu tiên.</div></div>`}
+    </div>`;
+  }
+
+  /* ---- Form nghỉ phép ---- */
+  function viewNewLeave() {
+    const u = me();
+    const people = Object.values(USERS).filter(x => x.id !== u.id)
+      .map(x => `<option value="${x.id}">${esc(x.name)} — ${esc(x.dept)}</option>`).join("");
+    const types = LEAVE_TYPES.map(t => `<button type="button" class="opt${t.id === "phep-nam" ? " on" : ""}" data-type="${t.id}">${esc(t.label)}</button>`).join("");
+
+    return `<div class="page">
+      <div class="page-head"><div><h2>Đơn xin nghỉ phép</h2><p>Kính gửi Ban Giám đốc Công ty</p></div></div>
+      <form class="card" id="fLeave" novalidate>
+        <div class="g3">
+          <div class="fld"><label>Họ và tên</label><div class="ro">${esc(u.name)}</div></div>
+          <div class="fld"><label>Chức vụ</label><div class="ro">${esc(u.position)}</div></div>
+          <div class="fld"><label>Phòng / Ban</label><div class="ro">${esc(u.dept)}</div></div>
+        </div>
+
+        <div class="g3">
+          <div class="fld"><label for="lFrom">Nghỉ từ ngày</label><input type="date" id="lFrom" value="${todayISO()}"></div>
+          <div class="fld"><label for="lTo">Đến ngày</label><input type="date" id="lTo" value="${todayISO()}"></div>
+          <div class="fld"><label for="lHalf">Thời lượng</label>
+            <select id="lHalf">
+              <option value="">Cả ngày</option>
+              <option value="am">Nửa ngày — buổi sáng</option>
+              <option value="pm">Nửa ngày — buổi chiều</option>
+            </select>
+          </div>
+        </div>
+        <div class="calc" id="lCalc"></div>
+
+        <div class="fld">
+          <label>Lý do nghỉ</label>
+          <div class="opts" id="lTypes">${types}</div>
+        </div>
+        <div class="fld" id="lTypeTextWrap" hidden>
+          <label for="lTypeText">Ghi rõ trường hợp</label>
+          <input type="text" id="lTypeText" placeholder="Ví dụ: đưa con đi nhập học">
+        </div>
+
+        <div class="fld"><label for="lReason">Diễn giải</label>
+          <textarea id="lReason" placeholder="Ghi rõ lý do nghỉ…"></textarea></div>
+
+        <div class="g2">
+          <div class="fld"><label for="lHandover">Bàn giao công việc cho</label>
+            <select id="lHandover"><option value="">— Chọn CBNV —</option>${people}</select></div>
+          <div class="fld"><label for="lMakeup">Đề xuất ngày làm bù (nếu có)</label>
+            <input type="date" id="lMakeup"></div>
+        </div>
+
+        <label class="chk"><input type="checkbox" id="lCommit">
+          <span>Tôi cam kết việc nghỉ phép của tôi không ảnh hưởng đến công việc tôi đang phụ trách. Hết thời gian nghỉ nêu trên, tôi sẽ trở lại làm việc bình thường.</span>
+        </label>
+
+        <div id="lErr"></div>
+        <div class="btnrow">
+          <button type="submit" class="btn pri">Gửi đơn</button>
+          <button type="button" class="btn" data-act="go" data-route="home">Quay lại</button>
+        </div>
+      </form>
+    </div>`;
+  }
+
+  function bindLeaveForm() {
+    const f = $("#fLeave"); if (!f) return;
+    let type = "phep-nam";
+
+    const refresh = () => {
+      const from = $("#lFrom").value, to = $("#lTo").value, half = $("#lHalf").value;
+      const box = $("#lCalc");
+      if (!from || !to) { box.className = "calc warn"; box.innerHTML = "Chọn ngày bắt đầu và ngày kết thúc"; return; }
+      if (parseDate(to) < parseDate(from)) { box.className = "calc warn"; box.innerHTML = "<b>Ngày kết thúc trước ngày bắt đầu</b>"; return; }
+      if (half && from !== to) { $("#lTo").value = from; return refresh(); }
+      const h = leaveHours(from, to, half);
+      const sun = sundaysInRange(from, to);
+      const why = [];
+      if (half) why.push("nửa ngày = 4 giờ");
+      else { why.push(`${HOURS_PER_DAY} giờ/ngày`); if (sun) why.push(`đã trừ ${sun} Chủ nhật`); }
+      box.className = h === 0 ? "calc warn" : "calc";
+      box.innerHTML = h === 0
+        ? "<b>0 giờ</b><span class=\"why\">Khoảng đã chọn chỉ có Chủ nhật — không tính vào thời gian nghỉ</span>"
+        : `<span>Tổng thời gian nghỉ</span><b>${fmtDays(h)} ngày · ${fmtHours(h)}</b><span class="why">hệ thống tự tính · ${why.join(" · ")}</span>`;
+    };
+
+    $("#lFrom").addEventListener("change", () => { if (parseDate($("#lTo").value) < parseDate($("#lFrom").value)) $("#lTo").value = $("#lFrom").value; refresh(); });
+    $("#lTo").addEventListener("change", refresh);
+    $("#lHalf").addEventListener("change", refresh);
+
+    $("#lTypes").addEventListener("click", e => {
+      const b = e.target.closest("[data-type]"); if (!b) return;
+      type = b.dataset.type;
+      $("#lTypes").querySelectorAll(".opt").forEach(x => x.classList.toggle("on", x === b));
+      const t = LEAVE_TYPES.find(x => x.id === type);
+      $("#lTypeTextWrap").hidden = !t.needsText;
+    });
+
+    refresh();
+
+    f.addEventListener("submit", e => {
+      e.preventDefault();
+      const from = $("#lFrom").value, to = $("#lTo").value, half = $("#lHalf").value;
+      const t = LEAVE_TYPES.find(x => x.id === type);
+      const errs = [];
+      if (!from || !to) errs.push("Chọn ngày bắt đầu và ngày kết thúc.");
+      else if (parseDate(to) < parseDate(from)) errs.push("Ngày kết thúc không được trước ngày bắt đầu.");
+      else if (leaveHours(from, to, half) === 0) errs.push("Khoảng đã chọn không có ngày làm việc nào.");
+      if (t.needsText && !$("#lTypeText").value.trim()) errs.push("Chọn “" + t.label + "” thì phải ghi rõ trường hợp.");
+      if (!$("#lReason").value.trim()) errs.push("Nhập phần diễn giải lý do.");
+      if (!$("#lHandover").value) errs.push("Chọn người nhận bàn giao công việc.");
+      if (!$("#lCommit").checked) errs.push("Cần tích vào dòng cam kết.");
+      if (errs.length) {
+        $("#lErr").innerHTML = `<div class="note bad"><b>Chưa gửi được:</b><ul style="margin:.35rem 0 0;padding-left:1.1rem">${errs.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+        return;
+      }
+      const r = submitRequest({
+        kind: "leave", fromDate: from, toDate: to, halfDay: half || null,
+        leaveType: type, typeText: $("#lTypeText").value.trim(),
+        reason: $("#lReason").value.trim(), handoverTo: $("#lHandover").value,
+        makeupDate: $("#lMakeup").value
+      });
+      S.route = { name: "req", id: r.id, flash: "Đã gửi đơn. Bốn người duyệt đã nhận được thông báo trên Google Chat." };
+      render();
+    });
+  }
+
+  /* ---- Form ra vào cổng ---- */
+  function viewNewGate() {
+    const u = me();
+    const opts = PURPOSES.map(p => `<button type="button" class="opt${p.id === "cong-tac" ? " on" : ""}" data-purpose="${p.id}">${esc(p.label)}</button>`).join("");
+    return `<div class="page">
+      <div class="page-head"><div><h2>Giấy xin phép ra vào cổng</h2><p>Đăng ký ra khỏi cổng trong giờ làm việc</p></div></div>
+      <form class="card" id="fGate" novalidate>
+        <div class="g3">
+          <div class="fld"><label>Họ và tên</label><div class="ro">${esc(u.name)}</div></div>
+          <div class="fld"><label>Chức vụ</label><div class="ro">${esc(u.position)}</div></div>
+          <div class="fld"><label>Phòng / Ban / Bộ phận</label><div class="ro">${esc(u.dept)}</div></div>
+        </div>
+
+        <div class="fld"><label>Lý do xin phép ra vào cổng</label><div class="opts" id="gPurposes">${opts}</div></div>
+        <div class="fld" id="gTextWrap" hidden><label for="gText">Ghi rõ lý do</label>
+          <input type="text" id="gText" placeholder="Ví dụ: đi khám sức khoẻ định kỳ"></div>
+
+        <div class="g2">
+          <div class="fld"><label for="gOut">Thời gian ra</label><input type="datetime-local" id="gOut" value="${nowDTLocal(10)}"></div>
+          <div class="fld"><label for="gBack">Thời gian vào lại (dự kiến)</label><input type="datetime-local" id="gBack" value="${nowDTLocal(14)}"></div>
+        </div>
+        <div class="calc" id="gCalc"></div>
+
+        <div class="fld"><label for="gNote">Diễn giải</label>
+          <textarea id="gNote" placeholder="Ghi rõ nội dung công việc…"></textarea></div>
+
+        <div id="gErr"></div>
+        <div class="btnrow">
+          <button type="submit" class="btn pri">Gửi đơn</button>
+          <button type="button" class="btn" data-act="go" data-route="home">Quay lại</button>
+        </div>
+      </form>
+    </div>`;
+  }
+
+  function bindGateForm() {
+    const f = $("#fGate"); if (!f) return;
+    let purpose = "cong-tac";
+
+    const refresh = () => {
+      const out = $("#gOut").value, back = $("#gBack").value;
+      const box = $("#gCalc");
+      if (!out || !back) { box.className = "calc warn"; box.innerHTML = "Chọn thời gian ra và thời gian vào lại"; return; }
+      if (new Date(back) <= new Date(out)) { box.className = "calc warn"; box.innerHTML = "<b>Thời gian vào lại phải sau thời gian ra</b>"; return; }
+      const h = gateHours(out, back);
+      box.className = h === 0 ? "calc warn" : "calc";
+      box.innerHTML = h === 0
+        ? "<b>0 giờ</b><span class=\"why\">Khoảng đã chọn nằm ngoài giờ làm việc</span>"
+        : `<span>Số giờ vắng trong giờ làm</span><b>${fmtHours(h)}</b><span class="why">giờ làm 08:00–12:00 và 13:00–17:00 · đã trừ nghỉ trưa</span>`;
+    };
+    $("#gOut").addEventListener("change", refresh);
+    $("#gBack").addEventListener("change", refresh);
+    $("#gPurposes").addEventListener("click", e => {
+      const b = e.target.closest("[data-purpose]"); if (!b) return;
+      purpose = b.dataset.purpose;
+      $("#gPurposes").querySelectorAll(".opt").forEach(x => x.classList.toggle("on", x === b));
+      $("#gTextWrap").hidden = !PURPOSES.find(x => x.id === purpose).needsText;
+    });
+    refresh();
+
+    f.addEventListener("submit", e => {
+      e.preventDefault();
+      const out = $("#gOut").value, back = $("#gBack").value;
+      const p = PURPOSES.find(x => x.id === purpose);
+      const errs = [];
+      if (!out || !back) errs.push("Chọn thời gian ra và thời gian vào lại.");
+      else if (new Date(back) <= new Date(out)) errs.push("Thời gian vào lại phải sau thời gian ra.");
+      else if (gateHours(out, back) === 0) errs.push("Khoảng thời gian đã chọn nằm ngoài giờ làm việc.");
+      if (p.needsText && !$("#gText").value.trim()) errs.push("Chọn “" + p.label + "” thì phải ghi rõ lý do.");
+      if (!$("#gNote").value.trim()) errs.push("Nhập phần diễn giải.");
+      if (errs.length) {
+        $("#gErr").innerHTML = `<div class="note bad"><b>Chưa gửi được:</b><ul style="margin:.35rem 0 0;padding-left:1.1rem">${errs.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+        return;
+      }
+      const r = submitRequest({
+        kind: "gate", purpose, purposeText: $("#gText").value.trim(),
+        note: $("#gNote").value.trim(), outAt: out, backAt: back
+      });
+      S.route = { name: "req", id: r.id, flash: "Đã gửi đơn. Bốn người duyệt đã nhận được thông báo trên Google Chat." };
+      render();
+    });
+  }
+
+  /* ---- Hàng chờ duyệt ---- */
+  function viewApprove() {
+    const rows = S.requests.filter(r => r.status === "pending")
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    const nLeave = rows.filter(r => r.kind === "leave").length;
+    const nGate = rows.length - nLeave;
+
+    const body = rows.map(r => {
+      const u = USERS[r.userId];
+      const own = r.userId === S.currentUser;
+      const acts = own
+        ? `<span class="pill mute">Đơn của bạn</span>`
+        : `<button type="button" class="btn sm ok" data-act="approve" data-id="${r.id}">Duyệt</button>
+           <button type="button" class="btn sm danger" data-act="reject" data-id="${r.id}">Từ chối</button>`;
+      return `<tr>
+        <td><b>${esc(u.name)}</b><span class="sub mono">${esc(r.code)}</span></td>
+        <td class="nw">${esc(u.dept)}</td>
+        <td>${esc(kindLabel(r))}<span class="sub">${esc(detailLabel(r))}</span></td>
+        <td class="nw mono">${esc(periodLabel(r))}</td>
+        <td class="nw mono">${esc(fmtHours(r.hoursSystem))}</td>
+        <td class="nw mono">${fmtStamp(r.createdAt)}</td>
+        <td class="nw"><div class="btnrow">${acts}<button type="button" class="btn sm" data-act="open-req" data-id="${r.id}">Xem</button></div></td>
+      </tr>`;
+    }).join("");
+
+    return `<div class="page">
+      <div class="page-head">
+        <div><h2>Chờ duyệt</h2><p>${rows.length} đơn · toàn công ty · một trong bốn người duyệt xử lý là đủ</p></div>
+        <div class="btnrow">
+          <span class="pill info">Nghỉ phép ${nLeave}</span>
+          <span class="pill info">Ra vào cổng ${nGate}</span>
+        </div>
+      </div>
+      <div class="card pad0">
+        ${rows.length ? `<div class="tw"><table>
+          <thead><tr><th>Người gửi</th><th>Phòng ban</th><th>Loại đơn</th><th>Thời gian</th><th>Số giờ</th><th>Gửi lúc</th><th></th></tr></thead>
+          <tbody>${body}</tbody></table></div>`
+        : `<div class="empty">Không có đơn nào đang chờ duyệt.</div>`}
+      </div>
+      <div class="note info">
+        <b>Quy tắc:</b> ai duyệt trước thì đơn chốt theo người đó, ba người còn lại thấy đơn đã đóng.
+        Không ai tự duyệt được đơn của chính mình.
+      </div>
+    </div>`;
+  }
+
+  function viewHandled() {
+    const rows = S.requests.filter(r => r.decidedBy === S.currentUser)
+      .sort((a, b) => new Date(b.decidedAt) - new Date(a.decidedAt));
+    const body = rows.map(r => {
+      const u = USERS[r.userId];
+      return `<tr>
+        <td><b>${esc(u.name)}</b><span class="sub mono">${esc(r.code)}</span></td>
+        <td>${esc(kindLabel(r))}<span class="sub">${esc(detailLabel(r))}</span></td>
+        <td class="nw mono">${esc(periodLabel(r))}</td>
+        <td class="nw mono">${esc(fmtHours(r.hoursSystem))}</td>
+        <td><span class="pill ${r.status}">${STATUS_LABEL[r.status]}</span>${r.rejectReason ? `<span class="sub">${esc(r.rejectReason)}</span>` : ""}</td>
+        <td class="nw mono">${fmtStamp(r.decidedAt)}</td>
+        <td class="nw"><button type="button" class="btn sm" data-act="open-req" data-id="${r.id}">Xem</button></td>
+      </tr>`;
+    }).join("");
+    return `<div class="page">
+      <div class="page-head"><div><h2>Đã xử lý</h2><p>${rows.length} đơn bạn đã duyệt hoặc từ chối</p></div></div>
+      <div class="card pad0">
+        ${rows.length ? `<div class="tw"><table>
+          <thead><tr><th>Người gửi</th><th>Loại đơn</th><th>Thời gian</th><th>Số giờ</th><th>Kết quả</th><th>Lúc</th><th></th></tr></thead>
+          <tbody>${body}</tbody></table></div>` : `<div class="empty">Bạn chưa xử lý đơn nào.</div>`}
+      </div>
+    </div>`;
+  }
+
+  /* ---- Chấm công ---- */
+  function viewTimekeeping() {
+    const f = S.tkFilter || (S.tkFilter = { from: "", to: "", dept: "", kind: "", state: "all" });
+    let rows = S.requests.filter(r => r.status === "approved");
+    if (f.from) rows = rows.filter(r => startISO(r) >= f.from);
+    if (f.to) rows = rows.filter(r => startISO(r) <= f.to);
+    if (f.dept) rows = rows.filter(r => USERS[r.userId].dept === f.dept);
+    if (f.kind) rows = rows.filter(r => r.kind === f.kind);
+    if (f.state === "todo") rows = rows.filter(r => !r.timekept);
+    if (f.state === "done") rows = rows.filter(r => r.timekept);
+    rows.sort((a, b) => startISO(a) < startISO(b) ? 1 : -1);
+
+    const hLeave = rows.filter(r => r.kind === "leave").reduce((s, r) => s + (r.hoursFinal || 0), 0);
+    const hGate = rows.filter(r => r.kind === "gate").reduce((s, r) => s + (r.hoursFinal || 0), 0);
+    const nTodo = rows.filter(r => !r.timekept).length;
+
+    const deptOpts = DEPTS.map(d => `<option value="${esc(d)}"${f.dept === d ? " selected" : ""}>${esc(d)}</option>`).join("");
+
+    const body = rows.map(r => {
+      const u = USERS[r.userId];
+      const edited = r.hoursEdits.length;
+      const final = `<span class="mono"${edited ? ' style="color:var(--warn)"' : ""}>${esc(fmtHours(r.hoursFinal))}${edited ? " ✎" : ""}</span>`;
+      return `<tr>
+        <td><b>${esc(u.name)}</b><span class="sub mono">${esc(r.code)}</span></td>
+        <td class="nw">${esc(u.dept)}</td>
+        <td>${esc(kindLabel(r))}<span class="sub">${esc(detailLabel(r))}</span></td>
+        <td class="nw mono">${esc(periodLabel(r))}</td>
+        <td class="nw mono">${esc(fmtHours(r.hoursSystem))}</td>
+        <td class="nw">${final}
+          <button type="button" class="btn sm" data-act="edit-hours" data-id="${r.id}" style="margin-left:.35rem">Sửa</button></td>
+        <td class="nw">${esc(USERS[r.decidedBy].name)}</td>
+        <td class="nw">${r.timekept
+          ? `<span class="pill approved">Đã chấm</span><button type="button" class="btn sm" data-act="untk" data-id="${r.id}" style="margin-left:.35rem">Bỏ</button>`
+          : `<button type="button" class="btn sm ok" data-act="tk" data-id="${r.id}">Đánh dấu</button>`}</td>
+        <td class="nw"><button type="button" class="btn sm" data-act="open-req" data-id="${r.id}">Xem</button></td>
+      </tr>`;
+    }).join("");
+
+    return `<div class="page">
+      <div class="page-head">
+        <div><h2>Chấm công — đơn đã duyệt</h2><p>${rows.length} đơn trong bộ lọc hiện tại</p></div>
+        <div class="btnrow">
+          <button type="button" class="btn pri" data-act="csv">Tải Excel (CSV)</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="g3">
+          <div class="fld"><label for="tkFrom">Từ ngày</label><input type="date" id="tkFrom" value="${esc(f.from)}"></div>
+          <div class="fld"><label for="tkTo">Đến ngày</label><input type="date" id="tkTo" value="${esc(f.to)}"></div>
+          <div class="fld"><label for="tkDept">Phòng ban</label><select id="tkDept"><option value="">Tất cả</option>${deptOpts}</select></div>
+          <div class="fld"><label for="tkKind">Loại đơn</label><select id="tkKind">
+            <option value="">Tất cả</option>
+            <option value="leave"${f.kind === "leave" ? " selected" : ""}>Nghỉ phép</option>
+            <option value="gate"${f.kind === "gate" ? " selected" : ""}>Ra vào cổng</option></select></div>
+          <div class="fld"><label for="tkState">Trạng thái chấm công</label><select id="tkState">
+            <option value="all"${f.state === "all" ? " selected" : ""}>Tất cả</option>
+            <option value="todo"${f.state === "todo" ? " selected" : ""}>Chưa chấm công</option>
+            <option value="done"${f.state === "done" ? " selected" : ""}>Đã chấm công</option></select></div>
+        </div>
+        <div class="totals">
+          <div><span class="k">Đơn đã duyệt</span><span class="v">${rows.length}</span></div>
+          <div><span class="k">Chưa chấm</span><span class="v" style="color:${nTodo ? "var(--warn)" : "var(--ink-3)"}">${nTodo}</span></div>
+          <div><span class="k">Giờ nghỉ phép</span><span class="v">${fmtDays(hLeave)}<span class="k" style="font-family:var(--font-body)">ngày · ${fmtHours(hLeave)}</span></span></div>
+          <div><span class="k">Giờ ra cổng</span><span class="v">${fmtHours(hGate)}</span></div>
+        </div>
+      </div>
+
+      <div class="card pad0">
+        ${rows.length ? `<div class="tw"><table>
+          <thead><tr><th>CBNV</th><th>Phòng ban</th><th>Loại đơn</th><th>Thời gian</th><th>Giờ hệ thống tính</th><th>Giờ chốt</th><th>Người duyệt</th><th>Chấm công</th><th></th></tr></thead>
+          <tbody>${body}</tbody></table></div>` : `<div class="empty">Không có đơn nào khớp bộ lọc.</div>`}
+      </div>
+
+      <div class="note info">
+        <b>Giờ hệ thống tính</b> không sửa được — đó là số máy tính ra theo giờ làm việc công ty.
+        <b>Giờ chốt</b> sửa được, và mỗi lần sửa hệ thống lưu lại số cũ, số mới, người sửa và thời điểm.
+        Ngày lễ chưa được trừ tự động nên khi kỳ nghỉ trùng ngày lễ thì sửa ở cột Giờ chốt.
+      </div>
+    </div>`;
+  }
+  const startISO = r => (r.kind === "leave" ? r.fromDate : r.outAt.slice(0, 10));
+
+  function bindTimekeeping() {
+    if (!$("#tkFrom")) return;
+    const set = (k, v) => { S.tkFilter[k] = v; save(); render(); };
+    $("#tkFrom").addEventListener("change", e => set("from", e.target.value));
+    $("#tkTo").addEventListener("change", e => set("to", e.target.value));
+    $("#tkDept").addEventListener("change", e => set("dept", e.target.value));
+    $("#tkKind").addEventListener("change", e => set("kind", e.target.value));
+    $("#tkState").addEventListener("change", e => set("state", e.target.value));
+  }
+
+  /* ---- Chi tiết đơn ---- */
+  function viewRequest(id) {
+    const r = byId(id);
+    if (!r) return `<div class="page"><div class="card"><div class="empty">Không tìm thấy đơn.</div></div></div>`;
+    const u = USERS[r.userId];
+    const canSee = r.userId === S.currentUser || has("approver") || has("admin");
+    if (!canSee) return `<div class="page"><div class="card"><div class="empty">Bạn không có quyền xem đơn này.</div></div></div>`;
+
+    const kv = [];
+    kv.push(["Mã đơn", `<span class="mono">${esc(r.code)}</span>`]);
+    kv.push(["Người gửi", `${esc(u.name)} — ${esc(u.position)}, ${esc(u.dept)}<span class="sub mono">${esc(u.email)}</span>`]);
+    if (r.kind === "leave") {
+      kv.push(["Thời gian nghỉ", `<span class="mono">${esc(periodLabel(r))}</span>`]);
+      kv.push(["Tổng thời gian", `<span class="mono">${fmtDays(r.hoursSystem)} ngày · ${esc(fmtHours(r.hoursSystem))}</span><span class="sub">hệ thống tính · 8 giờ/ngày · không tính Chủ nhật</span>`]);
+      kv.push(["Loại nghỉ", esc(detailLabel(r))]);
+      kv.push(["Diễn giải", esc(r.reason)]);
+      kv.push(["Bàn giao cho", r.handoverTo ? esc(USERS[r.handoverTo].name) : "—"]);
+      kv.push(["Ngày làm bù", r.makeupDate ? fmtDate(r.makeupDate) : "Không đề xuất"]);
+    } else {
+      kv.push(["Lý do", esc(detailLabel(r))]);
+      kv.push(["Diễn giải", esc(r.note)]);
+      kv.push(["Thời gian ra", `<span class="mono">${fmtDT(r.outAt)}</span>`]);
+      kv.push(["Vào lại (dự kiến)", `<span class="mono">${fmtDT(r.backAt)}</span>`]);
+      kv.push(["Vào lại thực tế", r.actualBackAt
+        ? `<span class="mono">${fmtDT(r.actualBackAt)}</span><span class="sub">${diffLabel(diffMinutes(r.backAt, r.actualBackAt))}</span>`
+        : `<span class="sub">Chưa nhập</span>`]);
+      if (r.diffReason) kv.push(["Lý do sớm/trễ", esc(r.diffReason)]);
+      kv.push(["Số giờ vắng", `<span class="mono">${esc(fmtHours(r.hoursSystem))}</span><span class="sub">trong giờ làm 08:00–12:00 và 13:00–17:00</span>`]);
+    }
+
+    const tl = [`<div class="tl"><span class="dot"></span><div><b>CBNV gửi đơn</b><span>${esc(u.name)} · ${fmtStamp(r.createdAt)}</span></div></div>`];
+    if (r.status === "pending")
+      tl.push(`<div class="tl mute"><span class="dot"></span><div><b>Chờ duyệt</b><span>Bốn người duyệt đều thấy đơn này — một người xử lý là đủ</span></div></div>`);
+    if (r.status === "approved")
+      tl.push(`<div class="tl done"><span class="dot"></span><div><b>Đã duyệt</b><span>${esc(USERS[r.decidedBy].name)} · ${fmtStamp(r.decidedAt)}</span></div></div>`);
+    if (r.status === "rejected")
+      tl.push(`<div class="tl stop"><span class="dot"></span><div><b>Bị từ chối</b><span>${esc(USERS[r.decidedBy].name)} · ${fmtStamp(r.decidedAt)}${r.rejectReason ? " — " + esc(r.rejectReason) : ""}</span></div></div>`);
+    if (r.status === "cancelled")
+      tl.push(`<div class="tl mute"><span class="dot"></span><div><b>Đã huỷ</b><span>Đơn không còn hiệu lực</span></div></div>`);
+    r.hoursEdits.forEach(e => tl.push(`<div class="tl"><span class="dot"></span><div><b>Sửa giờ chốt</b><span>${esc(fmtHours(e.from))} → ${esc(fmtHours(e.to))} · ${esc(USERS[e.by].name)} · ${fmtStamp(e.at)}</span></div></div>`));
+    if (r.timekept)
+      tl.push(`<div class="tl done"><span class="dot"></span><div><b>Đã chấm công</b><span>${esc(USERS[r.timekeptBy].name)} · ${fmtStamp(r.timekeptAt)}</span></div></div>`);
+
+    const acts = [];
+    if (r.status === "pending" && has("approver") && r.userId !== S.currentUser) {
+      acts.push(`<button type="button" class="btn ok" data-act="approve" data-id="${r.id}">Duyệt đơn</button>`);
+      acts.push(`<button type="button" class="btn danger" data-act="reject" data-id="${r.id}">Từ chối</button>`);
+    }
+    if (r.status === "pending" && r.userId === S.currentUser)
+      acts.push(`<button type="button" class="btn danger" data-act="cancel" data-id="${r.id}">Huỷ đơn</button>`);
+    if (r.kind === "gate" && r.status === "approved" && r.userId === S.currentUser)
+      acts.push(`<button type="button" class="btn pri" data-act="actual" data-id="${r.id}">${r.actualBackAt ? "Sửa giờ vào lại thực tế" : "Nhập giờ vào lại thực tế"}</button>`);
+    if (r.status === "approved" && has("admin")) {
+      acts.push(`<button type="button" class="btn" data-act="edit-hours" data-id="${r.id}">Sửa giờ chốt</button>`);
+      acts.push(`<button type="button" class="btn ${r.timekept ? "" : "ok"}" data-act="${r.timekept ? "untk" : "tk"}" data-id="${r.id}">${r.timekept ? "Bỏ đánh dấu chấm công" : "Đánh dấu đã chấm công"}</button>`);
+    }
+    if (r.status === "approved") acts.push(`<button type="button" class="btn" data-act="print" data-id="${r.id}">In đơn</button>`);
+    acts.push(`<button type="button" class="btn" data-act="back">Quay lại</button>`);
+
+    const selfWarn = r.status === "pending" && has("approver") && r.userId === S.currentUser
+      ? `<div class="note"><b>Đây là đơn của bạn.</b> Người duyệt không tự duyệt đơn của chính mình — ba người duyệt còn lại sẽ xử lý.</div>` : "";
+
+    const flash = S.route.flash ? `<div class="note info"><b>${esc(S.route.flash)}</b></div>` : "";
+
+    return `<div class="page">
+      <div class="page-head">
+        <div><h2>${esc(kindLabel(r))} — ${esc(detailLabel(r))}</h2>
+          <p><span class="mono">${esc(r.code)}</span> · gửi lúc ${fmtStamp(r.createdAt)}</p></div>
+        <span class="pill ${r.status}">${STATUS_LABEL[r.status]}</span>
+      </div>
+      ${flash}${selfWarn}
+      <div class="g2" style="align-items:start">
+        <div class="card"><div class="kv">${kv.map(([k, v]) => `<span class="k">${esc(k)}</span><span>${v}</span>`).join("")}</div></div>
+        <div class="card">
+          <div class="card-h" style="margin:-1.1rem -1.2rem .2rem;border-radius:0"><b>Diễn tiến</b></div>
+          <div class="timeline">${tl.join("")}</div>
+          ${r.status === "approved" ? `<div class="kv" style="border-top:1px solid var(--rule-soft);padding-top:.8rem">
+            <span class="k">Giờ hệ thống tính</span><span class="mono">${esc(fmtHours(r.hoursSystem))}</span>
+            <span class="k">Giờ chốt</span><span class="mono">${esc(fmtHours(r.hoursFinal))}${r.hoursEdits.length ? " ✎ đã sửa tay" : ""}</span>
+          </div>` : ""}
+        </div>
+      </div>
+      <div class="btnrow">${acts.join("")}</div>
+    </div>`;
+  }
+
+  /* ================= PRINT ================= */
+
+  function buildPrint(r) {
+    const u = USERS[r.userId];
+    const sig = who => `<div><b>${esc(who)}</b></div>`;
+    const approvedBy = r.decidedBy ? USERS[r.decidedBy].name : "";
+    const stamp = r.decidedAt ? fmtStamp(r.decidedAt) : "";
+
+    if (r.kind === "leave") {
+      const opts = LEAVE_TYPES.map(t =>
+        `<span class="cb${t.id === r.leaveType ? " on" : ""}">${esc(t.label)}</span>`).join("");
+      return `<div class="paper">
+        <p class="t">ĐƠN XIN NGHỈ PHÉP</p>
+        <p class="s">Kính gửi: BAN GIÁM ĐỐC CÔNG TY</p>
+        <div class="r"><span>Tôi tên là:</span><span class="v">${esc(u.name)}</span></div>
+        <div class="r"><span>Chức vụ:</span><span class="v">${esc(u.position)}</span><span>Phòng/Ban:</span><span class="v">${esc(u.dept)}</span></div>
+        <div class="r"><span>Nay tôi làm đơn này kính đề nghị Ban Giám đốc chấp thuận cho tôi được nghỉ phép, cụ thể:</span></div>
+        <div class="r"><span>Được nghỉ từ ngày</span><span class="v md">${fmtDate(r.fromDate)}</span>
+          <span>đến ngày</span><span class="v md">${fmtDate(r.toDate)}</span>
+          <span>Tổng thời gian nghỉ:</span><span class="v">${fmtDays(r.hoursSystem)} ngày (${esc(fmtHours(r.hoursSystem))})</span></div>
+        <div class="r"><span>Lý do:</span><span class="v">${esc(r.reason)}</span></div>
+        <div class="o">${opts}</div>
+        ${r.typeText ? `<div class="r"><span>Ghi rõ:</span><span class="v">${esc(r.typeText)}</span></div>` : ""}
+        <div class="r"><span>Công việc của tôi tạm thời bàn giao lại cho:</span><span class="v">${esc(r.handoverTo ? USERS[r.handoverTo].name : "")}</span></div>
+        <div class="r"><span>Đề xuất ngày làm bù (Nếu có):</span><span class="v">${r.makeupDate ? fmtDate(r.makeupDate) : ""}</span></div>
+        <div class="r"><span>Tôi cam kết việc nghỉ phép của tôi không ảnh hưởng đến công việc tôi đang phụ trách, Hết thời gian nghỉ nêu trên, tôi sẽ trở lại làm việc bình thường.</span></div>
+        <div class="sg">${sig("BAN GIÁM ĐỐC")}${sig("GSNB")}${sig("TP/TBP")}${sig("NGƯỜI LÀM ĐƠN")}</div>
+        <div class="sgv">
+          <span></span>
+          <span></span>
+          <span><span class="stamp">ĐÃ DUYỆT</span><br>${esc(approvedBy)}<br>${esc(stamp)}</span>
+          <span>${esc(u.name)}<br>${fmtStamp(r.createdAt)}</span>
+        </div>
+        <p class="n">Đơn được duyệt điện tử trên hệ thống nội bộ. Mã đơn: ${esc(r.code)}. Bản in này chỉ để lưu hồ sơ.</p>
+      </div>`;
+    }
+
+    const opts = PURPOSES.map(p => `<span class="cb${p.id === r.purpose ? " on" : ""}">${esc(p.label)}</span>`).join("");
+    const diff = r.actualBackAt ? diffMinutes(r.backAt, r.actualBackAt) : null;
+    const [dOut, tOut] = r.outAt.split("T");
+    const [dBack, tBack] = (r.actualBackAt || r.backAt).split("T");
+    const spl = s => { const [y, m, d] = s.split("-"); return { y, m, d }; };
+    const o = spl(dOut), b = spl(dBack);
+    return `<div class="paper">
+      <p class="t">GIẤY XIN PHÉP RA VÀO CỔNG</p>
+      <div class="r"><span>Họ và tên CBNV:</span><span class="v">${esc(u.name)}</span><span>Chức vụ:</span><span class="v">${esc(u.position)}</span></div>
+      <div class="r"><span>Phòng/Ban/Bộ phận:</span><span class="v">${esc(u.dept)}</span></div>
+      <div class="r"><span>Lý do xin phép ra vào cổng:</span>${opts}</div>
+      ${r.purposeText ? `<div class="r"><span>Ghi rõ:</span><span class="v">${esc(r.purposeText)}</span></div>` : ""}
+      <div class="r"><span>Diễn giải:</span><span class="v">${esc(r.note)}</span></div>
+      <div class="r"><span>Thời gian ra:</span><span class="v sm">${tOut.split(":")[0]}</span><span>giờ</span><span class="v sm">${tOut.split(":")[1]}</span><span>phút, Ngày</span><span class="v sm">${o.d}</span><span>Tháng</span><span class="v sm">${o.m}</span><span>Năm</span><span class="v sm">${o.y}</span></div>
+      <div class="r"><span>Thời gian vào lại:</span><span class="v sm">${tBack.split(":")[0]}</span><span>giờ</span><span class="v sm">${tBack.split(":")[1]}</span><span>phút, Ngày</span><span class="v sm">${b.d}</span><span>Tháng</span><span class="v sm">${b.m}</span><span>Năm</span><span class="v sm">${b.y}</span></div>
+      <div class="r"><span>Thời gian vào sớm:</span><span class="v">${diff != null && diff < 0 ? esc(diffLabel(diff)) : ""}</span><span>Thời gian vào trễ:</span><span class="v">${diff != null && diff > 0 ? esc(diffLabel(diff)) : ""}</span></div>
+      <div class="r"><span>Lý do của việc vào sớm/vào trễ:</span><span class="v">${esc(r.diffReason)}</span></div>
+      <div class="r"><span>Số giờ vắng trong giờ làm việc:</span><span class="v">${esc(fmtHours(r.hoursSystem))}</span></div>
+      <div class="sg">${sig("BGĐ/GSNB")}${sig("Trưởng phòng/ban")}${sig("Bảo vệ tiếp nhận")}${sig("CBNV đăng ký")}</div>
+      <div class="sgv">
+        <span><span class="stamp">ĐÃ DUYỆT</span><br>${esc(approvedBy)}<br>${esc(stamp)}</span>
+        <span></span>
+        <span></span>
+        <span>${esc(u.name)}<br>${fmtStamp(r.createdAt)}</span>
+      </div>
+      <p class="n">Đơn được duyệt điện tử trên hệ thống nội bộ. Mã đơn: ${esc(r.code)}. Không cần nộp lại bản giấy cho Phòng Nhân sự.</p>
+    </div>`;
+  }
+
+  function doPrint(id) {
+    const r = byId(id); if (!r) return;
+    $("#printArea").innerHTML = buildPrint(r);
+    window.print();
+  }
+
+  /* ================= RENDER ================= */
+
+  function render() {
+    const app = $("#app");
+    if (!S.currentUser) { app.innerHTML = viewLogin(); renderOverlay(); return; }
+
+    let inner = "";
+    switch (S.route.name) {
+      case "new-leave":   inner = viewNewLeave(); break;
+      case "new-gate":    inner = viewNewGate(); break;
+      case "approve":     inner = has("approver") ? viewApprove() : viewHome(); break;
+      case "handled":     inner = has("approver") ? viewHandled() : viewHome(); break;
+      case "timekeeping": inner = has("admin") ? viewTimekeeping() : viewHome(); break;
+      case "help":        inner = viewHelp(); break;
+      case "req":         inner = viewRequest(S.route.id); break;
+      default:            inner = viewHome();
+    }
+    app.innerHTML = viewShell(inner);
+
+    bindLeaveForm();
+    bindGateForm();
+    bindTimekeeping();
+    renderOverlay();
+    window.scrollTo({ top: 0 });
+    delete S.route.flash;   // thông báo chỉ hiện một lần
+  }
+
+  /* ================= EVENTS ================= */
+
+  document.addEventListener("click", e => {
+    const t = e.target.closest("[data-act]");
+
+    if (e.target.closest("[data-scrim]") && !e.target.closest(".modal")) { closeModal(); return; }
+    if (!t) return;
+    const act = t.dataset.act;
+    const id = t.dataset.id;
+
+    switch (act) {
+      case "show-picker": S.showPicker = true; S.loginError = ""; render(); break;
+
+      case "login":
+        S.currentUser = id; S.showPicker = false; S.loginError = "";
+        S.route = { name: has("admin") ? "timekeeping" : has("approver") ? "approve" : "home" };
+        save(); render(); break;
+
+      case "login-bad":
+        S.loginError = "Tài khoản taquocviet@gmail.com không thuộc tên miền @ctyhp.vn nên không được phép vào hệ thống. Dùng email công ty để đăng nhập.";
+        render(); break;
+
+      case "logout":
+        S.currentUser = null; S.showPicker = false; S.loginError = ""; save(); render(); break;
+
+      case "go": S.route = { name: t.dataset.route }; render(); break;
+      case "back": S.route = { name: has("admin") ? "timekeeping" : has("approver") ? "approve" : "home" }; render(); break;
+      case "open-req": S.chatOpen = false; S.route = { name: "req", id }; render(); break;
+
+      case "reseed":
+        openModal({
+          title: "Nạp lại dữ liệu mẫu?",
+          body: `<p style="margin:0">Toàn bộ đơn bạn đã tạo và các thao tác duyệt / chấm công trong bản demo sẽ bị xoá, thay bằng dữ liệu mẫu ban đầu.</p>`,
+          confirmText: "Nạp lại", tone: "danger",
+          onOk: () => { S = seed(); save(); closeModal(); render(); }
+        });
+        break;
+
+      case "approve": {
+        const res = decide(id, true);
+        if (res.err) { openModal({ title: "Không duyệt được", body: `<div class="note bad" style="margin:0">${esc(res.err)}</div>` }); break; }
+        render(); break;
+      }
+
+      case "reject":
+        openModal({
+          title: "Từ chối đơn",
+          body: `<div class="fld"><label for="mReason">Lý do từ chối — không bắt buộc</label>
+                 <textarea id="mReason" placeholder="Ví dụ: trùng đợt giao hàng, đề nghị dời sang tuần sau."></textarea>
+                 <span class="sub">Có lý do thì CBNV biết cần điều chỉnh gì.</span></div>`,
+          confirmText: "Từ chối đơn", tone: "danger", focus: "#mReason",
+          onOk: () => {
+            const reason = ($("#mReason") || {}).value || "";
+            const res = decide(id, false, reason);
+            closeModal();
+            if (res.err) openModal({ title: "Không thực hiện được", body: `<div class="note bad" style="margin:0">${esc(res.err)}</div>` });
+            else render();
+          }
+        });
+        break;
+
+      case "cancel":
+        openModal({
+          title: "Huỷ đơn này?",
+          body: `<p style="margin:0">Đơn sẽ chuyển sang trạng thái <b>Đã huỷ</b> và không còn hiệu lực. Dữ liệu vẫn được lưu, không bị xoá.</p>`,
+          confirmText: "Huỷ đơn", tone: "danger",
+          onOk: () => { const res = cancel(id); closeModal(); if (res && res.err) openModal({ title:"Không huỷ được", body:`<div class="note bad" style="margin:0">${esc(res.err)}</div>` }); else render(); }
+        });
+        break;
+
+      case "actual": {
+        const r = byId(id);
+        openModal({
+          title: "Giờ vào lại thực tế",
+          body: `<div class="kv" style="margin-bottom:.4rem">
+                   <span class="k">Ra lúc</span><span class="mono">${fmtDT(r.outAt)}</span>
+                   <span class="k">Dự kiến vào</span><span class="mono">${fmtDT(r.backAt)}</span>
+                 </div>
+                 <div class="fld"><label for="mActual">Vào lại thực tế</label>
+                   <input type="datetime-local" id="mActual" value="${esc(r.actualBackAt || r.backAt)}"></div>
+                 <div class="calc" id="mDiff" style="margin:0"></div>
+                 <div class="fld"><label for="mDiffReason">Lý do vào sớm / vào trễ</label>
+                   <input type="text" id="mDiffReason" value="${esc(r.diffReason)}" placeholder="Bắt buộc khi lệch quá ${DIFF_LIMIT_MIN} phút">
+                 </div>`,
+          confirmText: "Lưu", focus: "#mActual",
+          onOk: () => {
+            const res = setActualBack(id, $("#mActual").value, $("#mDiffReason").value);
+            if (res.err) { $("#mDiff").className = "calc warn"; $("#mDiff").innerHTML = `<b>${esc(res.err)}</b>`; return; }
+            closeModal(); render();
+          },
+          after: () => {
+            const upd = () => {
+              const v = $("#mActual").value;
+              const box = $("#mDiff");
+              if (!v) { box.className = "calc warn"; box.innerHTML = "Chọn thời điểm vào lại"; return; }
+              const min = diffMinutes(r.backAt, v);
+              const h = gateHours(r.outAt, v);
+              const over = Math.abs(min) > DIFF_LIMIT_MIN;
+              box.className = over ? "calc warn" : "calc";
+              box.innerHTML = `<b>${esc(diffLabel(min))}</b><span>Số giờ vắng ${esc(fmtHours(h))}</span>` +
+                (over ? `<span class="why">quá ${DIFF_LIMIT_MIN} phút → phải ghi lý do</span>` : "");
+            };
+            $("#mActual").addEventListener("change", upd);
+            upd();
+          }
+        });
+        break;
+      }
+
+      case "edit-hours": {
+        const r = byId(id);
+        openModal({
+          title: "Sửa giờ chốt",
+          body: `<div class="kv" style="margin-bottom:.4rem">
+                   <span class="k">Đơn</span><span><b>${esc(USERS[r.userId].name)}</b> — ${esc(kindLabel(r))}<span class="sub mono">${esc(r.code)} · ${esc(periodLabel(r))}</span></span>
+                   <span class="k">Giờ hệ thống tính</span><span class="mono">${esc(fmtHours(r.hoursSystem))}</span>
+                 </div>
+                 <div class="fld"><label for="mHours">Giờ chốt (giờ)</label>
+                   <input type="text" id="mHours" class="mono" value="${r.hoursFinal}">
+                   <span class="sub">Nhập số giờ, ví dụ 8 hoặc 3.5. Số cũ và người sửa sẽ được lưu lại.</span></div>
+                 <div id="mHoursErr"></div>`,
+          confirmText: "Lưu giờ chốt", focus: "#mHours",
+          onOk: () => {
+            const res = editFinalHours(id, $("#mHours").value.replace(",", "."));
+            if (res.err) { $("#mHoursErr").innerHTML = `<div class="note bad" style="margin:0">${esc(res.err)}</div>`; return; }
+            closeModal(); render();
+          }
+        });
+        break;
+      }
+
+      case "tk": case "untk": toggleTimekept(id); render(); break;
+
+      case "csv": {
+        const f = S.tkFilter || {};
+        let rows = S.requests.filter(r => r.status === "approved");
+        if (f.from) rows = rows.filter(r => startISO(r) >= f.from);
+        if (f.to) rows = rows.filter(r => startISO(r) <= f.to);
+        if (f.dept) rows = rows.filter(r => USERS[r.userId].dept === f.dept);
+        if (f.kind) rows = rows.filter(r => r.kind === f.kind);
+        if (f.state === "todo") rows = rows.filter(r => !r.timekept);
+        if (f.state === "done") rows = rows.filter(r => r.timekept);
+        if (!rows.length) { openModal({ title: "Không có dữ liệu", body: `<p style="margin:0">Bộ lọc hiện tại không có đơn nào để xuất.</p>` }); break; }
+        exportCSV(rows);
+        break;
+      }
+
+      case "print": doPrint(id); break;
+
+      case "chat-open": S.chatOpen = true; S.chatSeen = S.chat.length; save(); render(); break;
+      case "chat-close": S.chatOpen = false; save(); renderOverlay(); render(); break;
+
+      case "modal-close": closeModal(); break;
+      case "modal-ok": if (modalState && modalState.onOk) modalState.onOk(); else closeModal(); break;
+    }
+  });
+
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { if (modalState) closeModal(); else if (S.chatOpen) { S.chatOpen = false; render(); } } });
+
+  // chạy hook `after` của modal sau khi nó được vẽ
+  const _renderOverlay = renderOverlay;
+  renderOverlay = function () { _renderOverlay(); if (modalState && modalState.after) modalState.after(); };
+
+  /* ================= BOOT ================= */
+
+  S = load();
+  S.chatOpen = false;
+  if (!S.tkFilter) S.tkFilter = { from: "", to: "", dept: "", kind: "", state: "all" };
+  render();
+})();
+</script>
