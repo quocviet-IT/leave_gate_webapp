@@ -1,9 +1,18 @@
 /**
  * Request codes and lookup links — PRD sections III and X.
  *
- * The public zone has no login, so these two strings carry the whole security
- * model: a person quotes the short code plus their employee code to look a
- * request up, or opens the long link handed to them when they filed it.
+ * These two strings do different jobs, and confusing them would be a security
+ * bug:
+ *
+ *   * The **request code** (`NP-2607-0148`) is a human reference — short enough
+ *     to read over the phone, and sequential, therefore guessable. It proves
+ *     nothing. Quoting a code may reveal a request's status and nothing else.
+ *   * The **lookup token** (32 hex characters) is the only secret in the public
+ *     zone. It authorises reading a request in full, withdrawing it, and
+ *     entering a real return time. It is issued once, at filing.
+ *
+ * An employee code is deliberately absent: filing is fully public, so nothing
+ * the employee types is treated as a credential.
  */
 
 import { ICT_OFFSET_MINUTES } from "./workhours";
@@ -85,13 +94,11 @@ export function lookupPath(token: string): string {
 }
 
 /**
- * Employee codes are typed by people standing at a workshop noticeboard, so
- * compare them case-insensitively and ignore the separators they add.
+ * The employee code from HR's own numbering. It is the stable key the staff
+ * import upserts on — not a credential, and never asked of an employee. HR
+ * writes it as "HP-0148", "hp 0148" or "HP0148" in the same file, so normalise
+ * before matching rows.
  */
 export function normalizeEmployeeCode(value: string): string {
   return value.trim().toUpperCase().replace(/[\s.–—-]+/g, "");
-}
-
-export function employeeCodesMatch(a: string, b: string): boolean {
-  return normalizeEmployeeCode(a) === normalizeEmployeeCode(b) && a.trim() !== "";
 }

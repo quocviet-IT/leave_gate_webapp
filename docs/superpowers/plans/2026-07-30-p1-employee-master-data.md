@@ -433,13 +433,11 @@ async function main() {
   const capped = await client.query("select count(*)::int as n from lg_search_employees('th')");
   check("search is bounded to 8 rows", capped.rows[0].n > 0 && capped.rows[0].n <= 8, `n=${capped.rows[0].n}`);
 
-  // Someone without a code cannot be filed for, so they must not be findable.
+  // A leaver must not be filed for, so they drop out of the picker.
   await actAs("anhkhoa@ctyhp.vn");
-  await client.query(
-    "insert into lg_employee (code, full_name, active) values (null, 'Người Chưa Có Mã', true)",
-  );
-  const noCode = await client.query("select * from lg_search_employees('chua co ma')");
-  check("an employee with no code is not searchable", noCode.rows.length === 0);
+  await client.query("update lg_employee set active = false where code = 'ZZTEST02'");
+  const leaver = await client.query("select * from lg_search_employees('lan')");
+  check("an inactive employee is not searchable", leaver.rows.length === 0, JSON.stringify(leaver.rows));
 
   await client.query("rollback");
   console.log(`\n${passed} đạt, ${failed} không đạt.`);
@@ -469,8 +467,8 @@ Create `supabase/migrations/0003_employee_import.sql`:
 --
 -- Both are SECURITY DEFINER functions rather than table policies. The import
 -- needs a role check that a policy cannot express as clearly, and the search
--- must return names *without* codes — the code is what stands in for a password
--- on the public form, so it never leaves the database.
+-- must return names *without* the employee number, which is HR's internal key
+-- and has no business in a browser.
 --
 -- Supabase installs extensions into the `extensions` schema, so every function
 -- here puts it on the search path before using unaccent().
@@ -553,9 +551,10 @@ comment on function lg_import_employees(jsonb) is
 revoke all on function lg_import_employees(jsonb) from public;
 grant execute on function lg_import_employees(jsonb) to authenticated;
 
--- The public form's name picker. Deliberately narrow: two characters minimum,
--- at most eight rows, no employee code, and nobody who has no code — a person
--- without a code cannot file anyway, so listing them would only confuse.
+-- The public form's name picker, and the only thing the form learns about a
+-- person. Deliberately narrow: two characters minimum, at most eight rows, and
+-- never the employee number — that is HR's internal key and has no business in a
+-- browser. Inactive people are excluded so a leaver cannot be filed for.
 create function lg_search_employees(p_query text)
 returns table (id uuid, full_name text, title text, department text)
 language sql
@@ -566,7 +565,6 @@ as $$
   select e.id, e.full_name, e.title, e.department
   from lg_employee e
   where e.active
-    and e.code is not null
     and length(btrim(coalesce(p_query, ''))) >= 2
     and unaccent(lower(e.full_name)) like '%' || unaccent(lower(btrim(p_query))) || '%'
   order by e.full_name
@@ -881,8 +879,8 @@ export default function EmployeeImportPanel({
       </Card>
 
       <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-        Mã CBNV là thứ form công khai dùng để đối chiếu tên, nên người chưa có mã sẽ không gửi được
-        đơn và không hiện ra khi tìm tên.
+        Mã CBNV chỉ dùng để nhận ra một người là cùng một dòng khi nhập lại danh sách. Form công khai
+        không hỏi mã này và không bao giờ hiện nó ra.
       </Paragraph>
     </Space>
   );
@@ -975,6 +973,8 @@ git commit -m "Add the staff list import screen for C&B"
 ## Notes for whoever runs P2 next
 
 `lg_search_employees` is the only way the public form learns a name, and it
-returns `id` — so the form sends an employee **id** plus the typed code, and
-`lg_submit_request` compares that code against `lg_employee.code` server-side.
-Never send the code to the browser.
+returns `id` — so the form sends an employee **id** and nothing else about the
+person. Since PRD v0.6 there is no code to compare: what holds the form is the
+rate limit pair in P2 (5 per employee per day, one per device per minute), and
+what protects a filed request afterwards is the lookup token, not the request
+code. Never send the employee number to a browser in either zone.

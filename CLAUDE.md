@@ -40,7 +40,7 @@ Three zones, three ways in (PRD III). This shapes everything:
 
 | Zone | Routes | Way in |
 | --- | --- | --- |
-| Employee, public | `/don`, `/tra-cuu` | none — chosen name + matching employee code |
+| Employee, public | `/don`, `/tra-cuu` | none at all — a name chosen from the staff list |
 | Admin | `/admin/*` | Google Workspace SSO, domain `ctyhp.vn` |
 | Guard booth | `/bao-ve` | booth PIN |
 
@@ -56,8 +56,12 @@ Three zones, three ways in (PRD III). This shapes everything:
 - Writes go through Postgres functions in `supabase/migrations/`, not through
   table policies. `anon` deliberately has **no** table access: a public form must
   not publish the staff directory. Name search, submit, lookup, withdraw and the
-  booth stamps are all SECURITY DEFINER functions that can enforce the employee
-  code, the booth PIN and rate limits.
+  booth stamps are all SECURITY DEFINER functions, which is where the rate limits
+  and the booth PIN are enforced.
+- **The request code proves nothing.** It is sequential. Any path taking a
+  request code answers with a status only; full detail, withdrawal and real-return
+  edits require the 128-bit lookup token from the private link. Never widen this.
+- The employee number keys the staff import and must never reach a browser.
 - DO NOT re-implement a working-hours or SLA rule anywhere else. One place.
 
 ## 4. Gotchas / past mistakes (append when a bug recurs)
@@ -89,10 +93,12 @@ Three zones, three ways in (PRD III). This shapes everything:
 
 ## 6. Open questions the board still owns
 
-1. The employee code is guessable, and it is what replaces a password on the
-   public form. Mitigations shipped: per-code daily cap, lockout after wrong
-   tries, approver review, everything auditable. If that is judged too weak, the
-   fallback is SSO for anyone with company email and the public form for the
-   production floor only.
-2. Google Directory has no employee-code field, so HR must supply the mapping.
-   **Build step 3 cannot start without it.**
+1. Anyone who can open the public link can file under another person's name
+   (PRD v0.6 rule 3). Mitigations shipped: names only from the staff list, 5 per
+   employee per day, one per device per minute, device fingerprint in the audit
+   log, and the approval screen showing the person's recent requests. The
+   residual gap — an impersonated person cannot discover the request — is
+   accepted. Closing it needs company email for everyone, or a shared department
+   PIN on the form.
+2. Nobody can be chosen on the public form until C&B pastes a staff list.
+   That is the only remaining prerequisite, and it is a spreadsheet.

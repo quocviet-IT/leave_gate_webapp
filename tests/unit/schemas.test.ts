@@ -4,7 +4,9 @@ import {
   finalHoursSchema,
   gateRequestSchema,
   leaveRequestSchema,
+  statusLookupSchema,
   submitRequestSchema,
+  withdrawSchema,
 } from "@/lib/domain/schemas";
 
 const employeeId = "11111111-1111-4111-8111-111111111111";
@@ -90,10 +92,10 @@ describe("gate-pass form", () => {
 });
 
 describe("who is filing", () => {
-  it("needs a chosen name and an employee code", () => {
+  it("needs only a name chosen from the list", () => {
     expect(
       submitRequestSchema.safeParse({
-        submitter: { employeeId, employeeCode: "HP-0148" },
+        submitter: { employeeId },
         detail: leave,
       }).success,
     ).toBe(true);
@@ -102,26 +104,32 @@ describe("who is filing", () => {
   it("refuses a typed name instead of a chosen one", () => {
     expect(
       submitRequestSchema.safeParse({
-        submitter: { employeeId: "Nguyễn Văn Bình", employeeCode: "HP-0148" },
+        submitter: { employeeId: "Nguyễn Văn Bình" },
         detail: leave,
       }).success,
     ).toBe(false);
   });
 
-  it("refuses an empty employee code", () => {
-    expect(
-      submitRequestSchema.safeParse({
-        submitter: { employeeId, employeeCode: "" },
-        detail: leave,
-      }).success,
-    ).toBe(false);
+  it("asks for no credential, because filing is public", () => {
+    const parsed = submitRequestSchema.parse({ submitter: { employeeId }, detail: leave });
+    expect(Object.keys(parsed.submitter)).toEqual(["employeeId"]);
+  });
+});
+
+describe("looking a request up by its printed code", () => {
+  it("accepts a well-formed request code", () => {
+    expect(statusLookupSchema.safeParse({ requestCode: "NP-2607-0148" }).success).toBe(true);
+  });
+
+  it("rejects anything that is not a request code", () => {
+    expect(statusLookupSchema.safeParse({ requestCode: "0148" }).success).toBe(false);
+    expect(statusLookupSchema.safeParse({ requestCode: "XX-2607-0148" }).success).toBe(false);
   });
 });
 
 describe("employee updating a real return time", () => {
   const base = {
     lookupToken: token,
-    employeeCode: "HP-0148",
     actualInAt: "2026-07-30T14:20:00+07:00",
   };
 
@@ -141,6 +149,16 @@ describe("employee updating a real return time", () => {
     expect(
       actualReturnSchema.safeParse({ ...base, lookupToken: "nope", driftMinutes: 0 }).success,
     ).toBe(false);
+  });
+});
+
+describe("withdrawing a request", () => {
+  it("is authorised by the private link alone", () => {
+    expect(withdrawSchema.safeParse({ lookupToken: token }).success).toBe(true);
+  });
+
+  it("cannot be done with a request code", () => {
+    expect(withdrawSchema.safeParse({ lookupToken: "NP-2607-0148" }).success).toBe(false);
   });
 });
 

@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  employeeCodesMatch,
   formatRequestCode,
   generateLookupToken,
   isLookupToken,
@@ -74,15 +73,14 @@ describe("lookup tokens", () => {
   });
 });
 
-describe("employee codes", () => {
-  it("ignore case, spaces and separators", () => {
+describe("employee codes — HR's row key, never a credential", () => {
+  it("ignore case, spaces and separators so one person is one row", () => {
     expect(normalizeEmployeeCode(" hp-0148 ")).toBe("HP0148");
-    expect(employeeCodesMatch("hp 0148", "HP-0148")).toBe(true);
-    expect(employeeCodesMatch("HP0148", "HP0149")).toBe(false);
+    expect(normalizeEmployeeCode("hp 0148")).toBe("HP0148");
+    expect(normalizeEmployeeCode("HP–0148")).toBe("HP0148");
   });
 
-  it("never match on an empty code", () => {
-    expect(employeeCodesMatch("", "")).toBe(false);
-    expect(employeeCodesMatch("  ", "")).toBe(false);
+  it("returns an empty string for an empty code, so the caller must handle it", () => {
+    expect(normalizeEmployeeCode("   ")).toBe("");
   });
 });

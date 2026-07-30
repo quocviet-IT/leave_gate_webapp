@@ -24,13 +24,18 @@ The whole design follows from these, so nothing is shared between them by accide
 
 | Zone | Routes | Way in | Who |
 | --- | --- | --- | --- |
-| Employee | `/don`, `/tra-cuu` | no login — pick a name, type a matching employee code | all staff, including everyone without a company email |
+| Employee | `/don`, `/tra-cuu` | no login, no code — pick a name from the staff list | all staff, including everyone without a company email |
 | Admin | `/admin/*` | Google Workspace SSO, `@ctyhp.vn` only | four approvers · C&B · workshop supervisors |
 | Gate booth | `/bao-ve` | booth PIN | the guard on duty |
 
 `anon` holds no table permissions at all: publishing a public form must not publish the staff
 directory with it. Name search, filing, lookup, withdrawal and the booth stamps each go through a
-database function that can also enforce the employee code, the booth PIN and rate limits.
+database function that can also apply the rate limits and the booth PIN.
+
+Two strings do different jobs and must not be confused. The **request code** (`NP-2607-0148`) is a
+human reference — sequential, therefore guessable, and worth only a status when quoted. The
+**lookup token** in the private link is the single secret of the public zone: it authorises reading
+a request in full, withdrawing it, and entering a real return time.
 
 ## Documents
 
@@ -45,7 +50,7 @@ as they appear.
 
 ## Phase 1 scope
 
-One public form route with dynamic fields · identification by name plus employee code · QR codes
+One public form route with dynamic fields · name picked from the staff list, nothing to type · QR codes
 for the workshops · lookup page (track, withdraw, real return time, print) · approval queue with
 Claim and a lock against double approval · four personal tabs · supervisors filing on behalf ·
 gate booth screen with Cho ra / Cho vào · two Google Chat spaces · SLA reminders at 1 h and 2 h ·
@@ -69,9 +74,9 @@ its own database, its own accounts. Employees using this app cannot reach accoun
 
 ## Missing before work can start
 
-1. **A source for the employee codes** — Google Directory has no such field, and the employee code
-   is what stands in for a password on the public form. Without it, step 3 of the build order
-   cannot run.
-2. The official list of departments and units.
+1. **A spreadsheet of staff** — name, job title, department, and the employee number as the row
+   key. C&B pastes it into the admin zone; re-pasting updates in place. Nobody can be chosen on the
+   public form until this exists.
+2. The official list of departments and units (it comes from the same file).
 3. The list of supervisors allowed to file on behalf of workers.
 4. A PIN for the booth, and confirmation that the booth has a networked machine.

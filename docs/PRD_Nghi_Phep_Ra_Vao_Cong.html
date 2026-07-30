@@ -529,7 +529,7 @@
   <aside class="index">
     <div class="index-mark">
       <b>Leave &amp; Gate Pass</b>
-      <span>PRD · Phase 1 · v0.5</span>
+      <span>PRD · Phase 1 · v0.6</span>
     </div>
     <nav>
       <a href="#s0"><em>0</em><span>What changed</span></a>
@@ -577,7 +577,7 @@
         <div><span class="k">Approvers</span><span class="v big">4</span></div>
         <div><span class="k">Approvals needed</span><span class="v big">1 / 4</span></div>
         <div><span class="k">Screens</span><span class="v big">9</span></div>
-        <div><span class="k">Version</span><span class="v">0.5 — draft</span></div>
+        <div><span class="k">Version</span><span class="v">0.6 — draft</span></div>
         <div><span class="k">Handover</span><span class="v">30/07/2026</span></div>
       </div>
     </header>
@@ -585,7 +585,7 @@
     <div class="keys">
       <div>
         <span class="kh">Employees</span>
-        <span class="kb">A <strong>public link</strong> or a QR code posted in the workshops. No login, no password — pick your name, then type your <strong>employee code</strong>.</span>
+        <span class="kb">A <strong>public link</strong> or a QR code posted in the workshops. No login, no password, nothing to remember — pick your name from the list and fill the form. Filing returns a <strong>request code</strong> and a private tracking link.</span>
       </div>
       <div>
         <span class="kh">Approval</span>
@@ -604,8 +604,24 @@
     <!-- 0 -->
     <section class="sec" id="s0">
       <h2><em>0</em>What changed since v0.4</h2>
+
+      <div class="note note--info" style="margin-bottom:1.25rem">
+        <strong>v0.6 — the filing screen is fully open.</strong> v0.5 asked the employee to type a matching
+        employee code, treating it as a stand-in for a password. That is gone: the name is picked from the
+        staff list and the form sends. The employee number survives only as the row key of the staff import,
+        never shown and never asked for.
+        <br><br>
+        Three consequences follow, and all three are written into the rules below rather than left implied:
+        <strong>①</strong> the request code the system issues is a <em>reference</em>, not a key — it is
+        sequential, so quoting it may reveal a status and nothing more, while name, dates and reasons need the
+        private link issued at filing (rule 1);
+        <strong>②</strong> the form is held by rate limits instead of a credential (rule 3);
+        <strong>③</strong> nothing now waits on HR producing an employee-code mapping — the only prerequisite
+        left is a spreadsheet of staff that C&amp;B can paste in.
+      </div>
+
       <p>
-        Version 0.5 takes up all 17 items the board raised when reviewing v0.4. The table below maps
+        Version 0.5 took up all 17 items the board raised when reviewing v0.4. The table below maps
         each item to the section that covers it, together with the design decision it forced.
       </p>
       <div class="tw">
@@ -613,8 +629,8 @@
           <thead><tr><th class="c2">Group</th><th class="c1">Board's request</th><th class="c3">Section</th><th>Decision it forced</th></tr></thead>
           <tbody>
             <tr><td rowspan="4"><span class="pill pill--info">1 · Architecture</span></td><td>Separate the employee area from the admin area</td><td class="num">III</td><td><strong>Three zones, not two</strong> — the gate booth is the third, and it opens with a PIN</td></tr>
-            <tr><td>Minimal public form reached by link or QR, no login</td><td class="num">III · XII</td><td>Without a login there must be another way to tell who is filing: <strong>pick a name, then type a matching employee code</strong></td></tr>
-            <tr><td>Standalone status page, opened by request code or link</td><td class="num">XII · XIII</td><td>Looking a request up needs <strong>the request code plus the employee code</strong>, or the private link issued when it was filed — otherwise anyone holding a code could read someone else's request</td></tr>
+            <tr><td>Minimal public form reached by link or QR, no login</td><td class="num">III · XII</td><td><strong>Nothing gates filing at all.</strong> The name is picked from the synced list so it cannot be mistyped, and that is the only requirement — see the v0.6 note above and rule 3</td></tr>
+            <tr><td>Standalone status page, opened by request code or link</td><td class="num">XII · XIII</td><td>The request code is <strong>sequential and therefore guessable</strong>, so quoting it reveals a <strong>status only</strong>. Name, dates and reasons need the private link issued at filing</td></tr>
             <tr><td>Overview dashboard, approvals and timesheet for managers and HR</td><td class="num">III · XII</td><td>A new overview screen; company Google sign-in stays, but only for this zone</td></tr>
             <tr><td><span class="pill pill--info">2 · Production</span></td><td>Workshop supervisors file on behalf of workers</td><td class="num">V · XIII</td><td>New role. The request records who filed it; supervisors cannot approve</td></tr>
             <tr><td rowspan="3"><span class="pill pill--info">3 · Gate</span></td><td>A table of today's gate passes for the booth</td><td class="num">VIII</td><td>Approved requests only, today only, read-only — the booth cannot change a request</td></tr>
@@ -627,7 +643,7 @@
             <tr><td rowspan="3"><span class="pill pill--info">5 · Business rules</span></td><td>Require a reason when C&amp;B edits the final hours</td><td class="num">XI · XIII</td><td>At least 10 characters; the old value, new value, editor, timestamp and reason are all kept</td></tr>
             <tr><td>Let employees withdraw a pending request, and post the update</td><td class="num">VI · XIII</td><td>Withdrawal happens on the public lookup page; if someone has claimed the request, they are told directly</td></tr>
             <tr><td>A deadline for entering the real exit and return times</td><td class="num">XI · XIII</td><td><strong>End of the next working day</strong>; after that the employee's field locks and only Chị Khoa can edit it, with a reason</td></tr>
-            <tr><td rowspan="2"><span class="pill pill--info">6 · Data</span></td><td>Sync staff and departments from Google Workspace Directory</td><td class="num">XIV</td><td>The Directory holds <strong>no employee code</strong> — HR has to supply that mapping, which makes it a prerequisite</td></tr>
+            <tr><td rowspan="2"><span class="pill pill--info">6 · Data</span></td><td>Sync staff and departments from Google Workspace Directory</td><td class="num">XIV</td><td>The sync is one way and nightly. Until the service account exists, C&amp;B pastes the staff list in — the employee number is the row key, nothing more</td></tr>
             <tr><td>Merge both forms into one route with dynamic fields</td><td class="num">X · XII</td><td>One address, <code>/don</code>; the form-type field switches everything below it</td></tr>
           </tbody>
         </table>
@@ -705,7 +721,7 @@
           <ul>
             <li><strong>No login.</strong> Open a link, or scan the QR code posted in the workshops and on noticeboards</li>
             <li>One form; the first field picks the type and the fields below change to match</li>
-            <li>Identified by <strong>choosing a name and typing a matching employee code</strong></li>
+            <li>Identified by <strong>choosing a name from the synced list</strong> — nothing to type, nothing to remember</li>
             <li>Filing returns a <strong>request code</strong> and a private tracking link</li>
             <li>The lookup page: check status, withdraw a pending request, enter the real return time, print an approved request</li>
           </ul>
@@ -736,7 +752,7 @@
         <table>
           <thead><tr><th class="c2">Zone</th><th class="c2">Address</th><th class="c1">Way in</th><th>Who uses it</th></tr></thead>
           <tbody>
-            <tr><td><span class="pill pill--mute">Employee</span></td><td class="mono">/don · /tra-cuu</td><td>No login · link or QR · name plus employee code</td><td>All staff, including everyone without a company email</td></tr>
+            <tr><td><span class="pill pill--mute">Employee</span></td><td class="mono">/don · /tra-cuu</td><td>No login · link or QR · pick a name from the list</td><td>All staff, including everyone without a company email</td></tr>
             <tr><td><span class="pill pill--info">Admin</span></td><td class="mono">/admin/*</td><td>Google Workspace SSO, restricted to <code>ctyhp.vn</code></td><td>The four approvers · Chị Khoa (C&amp;B) · workshop supervisors</td></tr>
             <tr><td><span class="pill pill--draft">Gate booth</span></td><td class="mono">/bao-ve</td><td>Booth PIN</td><td>The guard on duty at the gate</td></tr>
           </tbody>
@@ -744,9 +760,9 @@
       </div>
       <div class="note" style="margin-top:1rem">
         <strong>A public zone does not mean anyone can read a request.</strong> The public form only
-        <em>accepts</em> requests. <em>Reading</em> one takes the request code together with the
-        employee code, or the private link issued at filing. A list of all requests exists only inside
-        the admin zone.
+        <em>accepts</em> requests. <em>Reading</em> one in full takes the private link issued at filing;
+        the printed request code answers with a status and nothing else, because a sequential code is a
+        reference, not a secret. A list of all requests exists only inside the admin zone.
       </div>
     </section>
 
@@ -758,7 +774,7 @@
           <h4>In Phase 1</h4>
           <ul>
             <li>One public form route with dynamic fields</li>
-            <li>Identification by name plus employee code, no login</li>
+            <li>Name picked from the synced list, no login and no code to type</li>
             <li>QR codes for the workshops and noticeboards</li>
             <li>Lookup page: track · withdraw · enter real times · print</li>
             <li>Google sign-in for the admin zone</li>
@@ -843,7 +859,7 @@
               <td>All staff — <strong>a company email is not required</strong></td>
               <td>
                 File on the public form; look up · withdraw a pending request · enter the real return time · print their own request.
-                <span class="sub">A request opens only with its code plus the employee code, or the private link issued at filing.</span>
+                <span class="sub">A request opens in full only with the private link issued at filing; the request code alone shows a status.</span>
               </td>
             </tr>
           </tbody>
@@ -1171,7 +1187,7 @@ flowchart LR
           <tbody>
             <tr><td class="pf">Form type</td><td>Two large choices: <strong>Xin nghỉ phép</strong> · <strong>Ra vào cổng</strong>. Switching one redraws everything below</td><td>Yes</td></tr>
             <tr><td class="pf">Full name</td><td>Search and pick from the staff list synced from Google Directory — a few letters is enough</td><td>Yes</td></tr>
-            <tr><td class="pf">Employee code</td><td>Typed. Must match the chosen name or the request will not send. Five wrong tries locks it for 15 minutes</td><td>Yes</td></tr>
+            <tr><td class="pf">— nothing typed to identify</td><td>No code, no password. The chosen name is the whole identification; rate limits do the rest</td><td>—</td></tr>
             <tr><td class="pf">Job title / department</td><td>Appear once the name is chosen; read-only</td><td>automatic</td></tr>
             <tr><td class="pf">— not on the paper form</td><td>A <strong>request code</strong> issued on filing, e.g. <span class="mono">NP-2607-0148</span>, with a private tracking link</td><td>automatic</td></tr>
             <tr><td class="pf">— not on the paper form</td><td><strong>Filed by</strong> — set when a supervisor files for a worker, and shown on the printed copy too</td><td>conditional</td></tr>
@@ -1302,14 +1318,13 @@ flowchart LR
                 <div class="mock-main" style="gap:.9rem;padding:1.2rem 1.1rem">
                   <div style="display:flex;flex-direction:column;gap:.2rem">
                     <strong style="font-size:var(--step-1)">Gửi đơn — Nhân sự CTYHP</strong>
-                    <span class="hint">Không cần đăng nhập. Điền 4 ô là xong.</span>
+                    <span class="hint">Không cần đăng nhập, không cần mật khẩu.</span>
                   </div>
                   <div class="fld">
                     <label>1 · Loại đơn</label>
                     <div class="radios"><span class="radio on">Xin nghỉ phép</span><span class="radio">Ra vào cổng</span></div>
                   </div>
                   <div class="fld"><label>2 · Tôi tên là</label><div class="inp">Nguyễn Văn Bình <span class="hint">· gõ tên để tìm</span></div></div>
-                  <div class="fld"><label>3 · Mã CBNV của bạn</label><div class="inp mono">HP–0148</div></div>
                   <div class="g2">
                     <div class="fld"><label>Chức vụ</label><div class="inp ro">Công nhân</div></div>
                     <div class="fld"><label>Phòng / Ban</label><div class="inp ro">Sản xuất</div></div>
@@ -1332,8 +1347,8 @@ flowchart LR
           </div>
           <figcaption>
             <b>Screen 1 · Public form</b> — replaces v0.4's sign-in screen. The <em>Loại đơn</em> field decides
-            which fields appear next. The <em>Mã CBNV</em> field is how the system knows it is really you,
-            standing in for a password.
+            which fields appear next. Picking the name from the list is the only identification, and there is
+            nothing to type that could be forgotten — the trade-off is set out in rule 3.
           </figcaption>
         </figure>
 
@@ -1385,8 +1400,9 @@ flowchart LR
           </div>
           <figcaption>
             <b>Screen 2 · Lookup</b> — replaces v0.4's "my requests" page. Opened by the private link issued at
-            filing, or by typing the request code with the employee code. This is also where an employee
-            <strong>withdraws a request</strong> and <strong>enters the real return time</strong>.
+            filing. Typing the request code alone answers with a status and nothing more. This is also where an
+            employee <strong>withdraws a request</strong> and <strong>enters the real return time</strong>, both
+            of which need the link.
           </figcaption>
         </figure>
 
@@ -1750,9 +1766,9 @@ flowchart LR
     <section class="sec" id="s13">
       <h2><em>XIII</em>Business rules</h2>
       <ol class="rules">
-        <li><b class="n">1</b><span><strong>Filing needs no login; reading does.</strong> The public form only accepts requests. Opening one takes the request code plus the employee code, or the private link issued at filing.</span></li>
-        <li><b class="n">2</b><span><strong>Names are chosen from the list, never typed.</strong> The list comes from Google Directory; people who have left no longer appear.</span></li>
-        <li><b class="n">3</b><span><strong>The employee code must match the chosen name.</strong> Five wrong tries locks filing for 15 minutes. One code may file at most <strong>5 requests a day</strong>.</span></li>
+        <li><b class="n">1</b><span><strong>Filing needs nothing; reading in full needs the private link.</strong> The public form only accepts requests. The request code is sequential, so quoting it answers with a <strong>status only</strong> — never a name, a date or a reason.</span></li>
+        <li><b class="n">2</b><span><strong>Names are chosen from the list, never typed.</strong> The list comes from the staff records; people who have left no longer appear.</span></li>
+        <li><b class="n">3</b><span><strong>The public form is rate-limited, not gated.</strong> Nothing an employee types is treated as a credential. Limits: at most <strong>5 requests per employee per day</strong> and one per minute per device. Anyone can therefore file under another person's name, and the four approvers are the control point — see the note under these rules.</span></li>
         <li><b class="n">4</b><span><strong>The admin zone accepts company accounts only.</strong> Domains other than <code>@ctyhp.vn</code> are refused at the account picker.</span></li>
         <li><b class="n">5</b><span><strong>All four approvers have authority over all staff,</strong> with no split by department.</span></li>
         <li><b class="n">6</b><span><strong>Supervisors may file, never approve.</strong> Only for their own department; the request records who filed it and still goes to the four approvers.</span></li>
@@ -1772,11 +1788,17 @@ flowchart LR
         <li><b class="n">20</b><span><strong>SLA reminders count working hours only.</strong> The clock stops in the evening and on Sundays, so nobody is paged during time off.</span></li>
       </ol>
       <div class="note" style="margin-top:1rem">
-        <strong>The known weakness:</strong> an employee code is something other people can learn. Three layers
-        stand against impersonation — a daily cap per code, four approvers who know the staff well enough to
-        spot an odd request, and every request being traceable so the impersonated person can find it. This is
-        the price of dropping the login. If the board judges it insufficient, the alternative is to restore
-        sign-in for everyone with a company email and open the public form to the production floor only.
+        <strong>The known weakness, stated plainly:</strong> with nothing to prove who is filing, anyone who can
+        open the link can file under another person's name. This is the accepted price of a form a worker can use
+        in ten seconds without a company email. What stands against it: names come only from the staff list, a
+        daily cap per person, every request carrying its filing time and device fingerprint in the audit log,
+        and — the real control — <strong>four approvers who know the staff and their departments</strong>. To make
+        that control usable, the approval screen shows the person's recent requests beside the one being decided,
+        so a duplicate or an out-of-character pattern is visible without going looking for it.
+        <br><br>
+        The residual gap is that an impersonated employee has no way to discover a request filed in their name,
+        because they never received its link. If the board wants that closed, the options are a company email for
+        everyone (then sign-in replaces this entirely) or a shared department PIN at the top of the form.
       </div>
     </section>
 
@@ -1797,7 +1819,7 @@ flowchart LR
             <tr><td>Job title</td><td><span class="mono">organizations[].title</span></td><td>Blank shows "—"; HR fills it in the Directory</td></tr>
             <tr><td>Department</td><td><span class="mono">organizations[].department</span> or the org unit</td><td>Pick one of the two and stay with it; never mix</td></tr>
             <tr><td>Employment status</td><td><span class="mono">suspended</span> · <span class="mono">archived</span></td><td>People who have left drop out of the picker; their past requests stay</td></tr>
-            <tr><td><strong>Employee code</strong></td><td><span class="pill pill--stop">Not available</span></td><td>Needs another source — see the note below</td></tr>
+            <tr><td>Employee number</td><td><span class="pill pill--mute">Not available</span></td><td>Comes from the pasted staff list and is only the row key for the import. Never shown, never asked for</td></tr>
           </tbody>
         </table>
       </div>
@@ -1818,10 +1840,10 @@ flowchart LR
         </table>
       </div>
       <div class="note" style="margin-top:1rem">
-        <strong>A prerequisite that is still missing:</strong> Google Directory holds no employee code, and the
-        employee code is what stands in for a password on the public form. HR needs to pick one of two paths —
-        load the codes into a custom Directory field, or hand over a file of <em>employee code ↔ full name</em>
-        for the app to load and reconcile nightly. Without the codes the employee zone cannot run.
+        <strong>Until the sync exists:</strong> C&amp;B pastes the staff list into the admin zone — full name, job
+        title, department, and the employee number as the row key. Re-pasting updates in place, so the provisional
+        list can be replaced by the real one at any time without duplicating anyone. Nothing in the employee zone
+        waits on the Google service account.
       </div>
     </section>
 
@@ -1833,12 +1855,12 @@ flowchart LR
           <thead><tr><th class="c2">Item</th><th class="c1">Choice</th><th>Why</th></tr></thead>
           <tbody>
             <tr><td>Interface</td><td>Next.js 16 · React 19 · Ant Design 6</td><td>The stack the team knows; forms, tables, filters and date pickers come ready</td></tr>
-            <tr><td>Employee zone</td><td>Public pages, no session; identified by name plus employee code; tracking links carry a long unguessable token</td><td>Workers without a company email can still file, and a QR scan puts them straight in</td></tr>
+            <tr><td>Employee zone</td><td>Public pages, no session; the name is picked from the staff list; tracking links carry a 128-bit token</td><td>A worker with no company email files in seconds, and a QR scan puts them straight in</td></tr>
             <tr><td>Admin zone</td><td>Company Google Workspace sign-in, restricted to <code>ctyhp.vn</code></td><td>One tap to get in. The domain is checked at the identity provider and again in the database</td></tr>
             <tr><td>Gate booth</td><td>Booth PIN, 30-day session on that machine</td><td>The booth is a shared machine with constant shift changes, and guards have no company email</td></tr>
             <tr><td>Data</td><td>Supabase — Postgres with authorisation in the database</td><td>Three zones with three different rights; rules in the database hold better than hiding things in the interface</td></tr>
             <tr><td>Double-approval guard</td><td>A version number per request, checked in the database; the queue subscribes to changes</td><td>Four people share one queue, so the lock has to sit underneath, not in the interface</td></tr>
-            <tr><td>Public-form abuse</td><td>Rate limits per employee code and per device; a temporary lock after repeated wrong codes</td><td>A form with no login needs a brake</td></tr>
+            <tr><td>Public-form abuse</td><td>Rate limits per employee per day and per device per minute; every filing recorded with its device fingerprint</td><td>A form with no gate needs a brake, and a trail when the brake is not enough</td></tr>
             <tr><td>Notifications</td><td>Google Chat — two spaces, one webhook each</td><td>Only needs a space and a URL. Direct messages are Phase 2</td></tr>
             <tr><td>Reminders</td><td>A job every 15 minutes comparing the 1 h and 2 h marks in working time</td><td>No separate queue infrastructure needed for Phase 1</td></tr>
             <tr><td>Master data</td><td>One-way nightly sync from Google Workspace Directory</td><td>Nobody keys in the staff and department lists</td></tr>
@@ -1855,8 +1877,8 @@ flowchart LR
           <thead><tr><th class="c3">Step</th><th>Content</th></tr></thead>
           <tbody>
             <tr><td class="num">1</td><td>Foundation: project, database, a running web address; Google sign-in for the admin zone</td></tr>
-            <tr><td class="num">2</td><td>Directory sync and employee codes; data structure and authorisation for all three zones; load the four approvers, Chị Khoa and the supervisors</td></tr>
-            <tr><td class="num">3</td><td>The public form: one route, dynamic fields, name plus employee code, with the hours computed live</td></tr>
+            <tr><td class="num">2</td><td>Staff master data: C&amp;B pastes the list, the public form can search it; authorisation for all three zones; load the four approvers, Chị Khoa and the supervisors</td></tr>
+            <tr><td class="num">3</td><td>The public form: one route, dynamic fields, name picked from the list, with the hours computed live and the rate limits in place</td></tr>
             <tr><td class="num">4</td><td>The lookup page: track, withdraw, enter the real return time; request codes, private links, QR codes</td></tr>
             <tr><td class="num">5</td><td>The approval queue: Claim, version lock, live refresh, four tabs, no self-approval</td></tr>
             <tr><td class="num">6</td><td>The gate booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo</td></tr>
@@ -1870,7 +1892,7 @@ flowchart LR
       </div>
       <div class="note note--info" style="margin-top:1rem">
         <strong>Still missing before work can start:</strong> ① the official list of departments and units;
-        ② a <strong>source for the employee codes</strong> the public form checks against; ③ the list of
+        ② the staff list itself, in any spreadsheet C&amp;B can paste from; ③ the list of
         supervisors allowed to file on behalf; ④ a PIN for the booth and confirmation that the booth has a
         networked machine. Without ② step 3 cannot run. Until then the team works from a provisional list and
         swaps in the real one.
@@ -1885,14 +1907,14 @@ flowchart LR
           <thead><tr><th class="c1">Risk</th><th class="c3">Level</th><th>Handling</th></tr></thead>
           <tbody>
             <tr>
-              <td>Without a source for employee codes, the employee zone cannot run</td>
+              <td>Without a staff list, nobody can be chosen on the public form</td>
               <td><span class="pill pill--stop">High</span></td>
-              <td>HR loads the codes into the Directory or hands over a code ↔ name file. This has to be done before step 3</td>
+              <td>C&amp;B pastes any spreadsheet of staff into the admin zone; re-pasting updates in place. Needed before step 3, but it is a spreadsheet, not a project</td>
             </tr>
             <tr>
-              <td>Someone learns an employee code and files in that person's name</td>
+              <td>Anyone with the link can file under another person's name</td>
               <td><span class="pill pill--stop">High</span></td>
-              <td>A cap of 5 requests per code per day; a 15-minute lock after repeated wrong codes; four approvers who know the staff; every request traceable, so the impersonated person can find it. If that is still not enough, restore sign-in for everyone holding a company email</td>
+              <td>A cap of 5 requests per employee per day and one per minute per device; only names in the staff list can be chosen; every filing logged with its device fingerprint; the approval screen shows the person's recent requests so an odd pattern is visible. <strong>Accepted residual risk:</strong> the impersonated person cannot discover the request themselves. Closing it needs company email for everyone, or a shared department PIN on the form</td>
             </tr>
             <tr>
               <td>The booth PIN spreads and non-guards can open the table</td>
@@ -1937,7 +1959,7 @@ flowchart LR
             <tr>
               <td>The public form is spammed from outside the company</td>
               <td><span class="pill pill--mute">Low</span></td>
-              <td>Nothing sends unless the name and employee code match, and limits apply per code and per device. Junk that does not match a code never reaches the database</td>
+              <td>Only names in the staff list can be chosen, so junk cannot invent a person; limits apply per employee per day and per device per minute; the address is internal and not linked from anywhere public</td>
             </tr>
             <tr>
               <td>Adding or changing a supervisor or approver needs the development team</td>

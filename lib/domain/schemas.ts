@@ -33,14 +33,13 @@ const dateOnly = z
 
 const isoInstant = z.string().datetime({ offset: true });
 
-/** Who is filing — the public form's whole identity check. */
+/**
+ * Who is filing. Filing is fully public, so the only requirement is that the
+ * name was *chosen from the synced list* rather than typed: an id, never a free
+ * string. Nothing here is a credential — the approvers are the control point.
+ */
 export const submitterSchema = z.object({
   employeeId: z.string().uuid("Phải chọn tên trong danh sách"),
-  employeeCode: z
-    .string()
-    .trim()
-    .min(2, "Nhập mã CBNV của bạn")
-    .max(32, "Mã CBNV quá dài"),
 });
 
 export const leaveRequestSchema = z
@@ -100,11 +99,16 @@ export const submitRequestSchema = z.object({
   onBehalfOf: z.string().email().nullish(),
 });
 
-/** The employee's own update of a real return time, from the lookup page. */
+const lookupToken = z.string().regex(/^[0-9a-f]{32}$/, "Đường dẫn tra cứu không hợp lệ");
+
+/**
+ * The employee's own update of a real return time, from the lookup page.
+ * Authorised by the token alone — the private link is the only secret the
+ * public zone has.
+ */
 export const actualReturnSchema = z
   .object({
-    lookupToken: z.string().regex(/^[0-9a-f]{32}$/, "Đường dẫn tra cứu không hợp lệ"),
-    employeeCode: z.string().trim().min(2).max(32),
+    lookupToken,
     actualInAt: isoInstant,
     driftMinutes: z.number().int(),
     driftReason: z.string().trim().max(500).optional().default(""),
@@ -117,9 +121,18 @@ export const actualReturnSchema = z
     },
   );
 
-export const withdrawSchema = z.object({
-  lookupToken: z.string().regex(/^[0-9a-f]{32}$/),
-  employeeCode: z.string().trim().min(2).max(32),
+export const withdrawSchema = z.object({ lookupToken });
+
+/**
+ * Looking a request up by its printed code. The code is sequential and
+ * therefore guessable, so this path may only ever answer with a status — never
+ * a name, a date or a reason. Full detail requires the token above.
+ */
+export const statusLookupSchema = z.object({
+  requestCode: z
+    .string()
+    .trim()
+    .regex(/^(NP|RC)-\d{4}-\d{4}$/, "Mã đơn có dạng NP-2607-0148"),
 });
 
 export const claimSchema = z.object({
@@ -148,6 +161,8 @@ export const finalHoursSchema = z.object({
   reason: z.string().trim().min(10, "Lý do điều chỉnh phải từ 10 ký tự"),
 });
 
+export type StatusLookupInput = z.infer<typeof statusLookupSchema>;
+export type WithdrawInput = z.infer<typeof withdrawSchema>;
 export type SubmitRequestInput = z.infer<typeof submitRequestSchema>;
 export type LeaveRequestInput = z.infer<typeof leaveRequestSchema>;
 export type GateRequestInput = z.infer<typeof gateRequestSchema>;

@@ -27,7 +27,8 @@ time, in the PRD's order.
 ## Build order (PRD section XV)
 
 1. ~~Foundation: project, database, admin sign-in~~ — done
-2. Directory sync and employee codes; roles for supervisors
+2. Staff master data: C&B pastes the list, the public form can search it; roles
+   for supervisors. (Google Directory sync replaces the paste in P9.)
 3. Public form, one route, dynamic fields — **blocked: no employee-code source**
 4. Lookup page: track, withdraw, real return time; codes, tokens, QR
 5. Approval queue: claim, version lock, realtime, four tabs
