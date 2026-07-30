@@ -35,6 +35,7 @@ const BUDGETS = [
 const ROUTES = [
   "/",
   "/don",
+  `/don/xong?code=NP-2607-0148&token=${"a".repeat(32)}`,
   "/tra-cuu",
   "/bao-ve",
   "/admin/dang-nhap",
@@ -77,19 +78,20 @@ let skipped = 0;
 console.log(`First-load JS on ${base}\n`);
 
 for (const route of ROUTES) {
-  const budget = budgetFor(route);
+  const routePath = route.split("?")[0];
+  const budget = budgetFor(routePath);
   let res;
   try {
     res = await fetch(base + route, { redirect: "manual" });
   } catch (err) {
-    console.log(`FAIL ${route.padEnd(24)} ${err.message}`);
+      console.log(`FAIL ${routePath.padEnd(24)} ${err.message}`);
     failed++;
     continue;
   }
 
   if (res.status >= 300 && res.status < 400) {
     skipped++;
-    console.log(`skip ${route.padEnd(24)} cần đăng nhập (${res.status})`);
+    console.log(`skip ${routePath.padEnd(24)} cần đăng nhập (${res.status})`);
     continue;
   }
 
@@ -102,7 +104,7 @@ for (const route of ROUTES) {
   if (over) failed++;
   const round = (n) => Math.round(n * 10) / 10;
   console.log(
-    `${over ? "OVER" : "ok  "} ${route.padEnd(24)} ${String(round(modernKb)).padStart(6)} KB / ` +
+    `${over ? "OVER" : "ok  "} ${routePath.padEnd(24)} ${String(round(modernKb)).padStart(6)} KB / ` +
       `${budget.kb} KB ${budget.zone}` +
       (legacyKb > 0 ? `  (+${round(legacyKb)} KB noModule, not sent to current browsers)` : ""),
   );

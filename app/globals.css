@@ -518,37 +518,105 @@ textarea.field-control {
   margin: 0.25rem 0 0;
 }
 
-.file-success {
+.success-page {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
-.file-success p {
+.success-page > h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 5vw, 1.8rem);
+  line-height: 1.2;
+}
+
+.success-page p {
   margin: 0;
   color: var(--ink-2);
   font-size: 0.86rem;
+  line-height: 1.5;
 }
 
-.request-code {
+.success-code-card {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 1rem;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+}
+
+.success-code-card span,
+.success-code-card small {
+  color: var(--ink-2);
+  font-size: 0.76rem;
+}
+
+.success-code-card strong {
   color: var(--accent);
   font-family: "Cascadia Mono", Consolas, ui-monospace, monospace;
   font-size: clamp(1.45rem, 7vw, 2rem);
   letter-spacing: 0.03em;
 }
 
-.file-success .success-note {
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
-  color: var(--ink-3);
-  font-size: 0.78rem;
+.success-qr {
+  display: grid;
+  grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.success-qr-image {
+  padding: 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.success-qr-image svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.success-qr > div:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.success-qr h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.private-link-note {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid #d5b574;
+  border-radius: 6px;
+  background: #fbf5e9;
+  color: #66491b;
+  font-size: 0.84rem;
+}
+
+.private-link-note p {
+  margin-top: 0.3rem;
+  color: #66491b;
 }
 
 @media (max-width: 36rem) {
   .form-grid,
-  .choice-grid {
+  .choice-grid,
+  .success-qr {
     grid-template-columns: 1fr;
+  }
+
+  .success-qr-image {
+    width: min(100%, 15rem);
   }
 
   .form-actions .button {

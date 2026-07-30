@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { deviceHash } from "@/lib/device";
 import {
   gateRequestSchema,
@@ -68,6 +69,7 @@ export async function fileRequestAction(
     };
   }
 
+  let filed: { code: string; token: string };
   try {
     let parsedDetail: Record<string, unknown>;
     let computedMinutes: number;
@@ -127,15 +129,13 @@ export async function fileRequestAction(
       "user-agent": incoming.get("user-agent") ?? "",
     });
     const throttleKey = await deviceHash(throttleHeaders, todayInIct());
-    const filed = await fileRequest({
+    filed = await fileRequest({
       employeeId: submitter.data.employeeId,
       kind,
       detail: parsedDetail,
       computedMinutes,
       deviceHash: throttleKey,
     });
-
-    return { ok: true, message: "", errors: {}, filed };
   } catch (cause) {
     return {
       ok: false,
@@ -143,4 +143,7 @@ export async function fileRequestAction(
       errors: {},
     };
   }
+
+  const destination = new URLSearchParams({ code: filed.code, token: filed.token });
+  redirect(`/don/xong?${destination.toString()}`);
 }

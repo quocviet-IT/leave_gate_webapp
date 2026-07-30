@@ -33,23 +33,6 @@ export default function SubmitForm({
     EMPTY_FILE_STATE,
   );
 
-  if (state.ok && state.filed) {
-    return (
-      <section className="file-success" aria-live="polite">
-        <span className="step-kicker">Đã gửi đơn</span>
-        <h1>Hệ thống đã nhận đơn của bạn</h1>
-        <p>Mã đơn</p>
-        <strong className="request-code">{state.filed.code}</strong>
-        <a className="button button--primary" href={`/tra-cuu/${state.filed.token}`}>
-          Mở trang theo dõi riêng
-        </a>
-        <p className="success-note">
-          Hãy lưu đường dẫn theo dõi. Mã đơn một mình chỉ xem được trạng thái chung.
-        </p>
-      </section>
-    );
-  }
-
   return (
     <FileStateContext.Provider value={state}>
       <form id={formId} action={submit} className="request-form">
