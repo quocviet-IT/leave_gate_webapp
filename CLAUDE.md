@@ -74,6 +74,18 @@ Three zones, three ways in (PRD III). This shapes everything:
   `tests/unit/rsc-antd.test.ts`.
 - Running `npm run build` then `npm run dev` over the same `.next` makes nested
   routes 404 in dev while single-segment routes still work. Delete `.next` first.
+- **`revoke … from public` does not stop `anon` from calling a function.** Two
+  grants make a function reachable: Supabase's default privileges grant EXECUTE
+  directly to `anon` and `authenticated`, and PostgreSQL's own default grants it to
+  `PUBLIC`. Both must go. Migrations 0005 and 0006 closed this after
+  `lg_submit_request` shipped callable by any browser holding the anon key. Since
+  0005, default privileges in `public` deny both roles, so **every new function
+  needs its grant written out** — and `verify-submit.mjs` fails if any `lg_`
+  function becomes anon-reachable beyond `lg_search_employees` and
+  `lg_status_by_code`.
+- Revoking from `PUBLIC` also removes the privilege from `authenticated`. The RLS
+  policies call `lg_current_role()`, and a policy runs as the querying role, so
+  that grant has to be handed back explicitly or every admin read breaks.
 - The plain Postgres port is blocked on the office network. `SUPABASE_DB_URL` must
   be the **session-mode pooler** (`postgres.<ref>@aws-0-<region>.pooler.supabase.com:5432`).
 - Sunday is the only non-working day, and Saturday **is** a working day. A

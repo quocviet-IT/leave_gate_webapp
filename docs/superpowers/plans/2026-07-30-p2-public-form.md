@@ -362,7 +362,7 @@ Add to `package.json` scripts, after `verify:employees`:
 ```
 
 Run: `npm run verify:submit`
-Expected: `12 đạt, 0 không đạt.`
+Expected: `15 đạt, 0 không đạt.` (12 as first written, plus the three privilege-surface checks added when the first run found every `lg_` function reachable by `anon`.)
 
 - [ ] **Step 5: Commit**
 
