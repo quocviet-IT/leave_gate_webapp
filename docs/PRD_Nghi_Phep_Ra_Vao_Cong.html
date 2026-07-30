@@ -1,4 +1,4 @@
-<title>PRD — Hệ thống Xin nghỉ phép & Ra vào cổng</title>
+<title>PRD — Leave Application & Gate Pass System</title>
 
 <style>
   :root {
@@ -528,27 +528,27 @@
   <!-- ================= INDEX ================= -->
   <aside class="index">
     <div class="index-mark">
-      <b>Nghỉ phép &amp; Ra vào cổng</b>
+      <b>Leave &amp; Gate Pass</b>
       <span>PRD · Phase 1 · v0.5</span>
     </div>
     <nav>
-      <a href="#s0"><em>0</em><span>Thay đổi v0.5</span></a>
-      <a href="#s1"><em>I</em><span>Vấn đề</span></a>
-      <a href="#s2"><em>II</em><span>Mục tiêu</span></a>
-      <a href="#s3"><em>III</em><span>Ba vùng</span></a>
-      <a href="#s4"><em>IV</em><span>Phạm vi</span></a>
-      <a href="#s5"><em>V</em><span>Người dùng</span></a>
-      <a href="#s6"><em>VI</em><span>Luồng &amp; thông báo</span></a>
-      <a href="#s7"><em>VII</em><span>Phân công đơn</span></a>
-      <a href="#s8"><em>VIII</em><span>Bốt bảo vệ</span></a>
-      <a href="#s9"><em>IX</em><span>Mẫu giấy</span></a>
-      <a href="#s10"><em>X</em><span>Trường dữ liệu</span></a>
-      <a href="#s11"><em>XI</em><span>Tính thời gian</span></a>
-      <a href="#s12"><em>XII</em><span>Giao diện</span></a>
-      <a href="#s13"><em>XIII</em><span>Quy tắc</span></a>
-      <a href="#s14"><em>XIV</em><span>Dữ liệu gốc</span></a>
-      <a href="#s15"><em>XV</em><span>Kỹ thuật</span></a>
-      <a href="#s16"><em>XVI</em><span>Rủi ro</span></a>
+      <a href="#s0"><em>0</em><span>What changed</span></a>
+      <a href="#s1"><em>I</em><span>Problem</span></a>
+      <a href="#s2"><em>II</em><span>Goals</span></a>
+      <a href="#s3"><em>III</em><span>Three zones</span></a>
+      <a href="#s4"><em>IV</em><span>Scope</span></a>
+      <a href="#s5"><em>V</em><span>Roles</span></a>
+      <a href="#s6"><em>VI</em><span>Flow &amp; alerts</span></a>
+      <a href="#s7"><em>VII</em><span>Work assignment</span></a>
+      <a href="#s8"><em>VIII</em><span>Gate booth</span></a>
+      <a href="#s9"><em>IX</em><span>Paper forms</span></a>
+      <a href="#s10"><em>X</em><span>Fields</span></a>
+      <a href="#s11"><em>XI</em><span>Time rules</span></a>
+      <a href="#s12"><em>XII</em><span>Screens</span></a>
+      <a href="#s13"><em>XIII</em><span>Business rules</span></a>
+      <a href="#s14"><em>XIV</em><span>Master data</span></a>
+      <a href="#s15"><em>XV</em><span>Technology</span></a>
+      <a href="#s16"><em>XVI</em><span>Risks</span></a>
     </nav>
   </aside>
 
@@ -557,104 +557,106 @@
 
     <header class="masthead">
       <div class="eyebrow">
-        <span>Công ty CTYHP</span>
-        <span class="kind">Tài liệu mô tả yêu cầu sản phẩm</span>
-        <span class="pill pill--draft">Bản nháp — chờ phê duyệt</span>
+        <span>CTYHP Company</span>
+        <span class="kind">Product requirements document</span>
+        <span class="pill pill--draft">Draft — awaiting approval</span>
       </div>
 
-      <h1>Hệ thống Xin nghỉ phép &amp; Giấy ra vào cổng</h1>
+      <h1>Leave Application &amp; Gate Pass System</h1>
 
       <p class="lede">
-        Thay hai mẫu đơn giấy đang lưu hành bằng một web app nội bộ. CBNV mở link hoặc quét mã QR để gửi
-        đơn — không cần đăng nhập; một trong bốn chị nhận và duyệt; bảo vệ xác nhận giờ ra vào ngay tại
-        bốt; đơn đã duyệt tự chảy về màn hình chấm công.
+        Replaces the two paper forms in use today with an internal web app. Employees open a link or
+        scan a QR code to file a request — no login; one of the four approvers claims and decides it;
+        the guard confirms the real times at the gate; approved requests flow straight to the
+        timesheet screen.
       </p>
 
       <div class="stats">
-        <div><span class="k">Loại đơn</span><span class="v big">2</span></div>
-        <div><span class="k">Vùng truy cập</span><span class="v big">3</span></div>
-        <div><span class="k">Người duyệt</span><span class="v big">4</span></div>
-        <div><span class="k">Cần duyệt</span><span class="v big">1 / 4</span></div>
-        <div><span class="k">Màn hình</span><span class="v big">9</span></div>
-        <div><span class="k">Phiên bản</span><span class="v">0.5 — nháp</span></div>
-        <div><span class="k">Bàn giao</span><span class="v">30/07/2026</span></div>
+        <div><span class="k">Form types</span><span class="v big">2</span></div>
+        <div><span class="k">Access zones</span><span class="v big">3</span></div>
+        <div><span class="k">Approvers</span><span class="v big">4</span></div>
+        <div><span class="k">Approvals needed</span><span class="v big">1 / 4</span></div>
+        <div><span class="k">Screens</span><span class="v big">9</span></div>
+        <div><span class="k">Version</span><span class="v">0.5 — draft</span></div>
+        <div><span class="k">Handover</span><span class="v">30/07/2026</span></div>
       </div>
     </header>
 
     <div class="keys">
       <div>
-        <span class="kh">Nhân viên</span>
-        <span class="kb">Một <strong>link công khai</strong> hoặc mã QR dán tại xưởng. Không đăng nhập, không mật khẩu — chọn tên rồi nhập <strong>mã CBNV</strong> của mình.</span>
+        <span class="kh">Employees</span>
+        <span class="kb">A <strong>public link</strong> or a QR code posted in the workshops. No login, no password — pick your name, then type your <strong>employee code</strong>.</span>
       </div>
       <div>
-        <span class="kh">Duyệt</span>
-        <span class="kb">Hàng chờ chung toàn công ty trong <code>/admin</code>. <strong>Chị Diệu · chị Phúc · chị Trân · chị Hạnh</strong> — một chị <strong>nhận xử lý</strong> rồi duyệt là đơn có hiệu lực.</span>
+        <span class="kh">Approval</span>
+        <span class="kb">One company-wide queue in <code>/admin</code>. <strong>Chị Diệu · Chị Phúc · Chị Trân · Chị Hạnh</strong> — one approver <strong>claims</strong> a request and decides it, and that decision stands.</span>
       </div>
       <div>
-        <span class="kh">Bảo vệ</span>
-        <span class="kb">Bốt cổng mở <code>/bao-ve</code> bằng mã PIN, thấy đơn đã duyệt trong ngày, bấm <strong>Cho ra</strong> / <strong>Cho vào</strong> để ghi giờ thực tế.</span>
+        <span class="kh">Gate</span>
+        <span class="kb">The booth opens <code>/bao-ve</code> with a PIN, sees today's approved gate passes, and taps <strong>Cho ra</strong> / <strong>Cho vào</strong> to record the real times.</span>
       </div>
       <div>
-        <span class="kh">Chấm công</span>
-        <span class="kb"><strong>Chị Khoa (C&amp;B)</strong> nhận đơn đã duyệt kèm số giờ hệ thống tính sẵn. Sửa giờ chốt phải ghi lý do. Lọc theo kỳ, tải Excel.</span>
+        <span class="kh">Timesheet</span>
+        <span class="kb"><strong>Chị Khoa (C&amp;B)</strong> receives approved requests with the hours already computed. Editing the final hours requires a reason. Filter by period, download Excel.</span>
       </div>
     </div>
 
     <!-- 0 -->
     <section class="sec" id="s0">
-      <h2><em>0</em>Thay đổi so với bản v0.4</h2>
+      <h2><em>0</em>What changed since v0.4</h2>
       <p>
-        Bản v0.5 tiếp thu toàn bộ 17 đầu mục Ban Giám đốc nêu khi đánh giá v0.4. Bảng dưới đối chiếu từng
-        đầu mục với mục đã đưa vào, kèm quyết định thiết kế phát sinh.
+        Version 0.5 takes up all 17 items the board raised when reviewing v0.4. The table below maps
+        each item to the section that covers it, together with the design decision it forced.
       </p>
       <div class="tw">
         <table>
-          <thead><tr><th class="c2">Nhóm</th><th class="c1">Yêu cầu</th><th class="c3">Vào mục</th><th>Quyết định kèm theo</th></tr></thead>
+          <thead><tr><th class="c2">Group</th><th class="c1">Board's request</th><th class="c3">Section</th><th>Decision it forced</th></tr></thead>
           <tbody>
-            <tr><td rowspan="4"><span class="pill pill--info">1 · Kiến trúc</span></td><td>Phân tách vùng Nhân viên và vùng Quản trị</td><td class="num">III</td><td>Thành ba vùng, không phải hai — bốt bảo vệ là vùng thứ ba, vào bằng mã PIN</td></tr>
-            <tr><td>Form công khai tối giản, dùng link / QR, không đăng nhập</td><td class="num">III · XII</td><td>Không đăng nhập nên phải có cách nhận diện thay thế: <strong>chọn tên + nhập mã CBNV khớp</strong></td></tr>
-            <tr><td>Trang tra cứu trạng thái đơn độc lập qua mã đơn / link</td><td class="num">XII · XIII</td><td>Tra cứu cần <strong>mã đơn + mã CBNV</strong>, hoặc mở link riêng đã cấp lúc gửi — tránh ai biết mã đơn cũng đọc được</td></tr>
-            <tr><td>Dashboard tổng quan, duyệt đơn, chấm công cho Quản lý &amp; PNS</td><td class="num">III · XII</td><td>Thêm màn hình tổng quan mới; giữ SSO <code>@ctyhp.vn</code> cho riêng vùng này</td></tr>
-            <tr><td><span class="pill pill--info">2 · Khối SX</span></td><td>Quản xưởng tạo đơn hộ công nhân</td><td class="num">V · XIII</td><td>Vai trò mới. Đơn ghi rõ ai tạo hộ; quản xưởng không có quyền duyệt</td></tr>
-            <tr><td rowspan="3"><span class="pill pill--info">3 · Bảo vệ</span></td><td>Màn hình bảng tra cứu đơn ra/vào cổng trong ngày</td><td class="num">VIII</td><td>Chỉ đơn đã duyệt, chỉ trong ngày, chỉ đọc — không sửa được nội dung đơn</td></tr>
-            <tr><td>Xác nhận giờ ra/vào thực tế bằng nút bấm</td><td class="num">VIII · XI</td><td>Giờ bảo vệ bấm là <strong>giờ thực tế ưu tiên</strong>, đè lên giờ CBNV tự khai</td></tr>
-            <tr><td>Webhook bắn đơn đã duyệt vào nhóm Chat Bảo vệ</td><td class="num">VI</td><td>Hai nhóm Chat riêng: nhóm Duyệt và nhóm Bảo vệ, nội dung khác nhau</td></tr>
-            <tr><td rowspan="4"><span class="pill pill--info">4 · Phân công</span></td><td>Nút Nhận xử lý để một người xí đơn</td><td class="num">VII</td><td>Nhận rồi <strong>tự nhả sau 30 phút</strong> nếu không quyết — tránh đơn bị giữ chết</td></tr>
-            <tr><td>Khóa dòng real-time và tự refresh khi đơn đã được duyệt</td><td class="num">VII</td><td>Khóa lạc quan theo số phiên bản đơn; thao tác trên bản cũ bị chặn kèm thông báo</td></tr>
-            <tr><td>Cảnh báo SLA qua Google Chat mốc 1h, 2h</td><td class="num">VI · VII</td><td>Chỉ đếm giờ làm việc; ngoài giờ và Chủ nhật không đếm, tránh nhắc lúc 2 giờ sáng</td></tr>
-            <tr><td>Tab cá nhân tại màn hình duyệt đơn</td><td class="num">VII · XII</td><td>Bốn tab: Tất cả · Tôi đã nhận · Tôi đã duyệt · Quá hạn</td></tr>
-            <tr><td rowspan="3"><span class="pill pill--info">5 · Nghiệp vụ</span></td><td>Bắt buộc lý do khi C&amp;B sửa Giờ chốt</td><td class="num">XI · XIII</td><td>Tối thiểu 10 ký tự; lưu số cũ, số mới, người sửa, thời điểm, lý do</td></tr>
-            <tr><td>CBNV chủ động rút / hủy đơn chờ duyệt, bắn thông báo cập nhật</td><td class="num">VI · XIII</td><td>Rút được ở trang tra cứu công khai; đơn đã có người nhận thì nhắc riêng người đó</td></tr>
-            <tr><td>Thời hạn chót cập nhật giờ ra/vào thực tế</td><td class="num">XI · XIII</td><td><strong>Hết ngày làm việc kế tiếp</strong>; quá hạn CBNV bị khóa, chỉ chị Khoa sửa kèm lý do</td></tr>
-            <tr><td rowspan="2"><span class="pill pill--info">6 · Dữ liệu</span></td><td>Tự đồng bộ Nhân sự &amp; Phòng ban từ Google Workspace Directory</td><td class="num">XIV</td><td>Directory <strong>không có mã CBNV</strong> — cần PNS cấp nguồn mã, đây là điều kiện tiên quyết</td></tr>
-            <tr><td>Gộp hai form thành một route với trường động</td><td class="num">X · XII</td><td>Một địa chỉ <code>/don</code>, ô Loại đơn đổi các trường bên dưới</td></tr>
+            <tr><td rowspan="4"><span class="pill pill--info">1 · Architecture</span></td><td>Separate the employee area from the admin area</td><td class="num">III</td><td><strong>Three zones, not two</strong> — the gate booth is the third, and it opens with a PIN</td></tr>
+            <tr><td>Minimal public form reached by link or QR, no login</td><td class="num">III · XII</td><td>Without a login there must be another way to tell who is filing: <strong>pick a name, then type a matching employee code</strong></td></tr>
+            <tr><td>Standalone status page, opened by request code or link</td><td class="num">XII · XIII</td><td>Looking a request up needs <strong>the request code plus the employee code</strong>, or the private link issued when it was filed — otherwise anyone holding a code could read someone else's request</td></tr>
+            <tr><td>Overview dashboard, approvals and timesheet for managers and HR</td><td class="num">III · XII</td><td>A new overview screen; company Google sign-in stays, but only for this zone</td></tr>
+            <tr><td><span class="pill pill--info">2 · Production</span></td><td>Workshop supervisors file on behalf of workers</td><td class="num">V · XIII</td><td>New role. The request records who filed it; supervisors cannot approve</td></tr>
+            <tr><td rowspan="3"><span class="pill pill--info">3 · Gate</span></td><td>A table of today's gate passes for the booth</td><td class="num">VIII</td><td>Approved requests only, today only, read-only — the booth cannot change a request</td></tr>
+            <tr><td>Confirm the real exit and return times with a button</td><td class="num">VIII · XI</td><td>The time the guard taps is the <strong>authoritative real time</strong>, overriding what the employee typed</td></tr>
+            <tr><td>Webhook posting approved passes to the guards' Google Chat space</td><td class="num">VI</td><td><strong>Two separate Chat spaces</strong> — approvers and guards — carrying different content</td></tr>
+            <tr><td rowspan="4"><span class="pill pill--info">4 · Assignment</span></td><td>A Claim button so one person takes a request</td><td class="num">VII</td><td>A claim <strong>expires after 30 minutes</strong> without a decision, so no request can be held hostage</td></tr>
+            <tr><td>Real-time row locking and refresh once a request is decided</td><td class="num">VII</td><td>Optimistic locking on a row version, checked in the database; acting on a stale view is refused</td></tr>
+            <tr><td>SLA reminders to Google Chat at 1 h and 2 h</td><td class="num">VI · VII</td><td>The clock counts <strong>working hours only</strong>; evenings and Sundays do not count, so nobody is paged at midnight</td></tr>
+            <tr><td>Personal filter tabs on the approval screen</td><td class="num">VII · XII</td><td>Four tabs: all pending · claimed by me · decided by me · <strong>overdue</strong></td></tr>
+            <tr><td rowspan="3"><span class="pill pill--info">5 · Business rules</span></td><td>Require a reason when C&amp;B edits the final hours</td><td class="num">XI · XIII</td><td>At least 10 characters; the old value, new value, editor, timestamp and reason are all kept</td></tr>
+            <tr><td>Let employees withdraw a pending request, and post the update</td><td class="num">VI · XIII</td><td>Withdrawal happens on the public lookup page; if someone has claimed the request, they are told directly</td></tr>
+            <tr><td>A deadline for entering the real exit and return times</td><td class="num">XI · XIII</td><td><strong>End of the next working day</strong>; after that the employee's field locks and only Chị Khoa can edit it, with a reason</td></tr>
+            <tr><td rowspan="2"><span class="pill pill--info">6 · Data</span></td><td>Sync staff and departments from Google Workspace Directory</td><td class="num">XIV</td><td>The Directory holds <strong>no employee code</strong> — HR has to supply that mapping, which makes it a prerequisite</td></tr>
+            <tr><td>Merge both forms into one route with dynamic fields</td><td class="num">X · XII</td><td>One address, <code>/don</code>; the form-type field switches everything below it</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note" style="margin-top:1rem">
-        <strong>Hệ quả lớn nhất của v0.5:</strong> bỏ đăng nhập ở vùng nhân viên nên ba quy tắc của v0.4 phải viết lại —
-        “chỉ tài khoản công ty mới vào được”, “không ai tự duyệt đơn của mình”, và “người này không đọc được đơn
-        người khác”. Cách xử lý mới nằm ở mục XIII, quy tắc 1 · 9 · 14.
+        <strong>The largest consequence of v0.5:</strong> dropping the login in the employee zone
+        forces three of v0.4's rules to be rewritten — company-accounts-only access, no self-approval,
+        and one person not being able to read another's request. The replacements are rules 1, 9 and 14
+        in section XIII.
       </div>
     </section>
 
     <!-- I -->
     <section class="sec" id="s1">
-      <h2><em>I</em>Vấn đề hiện tại</h2>
+      <h2><em>I</em>The problem today</h2>
       <div class="tw">
         <table>
-          <thead><tr><th class="c2">Bước</th><th>Trên giấy hiện nay</th><th>Trên app</th></tr></thead>
+          <thead><tr><th class="c2">Step</th><th>On paper today</th><th>In the app</th></tr></thead>
           <tbody>
-            <tr><td>Tạo đơn</td><td>In mẫu, viết tay họ tên · chức vụ · phòng ban mỗi lần</td><td>Chọn tên mình, ba trường này tự hiện ra từ dữ liệu Nhân sự</td></tr>
-            <tr><td>Công nhân không dùng máy tính</td><td>Vẫn phải xin mẫu giấy, nhờ người viết hộ</td><td>Quét mã QR dán tại xưởng để tự gửi; hoặc nhờ quản xưởng tạo hộ trên máy</td></tr>
-            <tr><td>Lấy chữ ký</td><td>Mang giấy đi tìm người ký; người ký đi vắng thì đợi</td><td>Đơn vào hàng chờ của cả bốn chị, kèm thông báo Google Chat</td></tr>
-            <tr><td>Bốn người ký cùng một tờ</td><td>Không xảy ra vì chỉ có một tờ giấy chạy vòng</td><td>Có thể xảy ra khi bốn chị mở cùng lúc — xử lý bằng nút Nhận xử lý ở mục VII</td></tr>
-            <tr><td>Tính số giờ</td><td>Nhân sự tính tay, tự trừ Chủ nhật và giờ nghỉ trưa</td><td>Hệ thống tính sẵn, Nhân sự chỉ kiểm lại</td></tr>
-            <tr><td>Bằng chứng</td><td>Chữ ký tay, khó tra lại</td><td>Lưu tên người duyệt và thời điểm, không sửa được</td></tr>
-            <tr><td>Giờ ra vào thực tế</td><td>Bảo vệ ghi tay lên tờ giấy, chữ khó đọc</td><td>Bảo vệ bấm một nút tại bốt, hệ thống ghi đúng giây</td></tr>
-            <tr><td>Về Nhân sự</td><td>Nộp giấy cho bảo vệ → bảo vệ chuyển về Nhân sự</td><td>Hiện ngay trên màn hình chấm công</td></tr>
-            <tr><td>Chấm công</td><td>Gom và nhập tay từng tờ</td><td>Lọc theo kỳ rồi tải một file Excel</td></tr>
-            <tr><td>Lưu trữ</td><td>Tập giấy, thất lạc là mất</td><td>Lưu trong cơ sở dữ liệu, in PDF khi cần</td></tr>
+            <tr><td>Filing</td><td>Print the form, hand-write name, job title and department every time</td><td>Pick your name and those three fields appear from the staff records</td></tr>
+            <tr><td>Workers without a computer</td><td>Still have to fetch a paper form and ask someone to fill it in</td><td>Scan the QR code posted in the workshop, or ask the supervisor to file on a computer</td></tr>
+            <tr><td>Collecting signatures</td><td>Walk the paper around; if a signatory is out, wait</td><td>The request enters a queue all four approvers see, with a Google Chat alert</td></tr>
+            <tr><td>Four people signing one sheet</td><td>Cannot happen — there is only one sheet doing the rounds</td><td>Can happen when four approvers open it at once — handled by the Claim button in section VII</td></tr>
+            <tr><td>Counting hours</td><td>HR works it out by hand, deducting Sundays and the lunch break</td><td>The system computes it; HR only reviews</td></tr>
+            <tr><td>Evidence</td><td>A handwritten signature, hard to trace later</td><td>The approver's name and timestamp, not editable afterwards</td></tr>
+            <tr><td>Real gate times</td><td>The guard writes them on the sheet, often barely legible</td><td>The guard taps one button at the booth and the time is recorded to the second</td></tr>
+            <tr><td>Reaching HR</td><td>Hand the sheet to the guard, who passes it on to HR</td><td>It appears on the timesheet screen immediately</td></tr>
+            <tr><td>Timesheet</td><td>Collect and key in every sheet by hand</td><td>Filter by period and download one Excel file</td></tr>
+            <tr><td>Records</td><td>A stack of paper; lost means gone</td><td>Held in the database, printable as PDF on demand</td></tr>
           </tbody>
         </table>
       </div>
@@ -662,128 +664,131 @@
 
     <!-- II -->
     <section class="sec" id="s2">
-      <h2><em>II</em>Mục tiêu và cách đo</h2>
+      <h2><em>II</em>Goals and how they are measured</h2>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Mục tiêu</th><th>Cách đo</th><th class="c3">Mốc</th></tr></thead>
+          <thead><tr><th class="c1">Goal</th><th>Measure</th><th class="c3">Target</th></tr></thead>
           <tbody>
-            <tr><td>Bỏ in và ký tay hai mẫu đơn</td><td>Tỉ lệ đơn tạo trên app so với tổng số đơn trong kỳ</td><td class="num">≥ 95%</td></tr>
-            <tr><td>Khối sản xuất gửi được đơn mà không cần email công ty</td><td>Tỉ lệ đơn của khối sản xuất gửi qua link / QR hoặc quản xưởng tạo hộ</td><td class="num">100%</td></tr>
-            <tr><td>Duyệt nhanh hơn</td><td>Thời gian trung bình từ lúc gửi đến lúc có người duyệt, trong giờ làm</td><td class="num">≤ 2 giờ</td></tr>
-            <tr><td>Không đơn nào bị bỏ quên</td><td>Số đơn còn ở trạng thái chờ quá 4 giờ làm việc mà không ai nhận</td><td class="num">0</td></tr>
-            <tr><td>Không duyệt trùng, không tranh chấp</td><td>Số đơn có nhiều hơn một người duyệt hoặc bị ghi đè kết quả</td><td class="num">0</td></tr>
-            <tr><td>Giờ ra vào cổng là số đo, không phải số khai</td><td>Tỉ lệ đơn ra vào cổng có giờ do bảo vệ bấm tại bốt</td><td class="num">≥ 90%</td></tr>
-            <tr><td>Nhân sự không nhập tay, không tính tay</td><td>Thời gian tạo dữ liệu chấm công cho một kỳ</td><td class="num">≤ 5 phút</td></tr>
-            <tr><td>Mọi lần sửa số giờ đều truy được nguyên nhân</td><td>Tỉ lệ dòng sửa giờ chốt có lý do điều chỉnh</td><td class="num">100%</td></tr>
-            <tr><td>Không mất đơn</td><td>Số đơn đã gửi mà không tra được trạng thái</td><td class="num">0</td></tr>
-            <tr><td>Dùng được ngay, không cần đào tạo</td><td>CBNV tự gửi đơn đầu tiên mà không hỏi ai</td><td class="num">≤ 3 phút</td></tr>
+            <tr><td>Stop printing and hand-signing both forms</td><td>Share of requests filed in the app out of all requests in the period</td><td class="num">≥ 95%</td></tr>
+            <tr><td>Production staff can file without a company email</td><td>Share of production requests filed by link, QR or a supervisor</td><td class="num">100%</td></tr>
+            <tr><td>Faster decisions</td><td>Mean time from filing to a decision, within working hours</td><td class="num">≤ 2 h</td></tr>
+            <tr><td>No request forgotten</td><td>Requests left unclaimed for more than 4 working hours</td><td class="num">0</td></tr>
+            <tr><td>No double approvals, no conflicts</td><td>Requests with more than one decision, or a decision overwritten</td><td class="num">0</td></tr>
+            <tr><td>Gate times measured, not declared</td><td>Share of gate passes whose times were tapped by a guard at the booth</td><td class="num">≥ 90%</td></tr>
+            <tr><td>HR keys in nothing and computes nothing</td><td>Time to produce timesheet data for one period</td><td class="num">≤ 5 min</td></tr>
+            <tr><td>Every hours edit traceable to a cause</td><td>Share of edited final-hours rows carrying an adjustment reason</td><td class="num">100%</td></tr>
+            <tr><td>No request lost</td><td>Filed requests whose status cannot be looked up</td><td class="num">0</td></tr>
+            <tr><td>Usable immediately, no training</td><td>An employee files their first request without asking anyone</td><td class="num">≤ 3 min</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note note--info" style="margin-top:1rem">
-        <strong>So với v0.4:</strong> khâu “Bảo vệ tiếp nhận” đã vào Phase 1, nên mục tiêu bỏ giấy ở cổng không còn
-        phải trừ ra. Phần giấy còn lại duy nhất là bản in lưu hồ sơ khi Nhân sự cần — in từ app, không phải viết tay.
+        <strong>Compared with v0.4:</strong> the guard's confirmation is now inside Phase 1, so the
+        goal of removing paper at the gate no longer carries an exception. The only paper left is a
+        printed copy for HR's file when one is needed — printed from the app, not written by hand.
       </div>
     </section>
 
     <!-- III -->
     <section class="sec" id="s3">
-      <h2><em>III</em>Ba vùng trải nghiệm</h2>
+      <h2><em>III</em>Three experience zones</h2>
       <p>
-        App chia thành ba vùng tách biệt, mỗi vùng một cách vào và một nhóm người dùng. Tách như vậy vì ba
-        nhóm này khác nhau hoàn toàn: công nhân cần vào nhanh không rào cản, người duyệt cần dữ liệu đầy đủ
-        và có kiểm soát, bảo vệ cần một bảng duy nhất bấm được bằng ngón tay trên máy dùng chung.
+        The app splits into three separate zones, each with its own way in and its own users. They are
+        split because the three groups have nothing in common: workers need to get in with no
+        obstacle, approvers need full data under proper control, and guards need a single table they
+        can operate with a fingertip on a shared machine.
       </p>
       <div class="duo">
         <div class="card card--zone">
-          <h4>Vùng nhân viên · công khai</h4>
+          <h4>Employee zone · public</h4>
           <span class="rt">/don · /tra-cuu</span>
           <ul>
-            <li><strong>Không đăng nhập.</strong> Mở link hoặc quét mã QR dán tại xưởng và bảng tin</li>
-            <li>Một form duy nhất, ô đầu tiên chọn loại đơn rồi các trường bên dưới đổi theo</li>
-            <li>Nhận diện bằng <strong>chọn tên + nhập mã CBNV</strong> khớp với dữ liệu Nhân sự</li>
-            <li>Gửi xong nhận <strong>mã đơn</strong> và một link riêng để theo dõi</li>
-            <li>Trang tra cứu: xem trạng thái, rút đơn còn chờ, cập nhật giờ vào lại thực tế, in đơn đã duyệt</li>
+            <li><strong>No login.</strong> Open a link, or scan the QR code posted in the workshops and on noticeboards</li>
+            <li>One form; the first field picks the type and the fields below change to match</li>
+            <li>Identified by <strong>choosing a name and typing a matching employee code</strong></li>
+            <li>Filing returns a <strong>request code</strong> and a private tracking link</li>
+            <li>The lookup page: check status, withdraw a pending request, enter the real return time, print an approved request</li>
           </ul>
         </div>
         <div class="card card--zone">
-          <h4>Vùng quản trị · <code>/admin</code></h4>
+          <h4>Admin zone · <code>/admin</code></h4>
           <span class="rt">/admin/tong-quan · /duyet-don · /cham-cong</span>
           <ul>
-            <li><strong>Đăng nhập bằng tài khoản Google công ty</strong>, chặn tên miền ngoài <code>@ctyhp.vn</code></li>
-            <li>Màn hình tổng quan: số đơn chờ, đơn quá hạn, giờ nghỉ trong kỳ, đơn chưa chấm công</li>
-            <li>Hàng chờ duyệt kèm nút Nhận xử lý và bốn tab cá nhân</li>
-            <li>Màn hình chấm công: lọc theo kỳ, hai cột giờ, tải Excel, đánh dấu đã chấm</li>
-            <li>Quản xưởng tạo đơn hộ công nhân của xưởng mình</li>
+            <li><strong>Sign in with the company Google account</strong>; domains other than <code>@ctyhp.vn</code> are refused</li>
+            <li>Overview: pending requests, overdue requests, leave hours in the period, requests not yet on a timesheet</li>
+            <li>The approval queue, with the Claim button and four personal tabs</li>
+            <li>Timesheet screen: filter by period, two hours columns, Excel download, mark as done</li>
+            <li>Supervisors filing on behalf of workers in their own department</li>
           </ul>
         </div>
         <div class="card card--zone">
-          <h4>Vùng bốt bảo vệ · <code>/bao-ve</code></h4>
+          <h4>Gate booth · <code>/bao-ve</code></h4>
           <span class="rt">/bao-ve</span>
           <ul>
-            <li><strong>Vào bằng mã PIN của bốt</strong>, phiên giữ dài ngày để đổi ca không phải đăng nhập lại</li>
-            <li>Một bảng duy nhất: đơn ra vào cổng đã duyệt của <strong>ngày hôm nay</strong></li>
-            <li>Hai nút lớn mỗi dòng: <strong>Cho ra</strong> và <strong>Cho vào</strong> — bấm là ghi giờ</li>
-            <li>Chỉ đọc phần còn lại; không sửa, không duyệt, không thấy lý do nghỉ</li>
+            <li><strong>Opens with the booth PIN</strong>; the session lasts weeks so a shift change needs no sign-in</li>
+            <li>One table: <strong>today's</strong> approved gate passes</li>
+            <li>Two large buttons per row — <strong>Cho ra</strong> and <strong>Cho vào</strong> — one tap records the time</li>
+            <li>Read-only otherwise: no edits, no decisions, and no leave reasons</li>
           </ul>
         </div>
       </div>
       <div class="tw" style="margin-top:1rem">
         <table>
-          <thead><tr><th class="c2">Vùng</th><th class="c2">Địa chỉ</th><th class="c1">Vào bằng gì</th><th>Ai dùng</th></tr></thead>
+          <thead><tr><th class="c2">Zone</th><th class="c2">Address</th><th class="c1">Way in</th><th>Who uses it</th></tr></thead>
           <tbody>
-            <tr><td><span class="pill pill--mute">Nhân viên</span></td><td class="mono">/don · /tra-cuu</td><td>Không đăng nhập · link hoặc QR · chọn tên + mã CBNV</td><td>Toàn bộ CBNV, kể cả người không có email công ty</td></tr>
-            <tr><td><span class="pill pill--info">Quản trị</span></td><td class="mono">/admin/*</td><td>Google Workspace SSO, giới hạn <code>ctyhp.vn</code></td><td>Bốn chị người duyệt · chị Khoa (C&amp;B) · quản xưởng</td></tr>
-            <tr><td><span class="pill pill--draft">Bốt bảo vệ</span></td><td class="mono">/bao-ve</td><td>Mã PIN của bốt</td><td>Bảo vệ đang trực tại cổng</td></tr>
+            <tr><td><span class="pill pill--mute">Employee</span></td><td class="mono">/don · /tra-cuu</td><td>No login · link or QR · name plus employee code</td><td>All staff, including everyone without a company email</td></tr>
+            <tr><td><span class="pill pill--info">Admin</span></td><td class="mono">/admin/*</td><td>Google Workspace SSO, restricted to <code>ctyhp.vn</code></td><td>The four approvers · Chị Khoa (C&amp;B) · workshop supervisors</td></tr>
+            <tr><td><span class="pill pill--draft">Gate booth</span></td><td class="mono">/bao-ve</td><td>Booth PIN</td><td>The guard on duty at the gate</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note" style="margin-top:1rem">
-        <strong>Vùng công khai không có nghĩa là ai cũng đọc được đơn.</strong> Form công khai chỉ cho <em>gửi</em>.
-        Muốn <em>đọc</em> một đơn phải có mã đơn kèm mã CBNV, hoặc link riêng cấp lúc gửi. Danh sách toàn bộ đơn
-        chỉ tồn tại trong vùng quản trị.
+        <strong>A public zone does not mean anyone can read a request.</strong> The public form only
+        <em>accepts</em> requests. <em>Reading</em> one takes the request code together with the
+        employee code, or the private link issued at filing. A list of all requests exists only inside
+        the admin zone.
       </div>
     </section>
 
     <!-- IV -->
     <section class="sec" id="s4">
-      <h2><em>IV</em>Phạm vi</h2>
+      <h2><em>IV</em>Scope</h2>
       <div class="duo">
         <div class="card card--in">
-          <h4>Trong Phase 1</h4>
+          <h4>In Phase 1</h4>
           <ul>
-            <li>Form công khai một route, trường động theo loại đơn</li>
-            <li>Nhận diện bằng chọn tên + mã CBNV, không cần đăng nhập</li>
-            <li>Mã QR để dán tại xưởng và bảng tin</li>
-            <li>Trang tra cứu đơn: theo dõi · rút đơn · cập nhật giờ thực tế · in</li>
-            <li>Đăng nhập Google cho vùng quản trị</li>
-            <li>Màn hình tổng quan cho Quản lý và PNS</li>
-            <li>Hàng chờ duyệt chung, nút Nhận xử lý, khóa chống duyệt trùng</li>
-            <li>Bốn tab cá nhân tại màn hình duyệt</li>
-            <li>Duyệt, hoặc từ chối và ghi thêm lý do</li>
-            <li>Quản xưởng tạo đơn hộ công nhân</li>
-            <li>Màn hình bốt bảo vệ: bảng đơn trong ngày, nút Cho ra / Cho vào</li>
-            <li>Hai nhóm Google Chat: nhóm Duyệt và nhóm Bảo vệ</li>
-            <li>Nhắc SLA mốc 1 giờ và 2 giờ</li>
-            <li>Tự tính số giờ theo giờ làm việc công ty</li>
-            <li>Màn hình chấm công: lọc · Excel · đánh dấu · lý do điều chỉnh bắt buộc</li>
-            <li>Đồng bộ CBNV và phòng ban từ Google Workspace Directory</li>
-            <li>Bản in theo bố cục mẫu giấy</li>
-            <li>Dùng được trên điện thoại</li>
+            <li>One public form route with dynamic fields</li>
+            <li>Identification by name plus employee code, no login</li>
+            <li>QR codes for the workshops and noticeboards</li>
+            <li>Lookup page: track · withdraw · enter real times · print</li>
+            <li>Google sign-in for the admin zone</li>
+            <li>Overview screen for managers and HR</li>
+            <li>Shared approval queue, Claim button, lock against double approval</li>
+            <li>Four personal tabs on the approval screen</li>
+            <li>Approve, or reject with a reason</li>
+            <li>Supervisors filing on behalf of workers</li>
+            <li>Gate booth screen with Cho ra / Cho vào buttons</li>
+            <li>Two Google Chat spaces: approvers and guards</li>
+            <li>SLA reminders at 1 h and 2 h</li>
+            <li>Hours computed from the company working day</li>
+            <li>Timesheet screen: filters · Excel · mark as done · mandatory adjustment reason</li>
+            <li>Staff and department sync from Google Workspace Directory</li>
+            <li>Print layouts matching the paper forms</li>
+            <li>Works on a phone</li>
           </ul>
         </div>
         <div class="card card--out">
-          <h4>Để lại Phase 2</h4>
+          <h4>Left to Phase 2</h4>
           <ul>
-            <li>Tự động trừ ngày lễ — Phase 1 chỉ trừ Chủ nhật</li>
-            <li>Theo dõi số ngày phép năm còn lại</li>
-            <li>Nối trực tiếp vào máy chấm công / bảng lương</li>
-            <li>Nhắn riêng Google Chat cho từng người</li>
-            <li>Quét mã QR của từng đơn tại cổng thay vì tìm trong bảng</li>
-            <li>Đăng nhập đích danh cho từng bảo vệ</li>
-            <li>Màn hình quản trị phòng ban &amp; CBNV cho Nhân sự</li>
-            <li>Phân quyền duyệt theo phòng ban</li>
-            <li>Ứng dụng cài đặt trên điện thoại</li>
+            <li>Automatic public-holiday deduction — Phase 1 deducts Sundays only</li>
+            <li>Tracking remaining annual leave</li>
+            <li>Direct feed into the time clock or payroll</li>
+            <li>Direct Google Chat messages to individuals</li>
+            <li>Scanning each request's QR code at the gate instead of finding it in the table</li>
+            <li>Named sign-in for each guard</li>
+            <li>An admin screen for departments and staff</li>
+            <li>Approval rights scoped by department</li>
+            <li>An installable phone app</li>
           </ul>
         </div>
       </div>
@@ -791,13 +796,13 @@
 
     <!-- V -->
     <section class="sec" id="s5">
-      <h2><em>V</em>Người dùng và quyền</h2>
+      <h2><em>V</em>Roles and permissions</h2>
       <div class="tw">
         <table>
-          <thead><tr><th class="c2">Vai trò</th><th class="c1">Ai</th><th>Làm được gì</th></tr></thead>
+          <thead><tr><th class="c2">Role</th><th class="c1">Who</th><th>What they can do</th></tr></thead>
           <tbody>
             <tr>
-              <td><span class="pill pill--info">Người duyệt</span></td>
+              <td><span class="pill pill--info">Approver</span></td>
               <td>
                 Chị Diệu <span class="sub mono">dieu@ctyhp.vn</span>
                 Chị Phúc <span class="sub mono">sx001@ctyhp.vn</span>
@@ -805,40 +810,40 @@
                 Chị Hạnh <span class="sub mono">hanh@ctyhp.vn</span>
               </td>
               <td>
-                Nhận xử lý rồi duyệt hoặc từ chối đơn của <strong>toàn bộ CBNV</strong>, không phân theo phòng ban.
-                <span class="sub">Một chị duyệt là đơn có hiệu lực. Đơn của chính mình do ba chị còn lại xử lý — hệ thống ẩn nút Duyệt.</span>
+                Claim, then approve or reject requests from <strong>all staff</strong>, with no split by department.
+                <span class="sub">One approval is enough. Their own requests are handled by the other three — the system hides the approve button.</span>
               </td>
             </tr>
             <tr>
-              <td><span class="pill pill--info">Chấm công</span></td>
-              <td>Chị Khoa — C&amp;B Nhân sự <span class="sub mono">anhkhoa@ctyhp.vn</span></td>
+              <td><span class="pill pill--info">C&amp;B</span></td>
+              <td>Chị Khoa — HR compensation &amp; benefits <span class="sub mono">anhkhoa@ctyhp.vn</span></td>
               <td>
-                Xem mọi đơn đã duyệt · sửa giờ chốt kèm lý do bắt buộc · lọc · tải Excel · đánh dấu đã chấm công ·
-                hủy đơn đã duyệt kèm lý do · sửa giờ ra vào thực tế đã quá hạn.
+                See every approved request · edit final hours with a mandatory reason · filter · download Excel ·
+                mark as done · cancel an approved request with a reason · edit real gate times after the deadline.
               </td>
             </tr>
             <tr>
-              <td><span class="pill pill--info">Quản xưởng</span></td>
-              <td>Trưởng bộ phận khối sản xuất <span class="sub">danh sách do PNS chỉ định</span></td>
+              <td><span class="pill pill--info">Supervisor</span></td>
+              <td>Production department heads <span class="sub">named by HR</span></td>
               <td>
-                Tạo đơn hộ công nhân <strong>thuộc bộ phận mình</strong>; xem trạng thái các đơn mình đã tạo hộ.
-                <span class="sub">Không có quyền duyệt. Đơn tạo hộ ghi rõ “do … tạo hộ” và vẫn phải qua bốn chị.</span>
+                File on behalf of workers <strong>in their own department</strong>; track the requests they filed.
+                <span class="sub">No approval rights. Such a request records who filed it and still goes to the four approvers.</span>
               </td>
             </tr>
             <tr>
-              <td><span class="pill pill--draft">Bảo vệ</span></td>
-              <td>Bảo vệ trực tại bốt cổng <span class="sub">vào bằng mã PIN của bốt</span></td>
+              <td><span class="pill pill--draft">Guard</span></td>
+              <td>The guard on duty at the gate booth <span class="sub">opens with the booth PIN</span></td>
               <td>
-                Xem bảng đơn ra vào cổng <strong>đã duyệt, trong ngày</strong>; bấm Cho ra / Cho vào để ghi giờ thực tế.
-                <span class="sub">Không thấy lý do nghỉ, không thấy đơn nghỉ phép, không sửa được đơn.</span>
+                See the table of <strong>approved gate passes for today</strong>; tap Cho ra / Cho vào to record real times.
+                <span class="sub">No leave reasons, no leave requests, and no way to change a request.</span>
               </td>
             </tr>
             <tr>
-              <td><span class="pill pill--mute">CBNV</span></td>
-              <td>Toàn bộ CBNV — <strong>không cần email công ty</strong></td>
+              <td><span class="pill pill--mute">Employee</span></td>
+              <td>All staff — <strong>a company email is not required</strong></td>
               <td>
-                Gửi đơn trên form công khai; tra cứu · rút đơn còn chờ · cập nhật giờ vào lại thực tế · in đơn của mình.
-                <span class="sub">Chỉ mở được đơn khi có mã đơn kèm mã CBNV, hoặc link riêng cấp lúc gửi.</span>
+                File on the public form; look up · withdraw a pending request · enter the real return time · print their own request.
+                <span class="sub">A request opens only with its code plus the employee code, or the private link issued at filing.</span>
               </td>
             </tr>
           </tbody>
@@ -848,58 +853,58 @@
 
     <!-- VI -->
     <section class="sec" id="s6">
-      <h2><em>VI</em>Luồng xử lý và thông báo</h2>
+      <h2><em>VI</em>Flow and notifications</h2>
       <div class="frame">
 <pre class="mermaid">
 flowchart LR
-  A["CBNV gửi đơn<br/>form công khai"] --> B["Chờ duyệt<br/>hàng chờ chung"]
-  Q["Quản xưởng tạo hộ"] --> B
-  B --> R["Đang xử lý<br/>1 trong 4 chị đã nhận"]
-  R --> C["Đã duyệt<br/>ghi tên + thời điểm"]
-  R --> D["Bị từ chối<br/>kèm lý do"]
-  B --> E["Đã rút<br/>CBNV tự rút"]
-  R -.->|"30 phút không quyết"| B
-  C --> G["Bốt bảo vệ<br/>Cho ra · Cho vào"]
-  G --> F["Chị Khoa chấm công"]
+  A["Employee files<br/>public form"] --> B["Pending<br/>shared queue"]
+  Q["Supervisor files<br/>on behalf"] --> B
+  B --> R["Claimed<br/>1 of 4 approvers"]
+  R --> C["Approved<br/>name + timestamp"]
+  R --> D["Rejected<br/>with reason"]
+  B --> E["Withdrawn<br/>by the employee"]
+  R -.->|"30 min, no decision"| B
+  C --> G["Gate booth<br/>Cho ra · Cho vào"]
+  G --> F["Chị Khoa · timesheet"]
   C --> F
-  F --> H["Đánh dấu đã chấm"]
-  F --> X["Tải file Excel"]
-  B -.->|"1h · 2h chưa ai nhận"| N["Nhóm Chat Duyệt"]
+  F --> H["Marked as done"]
+  F --> X["Excel download"]
+  B -.->|"1 h · 2 h unclaimed"| N["Approvers' Chat space"]
   R -.-> N
   D -.-> N
   E -.-> N
-  C -.-> M["Nhóm Chat Bảo vệ"]
+  C -.-> M["Guards' Chat space"]
 </pre>
       </div>
       <p style="margin-top:1rem">
-        Trạng thái đơn:
+        Request states, labelled in the app as:
         <span class="pill pill--draft">Chờ duyệt</span>
         <span class="pill pill--info">Đang xử lý</span>
         <span class="pill pill--ok">Đã duyệt</span>
         <span class="pill pill--stop">Bị từ chối</span>
         <span class="pill pill--mute">Đã rút</span>
-        <span class="sub" style="display:inline">— riêng đơn ra vào cổng có thêm dấu <b>Đã ra</b> và <b>Đã vào</b> do bảo vệ ghi.</span>
+        <span class="sub" style="display:inline">— gate passes additionally carry the guard's <b>Đã ra</b> and <b>Đã vào</b> marks.</span>
       </p>
 
-      <h3>Ai nhận thông báo nào</h3>
+      <h3>Who is told what</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Việc xảy ra</th><th class="c2">Nhóm Duyệt</th><th class="c2">Nhóm Bảo vệ</th><th>Nội dung tin</th></tr></thead>
+          <thead><tr><th class="c1">Event</th><th class="c2">Approvers</th><th class="c2">Guards</th><th>Message content</th></tr></thead>
           <tbody>
-            <tr><td>Đơn mới chờ duyệt</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Tên · phòng ban · loại đơn · thời gian · số giờ · link mở đơn</td></tr>
-            <tr><td>Chưa ai nhận sau 1 giờ làm việc</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Nhắc nhẹ, kèm số đơn đang chờ</td></tr>
-            <tr><td>Chưa ai nhận sau 2 giờ làm việc</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Nhắc lần hai, gọi tên cả bốn chị</td></tr>
-            <tr><td>Một chị nhận xử lý</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>“Chị Diệu đang xử lý đơn …” — để ba chị còn lại khỏi mở</td></tr>
-            <tr><td>Đơn ra vào cổng được duyệt</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--ok">Có</span></td><td>Tin cho bảo vệ: tên · phòng ban · giờ ra · giờ vào dự kiến. <strong>Không có lý do</strong></td></tr>
-            <tr><td>Đơn nghỉ phép được duyệt</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Bảo vệ không cần biết ai nghỉ phép ở nhà</td></tr>
-            <tr><td>Đơn bị từ chối</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Tên · loại đơn · người từ chối. Lý do từ chối không đưa vào tin</td></tr>
-            <tr><td>CBNV rút đơn</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--mute">Không</span></td><td>Cập nhật vào đúng luồng tin của đơn đó, để không ai duyệt đơn đã rút</td></tr>
-            <tr><td>Đơn đã duyệt bị chị Khoa hủy</td><td><span class="pill pill--ok">Có</span></td><td><span class="pill pill--ok">Có</span></td><td>Bảo vệ phải biết để không cho ra cổng nữa</td></tr>
+            <tr><td>New request pending</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--mute">No</span></td><td>Name · department · type · dates · hours · link to open it</td></tr>
+            <tr><td>Unclaimed after 1 working hour</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--mute">No</span></td><td>A gentle nudge with the number of pending requests</td></tr>
+            <tr><td>Unclaimed after 2 working hours</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--mute">No</span></td><td>A second nudge, naming all four approvers</td></tr>
+            <tr><td>An approver claims a request</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--mute">No</span></td><td>"Chị Diệu is handling …" — so the other three do not open it</td></tr>
+            <tr><td>A gate pass is approved</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--ok">Yes</span></td><td>To the guards: name · department · exit time · expected return. <strong>No reason</strong></td></tr>
+            <tr><td>A leave request is approved</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--mute">No</span></td><td>Guards do not need to know who is on leave at home</td></tr>
+            <tr><td>A request is rejected</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--mute">No</span></td><td>Name · type · who rejected it. The rejection reason stays out of the message</td></tr>
+            <tr><td>An employee withdraws a request</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--mute">No</span></td><td>Posted into that request's own thread, so nobody decides a withdrawn request</td></tr>
+            <tr><td>Chị Khoa cancels an approved request</td><td><span class="pill pill--ok">Yes</span></td><td><span class="pill pill--ok">Yes</span></td><td>The guards must know not to let the person out</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Mô phỏng tin nhắn</h3>
+      <h3>Sample messages</h3>
       <div class="grid-figs">
         <figure>
           <div class="scroller">
@@ -918,8 +923,8 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Nhóm Duyệt</b> — tin <strong>không kèm lý do nghỉ</strong>. Lý do có thể là chuyện sức khoẻ hoặc gia đình;
-            ai cần đọc thì mở đơn trong app.
+            <b>Approvers' space</b> — the message carries <strong>no leave reason</strong>. A reason can be
+            about health or family; whoever needs to read it opens the request in the app.
           </figcaption>
         </figure>
 
@@ -940,8 +945,8 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Nhóm Bảo vệ</b> — chỉ đơn ra vào cổng, chỉ những gì cần để cho qua cổng. Không có lý do,
-            không có đơn nghỉ phép.
+            <b>Guards' space</b> — gate passes only, and only what is needed to let someone through the
+            gate. No reasons, and no leave requests.
           </figcaption>
         </figure>
 
@@ -962,9 +967,9 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Nhắc SLA</b> — mốc 1 giờ nhắc nhẹ, mốc 2 giờ gọi tên cả bốn chị. Chỉ đếm giờ làm việc:
-            đơn gửi 16:30 thứ Bảy còn 30 phút làm việc trong ngày, nên mốc 1 giờ rơi vào 08:30 thứ Hai,
-            không nhắc lúc nửa đêm.
+            <b>SLA reminder</b> — a nudge at one hour, then a second naming all four approvers. Working
+            hours only: a request filed at 16:30 on Saturday has 30 working minutes left that day, so
+            its first hour falls at 08:30 on Monday rather than at midnight.
           </figcaption>
         </figure>
       </div>
@@ -972,123 +977,129 @@ flowchart LR
 
     <!-- VII -->
     <section class="sec" id="s7">
-      <h2><em>VII</em>Phân công đơn giữa bốn người duyệt</h2>
+      <h2><em>VII</em>Splitting work between four approvers</h2>
       <p>
-        Trên giấy chỉ có một tờ nên không bao giờ hai người ký cùng lúc. Trên app thì bốn chị mở cùng một
-        hàng chờ, nên phải có cơ chế để một đơn chỉ một người xử lý, và để không đơn nào bị cả bốn chị
-        tưởng người khác làm rồi.
+        On paper there is one sheet, so two people can never sign at once. In the app all four
+        approvers watch the same queue, so something has to guarantee that one request is handled by
+        one person — and that no request sits untouched because each approver assumes another took it.
       </p>
 
-      <h3>Bốn cơ chế</h3>
+      <h3>Four mechanisms</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Cơ chế</th><th>Cách chạy</th><th class="c3">Chống được gì</th></tr></thead>
+          <thead><tr><th class="c1">Mechanism</th><th>How it works</th><th class="c3">What it prevents</th></tr></thead>
           <tbody>
             <tr>
-              <td><strong>Nhận xử lý</strong><span class="sub">Claim</span></td>
+              <td><strong>Claim</strong><span class="sub">Nhận xử lý</span></td>
               <td>
-                Mỗi dòng có nút <strong>Nhận xử lý</strong>. Bấm xong đơn chuyển sang <em>Đang xử lý</em>, ghi tên và thời điểm.
-                Ba chị còn lại thấy dòng đó xám lại kèm chữ “Chị Diệu đang xử lý”.
-                <span class="sub">Nhận rồi <strong>tự nhả về hàng chờ sau 30 phút</strong> nếu không duyệt cũng không từ chối. Người nhận cũng có nút Nhả đơn.</span>
+                Every row carries a <strong>Nhận xử lý</strong> button. Once tapped the request moves to
+                <em>Đang xử lý</em> with a name and a timestamp, and the other three see the row greyed out and
+                labelled "Chị Diệu đang xử lý".
+                <span class="sub">A claim <strong>returns to the queue after 30 minutes</strong> without a decision. The holder can also release it.</span>
               </td>
-              <td>Bốn người cùng mở một đơn</td>
+              <td>Four people opening one request</td>
             </tr>
             <tr>
-              <td><strong>Khóa theo phiên bản</strong><span class="sub">Optimistic locking</span></td>
+              <td><strong>Version lock</strong><span class="sub">Optimistic locking</span></td>
               <td>
-                Mỗi đơn giữ một số phiên bản, tăng lên sau mỗi lần đổi trạng thái. Nút Duyệt gửi kèm số phiên bản
-                đang hiển thị trên máy; nếu số đó không còn khớp thì hệ thống <strong>từ chối thao tác</strong> và hiện
-                “Đơn này chị Trân vừa duyệt lúc 09:31”.
-                <span class="sub">Ràng buộc đặt ở tầng cơ sở dữ liệu, không chỉ ở giao diện.</span>
+                Each request carries a version number that increases on every state change. The approve
+                action sends the version on screen; if it no longer matches, the system <strong>refuses the
+                action</strong> and shows "Chị Trân approved this at 09:31".
+                <span class="sub">The check lives in the database, not only in the interface.</span>
               </td>
-              <td>Hai lần duyệt ghi đè nhau</td>
+              <td>Two decisions overwriting each other</td>
             </tr>
             <tr>
-              <td><strong>Tự cập nhật</strong><span class="sub">Real-time</span></td>
+              <td><strong>Live refresh</strong><span class="sub">Real-time</span></td>
               <td>
-                Bảng hàng chờ nghe thay đổi từ cơ sở dữ liệu. Đơn được nhận, duyệt, từ chối hay rút thì các máy
-                khác thấy ngay, không cần bấm tải lại. Số đơn chờ trên menu cũng đổi theo.
+                The queue subscribes to database changes. A request being claimed, decided or withdrawn
+                appears on every other screen at once, with no reload, and the pending count in the menu
+                follows.
               </td>
-              <td>Nhìn số liệu cũ rồi bấm oan</td>
+              <td>Acting on figures that are already stale</td>
             </tr>
             <tr>
-              <td><strong>Nhắc theo mốc</strong><span class="sub">SLA reminder</span></td>
+              <td><strong>Timed reminders</strong><span class="sub">SLA</span></td>
               <td>
-                Đếm từ lúc gửi, <strong>chỉ tính giờ làm việc</strong>. Mốc 1 giờ nhắc nhẹ vào nhóm Duyệt; mốc 2 giờ
-                nhắc lại kèm gọi tên cả bốn chị. Đơn đã có người nhận thì ngừng nhắc.
+                Counted from filing, <strong>in working hours only</strong>. One hour brings a gentle nudge to
+                the approvers' space; two hours brings a second naming all four. A claimed request stops the
+                clock.
               </td>
-              <td>Đơn nằm im vì ai cũng tưởng người khác làm</td>
+              <td>Requests sitting still because everyone assumes someone else has it</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Bốn tab ở màn hình duyệt</h3>
+      <h3>Four tabs on the approval screen</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Tab</th><th>Hiện những đơn nào</th><th class="c3">Dùng để</th></tr></thead>
+          <thead><tr><th class="c1">Tab</th><th>Shows</th><th class="c3">Used for</th></tr></thead>
           <tbody>
-            <tr><td>Tất cả đơn chờ</td><td>Mọi đơn <em>Chờ duyệt</em> và <em>Đang xử lý</em> của toàn công ty</td><td>Xem bức tranh chung</td></tr>
-            <tr><td>Đơn tôi đã nhận</td><td>Đơn mình đang giữ, chưa quyết — kèm đồng hồ đếm 30 phút</td><td>Việc của mình</td></tr>
-            <tr><td>Đơn tôi đã duyệt</td><td>Đơn mình đã duyệt hoặc từ chối, mới nhất trước</td><td>Tra lại việc đã làm</td></tr>
-            <tr><td>Quá hạn</td><td>Đơn chờ quá 2 giờ làm việc mà chưa ai nhận</td><td>Dọn phần bị bỏ quên</td></tr>
+            <tr><td>Tất cả đơn chờ</td><td>Every company request that is pending or claimed</td><td>The overall picture</td></tr>
+            <tr><td>Đơn tôi đã nhận</td><td>Requests you hold and have not decided, with the 30-minute countdown</td><td>Your own work</td></tr>
+            <tr><td>Đơn tôi đã duyệt</td><td>Requests you approved or rejected, newest first</td><td>Checking back</td></tr>
+            <tr><td>Quá hạn</td><td>Requests unclaimed for more than 2 working hours</td><td>Clearing what was missed</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note" style="margin-top:1rem">
-        <strong>Nhận xử lý không phải là phân công cứng.</strong> Không ai bị gán đơn tự động, và bốn chị vẫn
-        có thẩm quyền như nhau trên toàn bộ CBNV. Cơ chế này chỉ để bốn người không đụng nhau; nếu chị nhận
-        đơn đi vắng, sau 30 phút đơn tự về hàng chờ cho người khác.
+        <strong>Claiming is not a hard assignment.</strong> Nobody is allocated a request automatically, and
+        all four approvers keep equal authority over all staff. The mechanism exists only so four people do
+        not collide; if the holder steps away, the request returns to the queue after 30 minutes.
       </div>
     </section>
 
     <!-- VIII -->
     <section class="sec" id="s8">
-      <h2><em>VIII</em>Màn hình bốt bảo vệ</h2>
+      <h2><em>VIII</em>The gate booth screen</h2>
       <p>
-        Trên giấy, bảo vệ ký vào ô “Bảo vệ tiếp nhận” rồi gom tờ giấy chuyển về Nhân sự. Trên app, bảo vệ
-        không ký và không giữ giấy nữa — chỉ bấm một nút để ghi lại đúng thời điểm CBNV ra và vào.
+        On paper the guard signs the "Bảo vệ tiếp nhận" box, then collects the sheets and forwards them
+        to HR. In the app the guard neither signs nor holds paper — they tap one button to record when
+        the person actually left and returned.
       </p>
 
-      <h3>Cách vào và cách dùng</h3>
+      <h3>Getting in, and using it</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Hạng mục</th><th>Quy định Phase 1</th></tr></thead>
+          <thead><tr><th class="c1">Item</th><th>Phase 1 rule</th></tr></thead>
           <tbody>
-            <tr><td>Vào màn hình</td><td>Mở <code>/bao-ve</code>, nhập <strong>mã PIN của bốt</strong>. Phiên giữ 30 ngày trên đúng máy đó nên đổi ca không phải nhập lại.</td></tr>
-            <tr><td>Đổi mã PIN</td><td>Chị Khoa đổi được trong vùng quản trị; đổi xong mọi máy bốt phải nhập lại.</td></tr>
-            <tr><td>Thấy gì</td><td>Chỉ đơn <strong>ra vào cổng</strong>, <strong>đã duyệt</strong>, có giờ ra thuộc <strong>ngày hôm nay</strong>. Sắp theo giờ ra gần nhất trước.</td></tr>
-            <tr><td>Không thấy gì</td><td>Không thấy đơn nghỉ phép, không thấy lý do xin phép, không thấy đơn của ngày khác, không thấy đơn chưa duyệt.</td></tr>
-            <tr><td>Thao tác</td><td>Hai nút mỗi dòng: <strong>Cho ra</strong> và <strong>Cho vào</strong>. Bấm là ghi ngay giờ hệ thống, không nhập tay giờ.</td></tr>
-            <tr><td>Bấm sai</td><td>Hoàn tác được trong <strong>5 phút</strong> ngay trên dòng đó. Quá 5 phút thì chị Khoa sửa kèm lý do.</td></tr>
-            <tr><td>Thứ tự</td><td>Phải <em>Cho ra</em> trước mới <em>Cho vào</em> được. Bấm Cho vào trước, hệ thống chặn kèm nhắc.</td></tr>
-            <tr><td>Ghi lại gì</td><td>Thời điểm đến giây · thao tác · mã bốt. Phase 1 <strong>không ghi đích danh</strong> bảo vệ nào bấm.</td></tr>
-            <tr><td>Mất mạng</td><td>Bảo vệ ghi tay lên sổ ca như hiện nay, chị Khoa nhập bù kèm lý do. Bản offline thuộc Phase 2.</td></tr>
+            <tr><td>Opening the screen</td><td>Open <code>/bao-ve</code> and enter the <strong>booth PIN</strong>. The session lasts 30 days on that machine, so a shift change needs no sign-in.</td></tr>
+            <tr><td>Changing the PIN</td><td>Chị Khoa can change it in the admin zone; every booth machine must then re-enter it.</td></tr>
+            <tr><td>What is shown</td><td>Only <strong>gate passes</strong>, only <strong>approved</strong> ones, with an exit time <strong>today</strong>. Soonest exit first.</td></tr>
+            <tr><td>What is not shown</td><td>No leave requests, no reasons, no other day's requests, nothing undecided.</td></tr>
+            <tr><td>Actions</td><td>Two buttons per row: <strong>Cho ra</strong> and <strong>Cho vào</strong>. A tap records the system time; times are never typed.</td></tr>
+            <tr><td>Mis-taps</td><td>Undoable for <strong>5 minutes</strong> on that row. After that, Chị Khoa edits it with a reason.</td></tr>
+            <tr><td>Order</td><td><em>Cho ra</em> must come before <em>Cho vào</em>. Tapping the return first is refused, with an explanation.</td></tr>
+            <tr><td>What is recorded</td><td>The moment to the second · the action · the booth. Phase 1 does <strong>not</strong> record which guard tapped.</td></tr>
+            <tr><td>Network loss</td><td>The guard uses the shift logbook as today, and Chị Khoa keys it in with a reason. An offline mode is Phase 2.</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Giờ nào được tính</h3>
+      <h3>Which time counts</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Tình huống</th><th>Giờ hệ thống dùng để tính công</th></tr></thead>
+          <thead><tr><th class="c1">Situation</th><th>Time used for pay</th></tr></thead>
           <tbody>
-            <tr><td>Bảo vệ bấm cả Cho ra và Cho vào</td><td><strong>Giờ bảo vệ bấm</strong> — số đo tại cổng, tin cậy nhất</td></tr>
-            <tr><td>Bảo vệ chỉ bấm Cho ra</td><td>Giờ ra lấy của bảo vệ; giờ vào lấy của CBNV tự khai, đánh dấu <em>chưa xác nhận tại cổng</em></td></tr>
-            <tr><td>Bảo vệ không bấm gì</td><td>Lấy giờ CBNV tự khai, hiện cảnh báo trên màn chấm công</td></tr>
-            <tr><td>Giờ bảo vệ lệch giờ CBNV khai quá 15 phút</td><td>Vẫn lấy giờ bảo vệ, nhưng đánh dấu để chị Khoa xem lại</td></tr>
+            <tr><td>The guard tapped both buttons</td><td><strong>The guard's times</strong> — measured at the gate, the most reliable figure</td></tr>
+            <tr><td>The guard tapped only Cho ra</td><td>Exit from the guard; return from the employee, flagged <em>not confirmed at the gate</em></td></tr>
+            <tr><td>The guard tapped nothing</td><td>The employee's own times, with a warning on the timesheet screen</td></tr>
+            <tr><td>Guard and employee times differ by more than 15 minutes</td><td>Still the guard's times, flagged for Chị Khoa to review</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note note--info" style="margin-top:1rem">
-        <strong>Phase 1 vẫn cần bảo vệ tìm tên trong bảng.</strong> Bảng một ngày thường dưới 20 dòng nên tìm bằng
-        mắt là đủ, kèm ô tìm theo tên. Quét mã QR của từng đơn ngay tại cổng thuộc Phase 2.
+        <strong>In Phase 1 the guard still finds the name in a table.</strong> A day's table is normally under
+        20 rows, so reading it is enough, and there is a search box by name. Scanning each request's QR code
+        at the gate is Phase 2.
       </div>
     </section>
 
     <!-- IX -->
     <section class="sec" id="s9">
-      <h2><em>IX</em>Hai mẫu giấy hiện hành</h2>
+      <h2><em>IX</em>The two paper forms in use today</h2>
+      <p>Reproduced as they are, in Vietnamese, because these sheets are the source the app has to match field for field.</p>
       <div class="grid-figs">
         <figure>
           <div class="scroller">
@@ -1116,7 +1127,7 @@ flowchart LR
               </div>
             </div>
           </div>
-          <figcaption><b>Mẫu 1</b> — Đơn xin nghỉ phép.</figcaption>
+          <figcaption><b>Form 1</b> — leave application.</figcaption>
         </figure>
 
         <figure>
@@ -1139,80 +1150,81 @@ flowchart LR
               <p class="n">Lưu ý: CB-NV phải nộp lại phiếu này cho Bảo vệ để chuyển về Phòng Nhân sự làm căn cứ tính lương</p>
             </div>
           </div>
-          <figcaption><b>Mẫu 2</b> — Giấy xin phép ra vào cổng.</figcaption>
+          <figcaption><b>Form 2</b> — gate pass.</figcaption>
         </figure>
       </div>
     </section>
 
     <!-- X -->
     <section class="sec" id="s10">
-      <h2><em>X</em>Trường dữ liệu</h2>
+      <h2><em>X</em>Data fields</h2>
       <p>
-        App giữ lại toàn bộ các trường trên mẫu giấy; chỉ thay cách thu thập và cách ký. Hai mẫu dùng
-        <strong>một địa chỉ duy nhất</strong> <code>/don</code>: ô đầu tiên chọn loại đơn, các trường bên dưới đổi theo.
+        The app keeps every field on the paper forms; only the way they are collected and signed
+        changes. Both forms share <strong>one address</strong>, <code>/don</code>: the first field picks the
+        type and the fields below change to match.
       </p>
 
-      <h3>Phần chung — nhận diện người gửi</h3>
+      <h3>Shared — identifying the person filing</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Trường</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <thead><tr><th class="c1">Field</th><th>In the app</th><th class="c3">Required</th></tr></thead>
           <tbody>
-            <tr><td class="pf">Loại đơn</td><td>Hai lựa chọn lớn: <strong>Xin nghỉ phép</strong> · <strong>Ra vào cổng</strong>. Đổi lựa chọn thì phần dưới đổi theo</td><td>Có</td></tr>
-            <tr><td class="pf">Tôi tên là</td><td>Ô tìm và chọn tên trong danh sách CBNV đồng bộ từ Google Directory — gõ vài chữ là ra</td><td>Có</td></tr>
-            <tr><td class="pf">Mã CBNV</td><td>Ô nhập. Phải khớp với tên đã chọn mới gửi được. Sai 5 lần thì khóa 15 phút</td><td>Có</td></tr>
-            <tr><td class="pf">Chức vụ / Phòng–Ban–Bộ phận</td><td>Tự hiện ra sau khi chọn tên, chỉ đọc</td><td>tự động</td></tr>
-            <tr><td class="pf">— không có trên giấy</td><td><strong>Mã đơn</strong> hệ thống cấp sau khi gửi, ví dụ <span class="mono">NP-2607-0148</span>, kèm link riêng để theo dõi</td><td>tự động</td></tr>
-            <tr><td class="pf">— không có trên giấy</td><td><strong>Người tạo hộ</strong> — điền khi quản xưởng tạo thay công nhân, in ra bản giấy luôn</td><td>Có điều kiện</td></tr>
+            <tr><td class="pf">Form type</td><td>Two large choices: <strong>Xin nghỉ phép</strong> · <strong>Ra vào cổng</strong>. Switching one redraws everything below</td><td>Yes</td></tr>
+            <tr><td class="pf">Full name</td><td>Search and pick from the staff list synced from Google Directory — a few letters is enough</td><td>Yes</td></tr>
+            <tr><td class="pf">Employee code</td><td>Typed. Must match the chosen name or the request will not send. Five wrong tries locks it for 15 minutes</td><td>Yes</td></tr>
+            <tr><td class="pf">Job title / department</td><td>Appear once the name is chosen; read-only</td><td>automatic</td></tr>
+            <tr><td class="pf">— not on the paper form</td><td>A <strong>request code</strong> issued on filing, e.g. <span class="mono">NP-2607-0148</span>, with a private tracking link</td><td>automatic</td></tr>
+            <tr><td class="pf">— not on the paper form</td><td><strong>Filed by</strong> — set when a supervisor files for a worker, and shown on the printed copy too</td><td>conditional</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Phần riêng — Đơn xin nghỉ phép</h3>
+      <h3>Leave application</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Trên mẫu giấy</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <thead><tr><th class="c1">On the paper form</th><th>In the app</th><th class="c3">Required</th></tr></thead>
           <tbody>
-            <tr><td class="pf">Được nghỉ từ ngày … đến ngày …</td><td>Hai ô chọn ngày, thêm lựa chọn nghỉ nửa ngày sáng hoặc chiều</td><td>Có</td></tr>
-            <tr><td class="pf">Tổng thời gian nghỉ</td><td>Hệ thống tự tính ra ngày và giờ theo mục XI</td><td>tự động</td></tr>
-            <tr><td class="pf">Lý do — 8 ô đánh dấu</td><td>Chọn một. Chọn <strong>Trường hợp đặc biệt</strong> hoặc <strong>Khác</strong> thì hiện ô để tự ghi rõ</td><td>Có</td></tr>
-            <tr><td class="pf">Lý do (dòng viết tay)</td><td>Ô văn bản diễn giải</td><td>Có</td></tr>
-            <tr><td class="pf">Bàn giao lại cho</td><td>Chọn một CBNV trong danh sách</td><td>Có</td></tr>
-            <tr><td class="pf">Đề xuất ngày làm bù</td><td>Ô chọn ngày</td><td>Không</td></tr>
-            <tr><td class="pf">Cam kết không ảnh hưởng công việc</td><td>Ô tích, in nguyên văn cam kết bên cạnh</td><td>Có</td></tr>
-            <tr><td class="pf">4 ô ký: BGĐ · GSNB · TP/TBP · Người làm đơn</td><td>Ô người làm đơn ghi tên đã chọn kèm mã đơn và thời điểm gửi; ba ô còn lại thay bằng một trong bốn chị, ghi tên và thời điểm duyệt</td><td>tự động</td></tr>
+            <tr><td class="pf">Được nghỉ từ ngày … đến ngày …</td><td>Two date pickers, plus a morning or afternoon half-day option</td><td>Yes</td></tr>
+            <tr><td class="pf">Tổng thời gian nghỉ</td><td>Computed in days and hours per section XI</td><td>automatic</td></tr>
+            <tr><td class="pf">Lý do — 8 checkboxes</td><td>Pick one. <strong>Trường hợp đặc biệt</strong> or <strong>Khác</strong> opens a free-text box</td><td>Yes</td></tr>
+            <tr><td class="pf">Lý do (handwritten line)</td><td>A free-text explanation</td><td>Yes</td></tr>
+            <tr><td class="pf">Bàn giao lại cho</td><td>Pick a colleague from the list</td><td>Yes</td></tr>
+            <tr><td class="pf">Đề xuất ngày làm bù</td><td>A date picker</td><td>No</td></tr>
+            <tr><td class="pf">Cam kết không ảnh hưởng công việc</td><td>A checkbox, with the full undertaking printed beside it</td><td>Yes</td></tr>
+            <tr><td class="pf">4 signature boxes</td><td>The applicant box carries the chosen name, the request code and the filing time; the other three become one approver's name and timestamp</td><td>automatic</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Phần riêng — Giấy xin phép ra vào cổng</h3>
+      <h3>Gate pass</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Trên mẫu giấy</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <thead><tr><th class="c1">On the paper form</th><th>In the app</th><th class="c3">Required</th></tr></thead>
           <tbody>
-            <tr><td class="pf">Lý do: Đi công tác · Nghỉ phép · Khác</td><td>Chọn một. Chọn <strong>Khác</strong> thì hiện ô để tự ghi rõ</td><td>Có</td></tr>
-            <tr><td class="pf">Diễn giải</td><td>Ô văn bản</td><td>Có</td></tr>
-            <tr><td class="pf">Thời gian ra</td><td>Một ô chọn ngày và giờ</td><td>Có</td></tr>
-            <tr><td class="pf">Thời gian vào lại</td><td>Một ô chọn ngày và giờ, hiểu là dự kiến; phải sau thời gian ra</td><td>Có</td></tr>
-            <tr><td class="pf">Thời gian vào sớm / vào trễ</td><td>Hệ thống tính chênh lệch giữa giờ vào lại thực tế và giờ dự kiến</td><td>tự động</td></tr>
-            <tr><td class="pf">Lý do của việc vào sớm/vào trễ</td><td>Ô văn bản, bắt buộc khi lệch quá 15 phút</td><td>Có điều kiện</td></tr>
-            <tr><td class="pf">Ô ký “Bảo vệ tiếp nhận”</td><td><strong>Thay bằng hai dấu thời gian</strong> bảo vệ bấm tại bốt: <em>Đã cho ra</em> và <em>Đã cho vào</em>, kèm giờ đến giây và mã bốt</td><td>tự động</td></tr>
-            <tr><td class="pf">— không có trên giấy</td><td><strong>Giờ vào lại thực tế</strong>: ưu tiên giờ bảo vệ bấm; nếu bảo vệ không bấm thì CBNV nhập ở trang tra cứu, hạn chót hết ngày làm việc kế tiếp</td><td>Có</td></tr>
-            <tr><td class="pf">— không có trên giấy</td><td>Hệ thống tính <strong>số giờ vắng trong giờ làm</strong> để chấm công dùng trực tiếp</td><td>tự động</td></tr>
-            <tr><td class="pf">3 ô ký còn lại</td><td>Một trong bốn chị người duyệt</td><td>tự động</td></tr>
-            <tr><td class="pf">Lưu ý: nộp lại cho Bảo vệ để chuyển về Nhân sự</td><td>Không cần nữa — bảo vệ xác nhận ngay tại bốt, đơn tự chảy về màn hình chấm công</td><td>—</td></tr>
+            <tr><td class="pf">Lý do: Đi công tác · Nghỉ phép · Khác</td><td>Pick one. <strong>Khác</strong> opens a free-text box</td><td>Yes</td></tr>
+            <tr><td class="pf">Diễn giải</td><td>A free-text box</td><td>Yes</td></tr>
+            <tr><td class="pf">Thời gian ra</td><td>One date-and-time picker</td><td>Yes</td></tr>
+            <tr><td class="pf">Thời gian vào lại</td><td>One date-and-time picker, read as expected; must be after the exit</td><td>Yes</td></tr>
+            <tr><td class="pf">Thời gian vào sớm / vào trễ</td><td>Computed as the difference between the real return and the expected one</td><td>automatic</td></tr>
+            <tr><td class="pf">Lý do của việc vào sớm/vào trễ</td><td>A free-text box, required once the difference exceeds 15 minutes</td><td>conditional</td></tr>
+            <tr><td class="pf">"Bảo vệ tiếp nhận" signature box</td><td><strong>Replaced by two timestamps</strong> tapped at the booth: <em>Đã cho ra</em> and <em>Đã cho vào</em>, each to the second and with the booth recorded</td><td>automatic</td></tr>
+            <tr><td class="pf">— not on the paper form</td><td><strong>Real return time</strong>: the guard's tap wins; if the guard did not tap, the employee enters it on the lookup page by the end of the next working day</td><td>Yes</td></tr>
+            <tr><td class="pf">— not on the paper form</td><td>Computed <strong>hours absent within working time</strong>, used directly by the timesheet</td><td>automatic</td></tr>
+            <tr><td class="pf">The other 3 signature boxes</td><td>One of the four approvers</td><td>automatic</td></tr>
+            <tr><td class="pf">Note about handing the sheet to the guard</td><td>No longer needed — the guard confirms at the booth and the request flows to the timesheet</td><td>—</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Phần riêng — chấm công</h3>
+      <h3>Timesheet</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Trường</th><th>Trên app</th><th class="c3">Bắt buộc</th></tr></thead>
+          <thead><tr><th class="c1">Field</th><th>In the app</th><th class="c3">Required</th></tr></thead>
           <tbody>
-            <tr><td class="pf">Giờ tính</td><td>Số hệ thống tính, khóa, không ai sửa được</td><td>tự động</td></tr>
-            <tr><td class="pf">Giờ chốt</td><td>Số chị Khoa dùng để tính lương; mặc định bằng Giờ tính</td><td>Có</td></tr>
-            <tr><td class="pf">Lý do điều chỉnh</td><td>Ô văn bản, <strong>bắt buộc tối thiểu 10 ký tự</strong> khi Giờ chốt khác Giờ tính. Không ghi thì không lưu được</td><td>Có điều kiện</td></tr>
-            <tr><td class="pf">Vết sửa</td><td>Mỗi lần sửa lưu: số cũ · số mới · người sửa · thời điểm · lý do. Xem lại được toàn bộ, không xóa được</td><td>tự động</td></tr>
+            <tr><td class="pf">Computed hours</td><td>What the system calculated. Locked; nobody can edit it</td><td>automatic</td></tr>
+            <tr><td class="pf">Final hours</td><td>What Chị Khoa uses for payroll; defaults to the computed hours</td><td>Yes</td></tr>
+            <tr><td class="pf">Adjustment reason</td><td>Free text, <strong>at least 10 characters and mandatory</strong> whenever the final hours differ from the computed hours. Without it the row will not save</td><td>conditional</td></tr>
+            <tr><td class="pf">Edit trail</td><td>Every edit keeps the old value, new value, editor, timestamp and reason. All readable, none deletable</td><td>automatic</td></tr>
           </tbody>
         </table>
       </div>
@@ -1220,62 +1232,64 @@ flowchart LR
 
     <!-- XI -->
     <section class="sec" id="s11">
-      <h2><em>XI</em>Cách hệ thống tính thời gian</h2>
+      <h2><em>XI</em>How the system counts time</h2>
       <div class="duo">
         <div class="tw">
           <table>
-            <thead><tr><th class="c2">Quy ước</th><th>Giá trị</th></tr></thead>
+            <thead><tr><th class="c2">Convention</th><th>Value</th></tr></thead>
             <tbody>
-              <tr><td>Buổi sáng</td><td class="num">08:00 – 12:00 · 4 giờ</td></tr>
-              <tr><td>Nghỉ trưa</td><td class="num">12:00 – 13:00 · không tính</td></tr>
-              <tr><td>Buổi chiều</td><td class="num">13:00 – 17:00 · 4 giờ</td></tr>
-              <tr><td>Một ngày làm việc</td><td class="num">8 giờ</td></tr>
-              <tr><td>Ngày không làm</td><td>Chủ nhật — không tính vào thời gian nghỉ</td></tr>
-              <tr><td>Ngày lễ</td><td>Phase 1 chưa trừ tự động; chị Khoa sửa số giờ chốt kèm lý do</td></tr>
-              <tr><td>Múi giờ</td><td class="num">UTC+7 — kể cả trong file Excel</td></tr>
-              <tr><td>Mốc đếm SLA</td><td>Chỉ giờ làm việc; ngoài giờ và Chủ nhật dừng đếm</td></tr>
+              <tr><td>Morning</td><td class="num">08:00 – 12:00 · 4 h</td></tr>
+              <tr><td>Lunch</td><td class="num">12:00 – 13:00 · not counted</td></tr>
+              <tr><td>Afternoon</td><td class="num">13:00 – 17:00 · 4 h</td></tr>
+              <tr><td>One working day</td><td class="num">8 h</td></tr>
+              <tr><td>Non-working day</td><td>Sunday — never counted as leave</td></tr>
+              <tr><td>Public holidays</td><td>Not deducted in Phase 1; Chị Khoa edits the final hours with a reason</td></tr>
+              <tr><td>Time zone</td><td class="num">UTC+7 — including in the Excel file</td></tr>
+              <tr><td>SLA clock</td><td>Working hours only; it stops in the evening and on Sundays</td></tr>
             </tbody>
           </table>
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th class="c2">Ví dụ</th><th>CBNV nhập</th><th class="c3">Tính ra</th></tr></thead>
+            <thead><tr><th class="c2">Example</th><th>Input</th><th class="c3">Result</th></tr></thead>
             <tbody>
-              <tr><td>Nghỉ phép</td><td>Thứ Năm → Thứ Bảy, không có Chủ nhật</td><td class="num">24 giờ</td></tr>
-              <tr><td>Nghỉ phép</td><td>Thứ Bảy → Thứ Ba, có 1 Chủ nhật<span class="sub">4 ngày lịch</span></td><td class="num">24 giờ<span class="sub">trừ Chủ nhật</span></td></tr>
-              <tr><td>Nghỉ phép</td><td>Nửa ngày, buổi chiều</td><td class="num">4 giờ</td></tr>
-              <tr><td>Ra cổng</td><td>Ra 10:00 → vào 14:00</td><td class="num">3 giờ<span class="sub">trừ nghỉ trưa</span></td></tr>
-              <tr><td>Ra cổng</td><td>Ra 16:00 → vào 09:00 hôm sau</td><td class="num">2 giờ<span class="sub">1 giờ chiều + 1 giờ sáng</span></td></tr>
-              <tr><td>Ra cổng</td><td>Dự kiến vào 14:00, bảo vệ bấm 14:20</td><td class="num">Trễ 20 phút<span class="sub">&gt; 15 phút → phải ghi lý do</span></td></tr>
-              <tr><td>SLA</td><td>Gửi 16:30 thứ Bảy, chưa ai nhận</td><td class="num">Nhắc 08:30 thứ Hai<span class="sub">30 phút thứ Bảy + 30 phút thứ Hai</span></td></tr>
+              <tr><td>Leave</td><td>Thursday → Saturday, no Sunday</td><td class="num">24 h</td></tr>
+              <tr><td>Leave</td><td>Saturday → Tuesday, one Sunday<span class="sub">4 calendar days</span></td><td class="num">24 h<span class="sub">Sunday dropped</span></td></tr>
+              <tr><td>Leave</td><td>Half day, afternoon</td><td class="num">4 h</td></tr>
+              <tr><td>Gate pass</td><td>Out 10:00 → back 14:00</td><td class="num">3 h<span class="sub">lunch removed</span></td></tr>
+              <tr><td>Gate pass</td><td>Out 16:00 → back 09:00 next day</td><td class="num">2 h<span class="sub">1 h afternoon + 1 h morning</span></td></tr>
+              <tr><td>Gate pass</td><td>Expected back 14:00, guard tapped 14:20</td><td class="num">20 min late<span class="sub">&gt; 15 min → reason required</span></td></tr>
+              <tr><td>SLA</td><td>Filed 16:30 Saturday, unclaimed</td><td class="num">Nudge 08:30 Monday<span class="sub">30 min Saturday + 30 min Monday</span></td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <h3>Hạn chót cập nhật giờ ra vào thực tế</h3>
+      <h3>Deadline for entering real gate times</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Mốc</th><th>Ai làm được gì</th></tr></thead>
+          <thead><tr><th class="c1">Point</th><th>Who can do what</th></tr></thead>
           <tbody>
-            <tr><td>Ngay tại cổng</td><td>Bảo vệ bấm Cho ra / Cho vào — cách đúng và nhanh nhất, không cần ai nhập thêm</td></tr>
-            <tr><td>Đến <strong>hết ngày làm việc kế tiếp</strong></td><td>CBNV tự nhập giờ vào lại thực tế ở trang tra cứu, nếu bảo vệ không bấm. Kèm lý do khi lệch quá 15 phút</td></tr>
-            <tr><td>Quá hạn</td><td>Ô nhập của CBNV <strong>khóa lại</strong>. Chỉ chị Khoa sửa được, bắt buộc ghi lý do điều chỉnh</td></tr>
-            <tr><td>Sau khi đã đánh dấu chấm công</td><td>Khóa với mọi người. Muốn sửa thì chị Khoa bỏ dấu chấm công trước, mỗi bước đều lưu vết</td></tr>
+            <tr><td>At the gate</td><td>The guard taps Cho ra / Cho vào — the correct and fastest path, with nothing to key in afterwards</td></tr>
+            <tr><td>Until the <strong>end of the next working day</strong></td><td>The employee enters the real return time on the lookup page if the guard did not tap, with a reason once the difference exceeds 15 minutes</td></tr>
+            <tr><td>After the deadline</td><td>The employee's field <strong>locks</strong>. Only Chị Khoa can edit it, and only with an adjustment reason</td></tr>
+            <tr><td>Once marked as done on the timesheet</td><td>Locked for everyone. Chị Khoa must un-mark it first, and every step is recorded</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note note--info" style="margin-top:1rem">
-        <strong>Số hệ thống tính là số đề xuất, không phải số chốt.</strong> Chị Khoa sửa được số giờ chốt;
-        từ v0.5 mỗi lần sửa <strong>bắt buộc ghi lý do</strong>, và lưu lại số cũ, số mới, người sửa, thời điểm.
+        <strong>The computed figure is a proposal, not the final word.</strong> Chị Khoa can change the final
+        hours; from v0.5 every change <strong>requires a reason</strong>, and keeps the old value, the new
+        value, the editor and the timestamp.
       </div>
     </section>
 
     <!-- XII -->
     <section class="sec" id="s12">
-      <h2><em>XII</em>Giao diện mô phỏng</h2>
+      <h2><em>XII</em>Screen mock-ups</h2>
       <div class="note">
-        <strong>Bản vẽ minh họa, không phải ảnh chụp sản phẩm đã làm.</strong> Màu sắc và cách sắp xếp có thể thay đổi khi làm thật.
+        <strong>Sketches, not screenshots of built software.</strong> Colours and arrangement may change in
+        the real thing. The on-screen text is Vietnamese because that is the language of the interface.
       </div>
 
       <div class="grid-figs" style="margin-top:1.25rem">
@@ -1317,8 +1331,9 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 1 · Form công khai</b> — thay màn hình đăng nhập của v0.4. Ô <em>Loại đơn</em> quyết định các
-            trường hiện ra ở bước sau. Ô <em>Mã CBNV</em> là cách hệ thống biết đúng người, thay cho mật khẩu.
+            <b>Screen 1 · Public form</b> — replaces v0.4's sign-in screen. The <em>Loại đơn</em> field decides
+            which fields appear next. The <em>Mã CBNV</em> field is how the system knows it is really you,
+            standing in for a password.
           </figcaption>
         </figure>
 
@@ -1369,8 +1384,9 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 2 · Tra cứu đơn</b> — thay trang “Đơn của tôi” của v0.4. Mở bằng link riêng cấp lúc gửi,
-            hoặc nhập mã đơn kèm mã CBNV. Đây cũng là nơi CBNV <strong>rút đơn</strong> và <strong>nhập giờ vào lại thực tế</strong>.
+            <b>Screen 2 · Lookup</b> — replaces v0.4's "my requests" page. Opened by the private link issued at
+            filing, or by typing the request code with the employee code. This is also where an employee
+            <strong>withdraws a request</strong> and <strong>enters the real return time</strong>.
           </figcaption>
         </figure>
 
@@ -1419,8 +1435,8 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 3 · Trường động — nghỉ phép</b> — cùng một địa chỉ <code>/don</code>. Dòng xanh là số giờ hệ thống
-            tính ngay khi chọn ngày, thay ô “Tổng thời gian nghỉ” phải viết tay.
+            <b>Screen 3 · Dynamic fields — leave</b> — the same <code>/don</code> address. The green line is the
+            figure the system computes the moment dates are picked, replacing the hand-written total.
           </figcaption>
         </figure>
 
@@ -1461,8 +1477,8 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 4 · Trường động — ra vào cổng</b> — hai ô “vào sớm / vào trễ” trên giấy nay do bốt bảo vệ
-            và hệ thống tự sinh ra, CBNV không phải khai.
+            <b>Screen 4 · Dynamic fields — gate pass</b> — the paper form's "early / late return" boxes are now
+            produced by the booth and the system, so the employee never fills them in.
           </figcaption>
         </figure>
 
@@ -1496,8 +1512,8 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 5 · Đăng nhập vùng quản trị</b> — chỉ dành cho bốn chị, chị Khoa và quản xưởng. CBNV thường
-            không bao giờ thấy màn hình này.
+            <b>Screen 5 · Admin sign-in</b> — for the four approvers, Chị Khoa and the supervisors only. An
+            ordinary employee never sees this screen.
           </figcaption>
         </figure>
 
@@ -1542,8 +1558,8 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 6 · Tổng quan</b> — màn hình mới của v0.5. Mở ra là biết ngay có gì đang tắc: đơn quá hạn,
-            đơn mình đang giữ, đơn chưa chấm công.
+            <b>Screen 6 · Overview</b> — new in v0.5. Opening it tells you immediately what is stuck: overdue
+            requests, what you are holding, and what has not reached a timesheet.
           </figcaption>
         </figure>
 
@@ -1613,8 +1629,9 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 7 · Hàng chờ duyệt</b> — bốn tab ở trên. Dòng xám là đơn người khác đang giữ hoặc đơn của
-            chính mình. Dòng đỏ ở cột <em>Chờ</em> là đơn đã quá mốc 2 giờ.
+            <b>Screen 7 · Approval queue</b> — four tabs across the top. Greyed rows are requests someone else
+            holds, or the approver's own. A red figure in the waiting column means the request passed the
+            two-hour mark.
           </figcaption>
         </figure>
 
@@ -1664,8 +1681,8 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 8 · Bốt bảo vệ</b> — màn hình mới của v0.5, vào bằng mã PIN của bốt. Hai nút lớn thay cho
-            ô ký “Bảo vệ tiếp nhận” trên giấy.
+            <b>Screen 8 · Gate booth</b> — new in v0.5, opened with the booth PIN. Two large buttons replace the
+            "Bảo vệ tiếp nhận" signature box on paper.
           </figcaption>
         </figure>
 
@@ -1720,8 +1737,9 @@ flowchart LR
             </div>
           </div>
           <figcaption>
-            <b>Màn hình 9 · Chấm công</b> — của chị Khoa. Thêm cột <em>Giờ cổng</em> để đối chiếu số bảo vệ bấm với số
-            CBNV khai, và ô <em>Lý do điều chỉnh</em> bắt buộc mỗi khi Giờ chốt khác Giờ tính.
+            <b>Screen 9 · Timesheet</b> — Chị Khoa's screen. New in v0.5: a <em>Giờ cổng</em> column to compare the
+            guard's times against the employee's, and a mandatory <em>Lý do điều chỉnh</em> box whenever the
+            final hours differ from the computed ones.
           </figcaption>
         </figure>
 
@@ -1730,199 +1748,201 @@ flowchart LR
 
     <!-- XIII -->
     <section class="sec" id="s13">
-      <h2><em>XIII</em>Quy tắc nghiệp vụ</h2>
+      <h2><em>XIII</em>Business rules</h2>
       <ol class="rules">
-        <li><b class="n">1</b><span><strong>Gửi đơn không cần đăng nhập; đọc đơn thì cần.</strong> Form công khai chỉ cho gửi. Muốn mở một đơn phải có mã đơn kèm mã CBNV, hoặc link riêng cấp lúc gửi.</span></li>
-        <li><b class="n">2</b><span><strong>Tên phải chọn trong danh sách, không tự gõ.</strong> Danh sách lấy từ Google Directory; người đã rời công ty không còn hiện ra.</span></li>
-        <li><b class="n">3</b><span><strong>Mã CBNV phải khớp với tên đã chọn.</strong> Sai 5 lần thì khóa gửi 15 phút. Một mã tối đa <strong>5 đơn mỗi ngày</strong>.</span></li>
-        <li><b class="n">4</b><span><strong>Vùng quản trị chỉ vào bằng tài khoản công ty.</strong> Tên miền ngoài <code>@ctyhp.vn</code> bị từ chối ngay khi chọn tài khoản.</span></li>
-        <li><b class="n">5</b><span><strong>Bốn chị có thẩm quyền trên toàn bộ CBNV,</strong> không phân theo phòng ban.</span></li>
-        <li><b class="n">6</b><span><strong>Quản xưởng tạo đơn hộ được, duyệt thì không.</strong> Chỉ tạo cho người thuộc bộ phận mình; đơn ghi rõ ai tạo hộ và vẫn phải qua bốn chị.</span></li>
-        <li><b class="n">7</b><span><strong>Phải Nhận xử lý trước khi duyệt.</strong> Nhận rồi không quyết trong 30 phút thì đơn tự về hàng chờ.</span></li>
-        <li><b class="n">8</b><span><strong>Một chị duyệt là đủ.</strong> Thao tác trên bản dữ liệu cũ bị chặn kèm thông báo ai vừa duyệt, lúc nào.</span></li>
-        <li><b class="n">9</b><span><strong>Không ai tự duyệt đơn của mình.</strong> Đơn của một trong bốn chị bị ẩn nút Duyệt, ba chị còn lại xử lý — hệ thống so theo email tài khoản.</span></li>
-        <li><b class="n">10</b><span><strong>Từ chối thì ghi thêm lý do</strong> — không bắt buộc, nhưng có lý do thì CBNV biết cần sửa gì.</span></li>
-        <li><b class="n">11</b><span><strong>CBNV rút được đơn còn chờ,</strong> kể cả khi đã có người nhận xử lý. Rút xong bắn cập nhật vào nhóm Chat để không ai duyệt đơn đã rút.</span></li>
-        <li><b class="n">12</b><span><strong>Đơn đã duyệt không sửa nội dung.</strong> Muốn đổi thì chị Khoa hủy kèm lý do, CBNV gửi đơn mới.</span></li>
-        <li><b class="n">13</b><span><strong>Giờ bảo vệ bấm tại cổng thắng giờ CBNV tự khai.</strong> Bấm sai hoàn tác trong 5 phút; quá 5 phút thì chị Khoa sửa kèm lý do.</span></li>
-        <li><b class="n">14</b><span><strong>Bảo vệ chỉ thấy đơn ra vào cổng đã duyệt của hôm nay,</strong> không thấy lý do xin phép, không thấy đơn nghỉ phép.</span></li>
-        <li><b class="n">15</b><span><strong>Hạn nhập giờ vào lại thực tế là hết ngày làm việc kế tiếp.</strong> Quá hạn CBNV bị khóa; chỉ chị Khoa sửa được.</span></li>
-        <li><b class="n">16</b><span><strong>Sửa Giờ chốt phải ghi lý do điều chỉnh</strong> tối thiểu 10 ký tự. Mỗi lần sửa lưu số cũ, số mới, người sửa, thời điểm, lý do.</span></li>
-        <li><b class="n">17</b><span><strong>Giờ hệ thống tính thì khóa,</strong> không ai sửa được — kể cả chị Khoa.</span></li>
-        <li><b class="n">18</b><span><strong>Không xoá dữ liệu.</strong> Rút và hủy chỉ đổi trạng thái; mọi thao tác lưu người và thời điểm.</span></li>
-        <li><b class="n">19</b><span><strong>Thông báo Google Chat không chứa lý do nghỉ,</strong> ở cả nhóm Duyệt và nhóm Bảo vệ.</span></li>
-        <li><b class="n">20</b><span><strong>Nhắc SLA chỉ đếm giờ làm việc.</strong> Ngoài giờ và Chủ nhật dừng đếm, không nhắc vào lúc nghỉ.</span></li>
+        <li><b class="n">1</b><span><strong>Filing needs no login; reading does.</strong> The public form only accepts requests. Opening one takes the request code plus the employee code, or the private link issued at filing.</span></li>
+        <li><b class="n">2</b><span><strong>Names are chosen from the list, never typed.</strong> The list comes from Google Directory; people who have left no longer appear.</span></li>
+        <li><b class="n">3</b><span><strong>The employee code must match the chosen name.</strong> Five wrong tries locks filing for 15 minutes. One code may file at most <strong>5 requests a day</strong>.</span></li>
+        <li><b class="n">4</b><span><strong>The admin zone accepts company accounts only.</strong> Domains other than <code>@ctyhp.vn</code> are refused at the account picker.</span></li>
+        <li><b class="n">5</b><span><strong>All four approvers have authority over all staff,</strong> with no split by department.</span></li>
+        <li><b class="n">6</b><span><strong>Supervisors may file, never approve.</strong> Only for their own department; the request records who filed it and still goes to the four approvers.</span></li>
+        <li><b class="n">7</b><span><strong>A request must be claimed before it can be decided.</strong> An unresolved claim returns to the queue after 30 minutes.</span></li>
+        <li><b class="n">8</b><span><strong>One approval is enough.</strong> Acting on stale data is refused, and the message names who decided it and when.</span></li>
+        <li><b class="n">9</b><span><strong>Nobody approves their own request.</strong> An approver's own request hides the approve button and goes to the other three — matched on the account email.</span></li>
+        <li><b class="n">10</b><span><strong>A rejection may carry a reason</strong> — not required, but with one the employee knows what to change.</span></li>
+        <li><b class="n">11</b><span><strong>Employees may withdraw a pending request,</strong> even after someone has claimed it. The withdrawal is posted to the Chat space so nobody decides a withdrawn request.</span></li>
+        <li><b class="n">12</b><span><strong>An approved request cannot be edited.</strong> To change one, Chị Khoa cancels it with a reason and the employee files again.</span></li>
+        <li><b class="n">13</b><span><strong>The guard's time at the gate beats the employee's own.</strong> A mis-tap is undoable for 5 minutes; after that Chị Khoa edits it with a reason.</span></li>
+        <li><b class="n">14</b><span><strong>The booth sees only today's approved gate passes,</strong> never a leave reason and never a leave request.</span></li>
+        <li><b class="n">15</b><span><strong>The real return time is due by the end of the next working day.</strong> After that the employee's field locks and only Chị Khoa can edit it.</span></li>
+        <li><b class="n">16</b><span><strong>Editing the final hours requires an adjustment reason</strong> of at least 10 characters. Every edit keeps the old value, new value, editor, timestamp and reason.</span></li>
+        <li><b class="n">17</b><span><strong>The computed hours are locked</strong> and cannot be edited by anyone — including Chị Khoa.</span></li>
+        <li><b class="n">18</b><span><strong>Nothing is deleted.</strong> Withdrawals and cancellations only move a status; every action records who and when.</span></li>
+        <li><b class="n">19</b><span><strong>Google Chat messages never carry a leave reason,</strong> in either space.</span></li>
+        <li><b class="n">20</b><span><strong>SLA reminders count working hours only.</strong> The clock stops in the evening and on Sundays, so nobody is paged during time off.</span></li>
       </ol>
       <div class="note" style="margin-top:1rem">
-        <strong>Điểm yếu cần biết rõ:</strong> mã CBNV là thứ có thể bị người khác biết. Hệ thống chống mạo danh bằng
-        ba lớp — giới hạn số đơn mỗi mã mỗi ngày, bốn chị duyệt là người biết rõ CBNV nên đơn bất thường sẽ bị chặn,
-        và mọi đơn đều tra cứu được nên người bị mạo danh phát hiện ra. Đây là cái giá của việc bỏ đăng nhập; nếu Ban
-        Giám đốc thấy chưa đủ thì phương án thay thế là quay lại đăng nhập cho người có email và chỉ mở form công khai
-        cho khối sản xuất.
+        <strong>The known weakness:</strong> an employee code is something other people can learn. Three layers
+        stand against impersonation — a daily cap per code, four approvers who know the staff well enough to
+        spot an odd request, and every request being traceable so the impersonated person can find it. This is
+        the price of dropping the login. If the board judges it insufficient, the alternative is to restore
+        sign-in for everyone with a company email and open the public form to the production floor only.
       </div>
     </section>
 
     <!-- XIV -->
     <section class="sec" id="s14">
-      <h2><em>XIV</em>Dữ liệu gốc và đồng bộ Directory</h2>
+      <h2><em>XIV</em>Master data and Directory sync</h2>
       <p>
-        Không đăng nhập nghĩa là app không nhận được thông tin người dùng lúc gửi đơn, nên toàn bộ danh sách
-        CBNV và phòng ban phải có sẵn trong cơ sở dữ liệu trước. Nguồn là <strong>Google Workspace Directory</strong>.
+        No login means the app learns nothing about the person at filing time, so the full staff and
+        department list has to be in the database beforehand. The source is
+        <strong>Google Workspace Directory</strong>.
       </p>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Trường trong app</th><th class="c1">Lấy từ Directory</th><th>Ghi chú</th></tr></thead>
+          <thead><tr><th class="c1">Field in the app</th><th class="c1">From the Directory</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td>Họ và tên</td><td><span class="mono">name.fullName</span></td><td>Dùng để tìm và chọn trên form công khai</td></tr>
-            <tr><td>Email</td><td><span class="mono">primaryEmail</span></td><td>Chỉ để nhận diện người duyệt và quản xưởng; CBNV không cần</td></tr>
-            <tr><td>Chức vụ</td><td><span class="mono">organizations[].title</span></td><td>Trống thì hiện “—”, PNS bổ sung trong Directory</td></tr>
-            <tr><td>Phòng / Ban / Bộ phận</td><td><span class="mono">organizations[].department</span> hoặc đơn vị tổ chức</td><td>Chốt dùng một trong hai, không dùng lẫn</td></tr>
-            <tr><td>Trạng thái làm việc</td><td><span class="mono">suspended</span> · <span class="mono">archived</span></td><td>Người đã nghỉ: ẩn khỏi danh sách chọn, giữ nguyên đơn cũ</td></tr>
-            <tr><td><strong>Mã CBNV</strong></td><td><span class="pill pill--stop">Không có sẵn</span></td><td>Phải có nguồn khác — xem ô lưu ý dưới</td></tr>
+            <tr><td>Full name</td><td><span class="mono">name.fullName</span></td><td>What the public form searches and displays</td></tr>
+            <tr><td>Email</td><td><span class="mono">primaryEmail</span></td><td>Only used to recognise approvers and supervisors; employees do not need one</td></tr>
+            <tr><td>Job title</td><td><span class="mono">organizations[].title</span></td><td>Blank shows "—"; HR fills it in the Directory</td></tr>
+            <tr><td>Department</td><td><span class="mono">organizations[].department</span> or the org unit</td><td>Pick one of the two and stay with it; never mix</td></tr>
+            <tr><td>Employment status</td><td><span class="mono">suspended</span> · <span class="mono">archived</span></td><td>People who have left drop out of the picker; their past requests stay</td></tr>
+            <tr><td><strong>Employee code</strong></td><td><span class="pill pill--stop">Not available</span></td><td>Needs another source — see the note below</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Cách đồng bộ</h3>
+      <h3>How the sync runs</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Hạng mục</th><th>Quy định Phase 1</th></tr></thead>
+          <thead><tr><th class="c1">Item</th><th>Phase 1 rule</th></tr></thead>
           <tbody>
-            <tr><td>Nhịp đồng bộ</td><td>Tự động mỗi đêm 01:00, cộng thêm nút <strong>Đồng bộ ngay</strong> trong vùng quản trị</td></tr>
-            <tr><td>Chiều đồng bộ</td><td>Một chiều — Directory là bản gốc, app không ghi ngược lại</td></tr>
-            <tr><td>Người mới</td><td>Thêm vào danh sách chọn ngay sau lần đồng bộ kế tiếp</td></tr>
-            <tr><td>Người nghỉ việc</td><td>Ẩn khỏi danh sách chọn, chặn gửi đơn mới; đơn cũ và số liệu chấm công giữ nguyên</td></tr>
-            <tr><td>Đổi phòng ban</td><td>Đơn đã gửi giữ phòng ban <strong>lúc gửi</strong>, không đổi theo — để số liệu kỳ cũ không bị lệch</td></tr>
-            <tr><td>Đồng bộ lỗi</td><td>Giữ nguyên danh sách lần trước và bắn tin vào nhóm Duyệt, không để danh sách rỗng</td></tr>
-            <tr><td>Bốn chị và quản xưởng</td><td>Đánh dấu vai trò trong app, không lấy từ Directory. Phase 1 do nhóm phát triển nạp</td></tr>
+            <tr><td>Schedule</td><td>Nightly at 01:00, plus a <strong>Sync now</strong> button in the admin zone</td></tr>
+            <tr><td>Direction</td><td>One way — the Directory is the source of truth and the app never writes back</td></tr>
+            <tr><td>New joiners</td><td>Appear in the picker after the next sync</td></tr>
+            <tr><td>Leavers</td><td>Drop out of the picker and cannot file; past requests and timesheet figures stay untouched</td></tr>
+            <tr><td>Department changes</td><td>A filed request keeps the department it had <strong>at filing</strong>, so figures for a closed period do not shift</td></tr>
+            <tr><td>Sync failure</td><td>Keep the previous list and post to the approvers' space; never leave the list empty</td></tr>
+            <tr><td>Approvers and supervisors</td><td>Flagged inside the app, not taken from the Directory. Loaded by the development team in Phase 1</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note" style="margin-top:1rem">
-        <strong>Điều kiện tiên quyết chưa có:</strong> Google Directory không chứa mã CBNV, mà mã CBNV lại là thứ
-        thay mật khẩu ở form công khai. Cần PNS chọn một trong hai cách — nạp mã vào một trường tùy chỉnh của
-        Directory, hoặc gửi một file danh sách <em>mã CBNV ↔ họ tên</em> để app nạp và tự đối chiếu mỗi đêm.
-        Chưa có mã thì chưa chạy được vùng nhân viên.
+        <strong>A prerequisite that is still missing:</strong> Google Directory holds no employee code, and the
+        employee code is what stands in for a password on the public form. HR needs to pick one of two paths —
+        load the codes into a custom Directory field, or hand over a file of <em>employee code ↔ full name</em>
+        for the app to load and reconcile nightly. Without the codes the employee zone cannot run.
       </div>
     </section>
 
     <!-- XV -->
     <section class="sec" id="s15">
-      <h2><em>XV</em>Kỹ thuật và thứ tự làm</h2>
+      <h2><em>XV</em>Technology and build order</h2>
       <div class="tw">
         <table>
-          <thead><tr><th class="c2">Hạng mục</th><th class="c1">Chọn</th><th>Vì sao</th></tr></thead>
+          <thead><tr><th class="c2">Item</th><th class="c1">Choice</th><th>Why</th></tr></thead>
           <tbody>
-            <tr><td>Giao diện</td><td>Next.js 16 · React 19 · Ant Design 6</td><td>Bộ công cụ nhóm đang thành thạo; biểu mẫu, bảng, bộ lọc, chọn ngày có sẵn</td></tr>
-            <tr><td>Vùng nhân viên</td><td>Trang công khai, không phiên đăng nhập; nhận diện bằng tên + mã CBNV; link theo dõi mang mã dài khó đoán</td><td>Công nhân không có email công ty vẫn gửi được đơn, quét QR là vào</td></tr>
-            <tr><td>Vùng quản trị</td><td>Đăng nhập bằng Google Workspace của công ty, giới hạn tên miền <code>ctyhp.vn</code></td><td>Bấm một nút là vào. Tên miền kiểm cả ở trình đăng nhập và ở tầng cơ sở dữ liệu</td></tr>
-            <tr><td>Vùng bốt bảo vệ</td><td>Mã PIN của bốt, phiên 30 ngày trên máy đó</td><td>Bốt dùng chung máy, đổi ca liên tục; bảo vệ không có email công ty</td></tr>
-            <tr><td>Dữ liệu</td><td>Supabase — Postgres, phân quyền ở tầng dữ liệu</td><td>Ba vùng ba quyền khác nhau; đặt trong cơ sở dữ liệu chắc hơn là chỉ ẩn trên giao diện</td></tr>
-            <tr><td>Chống duyệt trùng</td><td>Số phiên bản trên mỗi đơn, kiểm tại tầng dữ liệu; bảng nghe thay đổi theo thời gian thực</td><td>Bốn người mở cùng một hàng chờ nên khóa phải nằm dưới cùng, không nằm ở giao diện</td></tr>
-            <tr><td>Chống lạm dụng form công khai</td><td>Giới hạn số lần gửi theo mã CBNV và theo thiết bị; khóa tạm khi nhập sai mã nhiều lần</td><td>Form không đăng nhập nên phải có phanh</td></tr>
-            <tr><td>Thông báo</td><td>Google Chat — hai nhóm, mỗi nhóm một webhook</td><td>Chỉ cần tạo nhóm và lấy đường link. Nhắn riêng từng người thuộc Phase 2</td></tr>
-            <tr><td>Nhắc theo mốc</td><td>Việc chạy định kỳ mỗi 15 phút, đối chiếu mốc 1h và 2h theo giờ làm việc</td><td>Không cần hạ tầng hàng đợi riêng cho Phase 1</td></tr>
-            <tr><td>Dữ liệu gốc</td><td>Đồng bộ một chiều từ Google Workspace Directory, chạy hằng đêm</td><td>Không phải nhập tay danh sách CBNV và phòng ban</td></tr>
-            <tr><td>Nơi chạy</td><td>Vercel, một địa chỉ web nội bộ riêng</td><td>Mở bằng trình duyệt trên máy tính và điện thoại, không phải cài gì</td></tr>
-            <tr><td>Bản in</td><td>In từ trình duyệt theo bố cục mẫu giấy, lưu PDF</td><td>Giữ dấu tiếng Việt chính xác</td></tr>
-            <tr><td>App kế toán</td><td>Tách hoàn toàn: dự án · cơ sở dữ liệu · tài khoản riêng</td><td>CBNV vào app này không chạm được dữ liệu kế toán</td></tr>
+            <tr><td>Interface</td><td>Next.js 16 · React 19 · Ant Design 6</td><td>The stack the team knows; forms, tables, filters and date pickers come ready</td></tr>
+            <tr><td>Employee zone</td><td>Public pages, no session; identified by name plus employee code; tracking links carry a long unguessable token</td><td>Workers without a company email can still file, and a QR scan puts them straight in</td></tr>
+            <tr><td>Admin zone</td><td>Company Google Workspace sign-in, restricted to <code>ctyhp.vn</code></td><td>One tap to get in. The domain is checked at the identity provider and again in the database</td></tr>
+            <tr><td>Gate booth</td><td>Booth PIN, 30-day session on that machine</td><td>The booth is a shared machine with constant shift changes, and guards have no company email</td></tr>
+            <tr><td>Data</td><td>Supabase — Postgres with authorisation in the database</td><td>Three zones with three different rights; rules in the database hold better than hiding things in the interface</td></tr>
+            <tr><td>Double-approval guard</td><td>A version number per request, checked in the database; the queue subscribes to changes</td><td>Four people share one queue, so the lock has to sit underneath, not in the interface</td></tr>
+            <tr><td>Public-form abuse</td><td>Rate limits per employee code and per device; a temporary lock after repeated wrong codes</td><td>A form with no login needs a brake</td></tr>
+            <tr><td>Notifications</td><td>Google Chat — two spaces, one webhook each</td><td>Only needs a space and a URL. Direct messages are Phase 2</td></tr>
+            <tr><td>Reminders</td><td>A job every 15 minutes comparing the 1 h and 2 h marks in working time</td><td>No separate queue infrastructure needed for Phase 1</td></tr>
+            <tr><td>Master data</td><td>One-way nightly sync from Google Workspace Directory</td><td>Nobody keys in the staff and department lists</td></tr>
+            <tr><td>Hosting</td><td>Vercel, on its own internal web address</td><td>Opens in a browser on a computer or a phone, with nothing to install</td></tr>
+            <tr><td>Printing</td><td>Browser printing in the paper form's layout, saved as PDF</td><td>Keeps Vietnamese diacritics exact</td></tr>
+            <tr><td>Accounting app</td><td>Fully separate: project, database and accounts</td><td>Employees using this app cannot touch accounting data</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>Thứ tự làm</h3>
+      <h3>Build order</h3>
       <div class="tw">
         <table>
-          <thead><tr><th class="c3">Bước</th><th>Nội dung</th></tr></thead>
+          <thead><tr><th class="c3">Step</th><th>Content</th></tr></thead>
           <tbody>
-            <tr><td class="num">1</td><td>Dựng nền: dự án, cơ sở dữ liệu, một địa chỉ web chạy thử; đăng nhập Google cho vùng quản trị</td></tr>
-            <tr><td class="num">2</td><td>Đồng bộ Directory và nạp mã CBNV; cấu trúc dữ liệu và phân quyền cho ba vùng; nạp bốn chị, chị Khoa, quản xưởng</td></tr>
-            <tr><td class="num">3</td><td>Form công khai một route với trường động, nhận diện bằng tên + mã CBNV, kèm phần tự tính giờ</td></tr>
-            <tr><td class="num">4</td><td>Trang tra cứu đơn: theo dõi, rút đơn, nhập giờ vào lại thực tế; sinh mã đơn và link riêng; mã QR</td></tr>
-            <tr><td class="num">5</td><td>Hàng chờ duyệt: nút Nhận xử lý, khóa theo phiên bản, tự cập nhật, bốn tab, chặn tự duyệt</td></tr>
-            <tr><td class="num">6</td><td>Màn hình bốt bảo vệ: mã PIN, bảng đơn trong ngày, nút Cho ra / Cho vào, hoàn tác 5 phút</td></tr>
-            <tr><td class="num">7</td><td>Màn hình chấm công: lọc, cột Giờ cổng, hai cột giờ, lý do điều chỉnh bắt buộc, tải Excel, đánh dấu</td></tr>
-            <tr><td class="num">8</td><td>Màn hình tổng quan cho Quản lý và PNS; quản xưởng tạo đơn hộ</td></tr>
-            <tr><td class="num">9</td><td>Hai nhóm Google Chat và việc nhắc SLA mốc 1h · 2h</td></tr>
-            <tr><td class="num">10</td><td>Bản in theo bố cục mẫu giấy</td></tr>
-            <tr><td class="num">11</td><td>Chạy thử trọn một đơn: gửi trên điện thoại → duyệt → bảo vệ bấm tại cổng → chấm công; đưa lên mạng kèm hướng dẫn một trang và mã QR dán xưởng</td></tr>
+            <tr><td class="num">1</td><td>Foundation: project, database, a running web address; Google sign-in for the admin zone</td></tr>
+            <tr><td class="num">2</td><td>Directory sync and employee codes; data structure and authorisation for all three zones; load the four approvers, Chị Khoa and the supervisors</td></tr>
+            <tr><td class="num">3</td><td>The public form: one route, dynamic fields, name plus employee code, with the hours computed live</td></tr>
+            <tr><td class="num">4</td><td>The lookup page: track, withdraw, enter the real return time; request codes, private links, QR codes</td></tr>
+            <tr><td class="num">5</td><td>The approval queue: Claim, version lock, live refresh, four tabs, no self-approval</td></tr>
+            <tr><td class="num">6</td><td>The gate booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo</td></tr>
+            <tr><td class="num">7</td><td>The timesheet: filters, gate-time column, two hours columns, mandatory adjustment reason, Excel, mark as done</td></tr>
+            <tr><td class="num">8</td><td>The overview screen; supervisors filing on behalf</td></tr>
+            <tr><td class="num">9</td><td>Two Google Chat spaces and the 1 h · 2 h reminder job</td></tr>
+            <tr><td class="num">10</td><td>Print layouts matching the paper forms</td></tr>
+            <tr><td class="num">11</td><td>One end-to-end run: file on a phone → approve → guard taps at the gate → timesheet; then go live with a one-page guide and QR codes for the workshops</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note note--info" style="margin-top:1rem">
-        <strong>Còn thiếu để bắt đầu:</strong> ① danh sách các phòng / ban / bộ phận chính thức; ② <strong>nguồn mã
-        CBNV</strong> để form công khai đối chiếu; ③ danh sách quản xưởng được phép tạo đơn hộ; ④ mã PIN cho bốt và
-        xác nhận bốt có máy nối mạng. Thiếu ② thì bước 3 không chạy được. Trong lúc chờ, nhóm dùng danh sách tạm và
-        thay bằng danh sách thật sau.
+        <strong>Still missing before work can start:</strong> ① the official list of departments and units;
+        ② a <strong>source for the employee codes</strong> the public form checks against; ③ the list of
+        supervisors allowed to file on behalf; ④ a PIN for the booth and confirmation that the booth has a
+        networked machine. Without ② step 3 cannot run. Until then the team works from a provisional list and
+        swaps in the real one.
       </div>
     </section>
 
     <!-- XVI -->
     <section class="sec" id="s16">
-      <h2><em>XVI</em>Rủi ro</h2>
+      <h2><em>XVI</em>Risks</h2>
       <div class="tw">
         <table>
-          <thead><tr><th class="c1">Rủi ro</th><th class="c3">Mức</th><th>Cách xử lý</th></tr></thead>
+          <thead><tr><th class="c1">Risk</th><th class="c3">Level</th><th>Handling</th></tr></thead>
           <tbody>
             <tr>
-              <td>Chưa có nguồn mã CBNV thì vùng nhân viên không chạy được</td>
-              <td><span class="pill pill--stop">Cao</span></td>
-              <td>PNS nạp mã vào Directory hoặc gửi file danh sách mã ↔ họ tên. Đây là việc phải xong trước bước 3</td>
+              <td>Without a source for employee codes, the employee zone cannot run</td>
+              <td><span class="pill pill--stop">High</span></td>
+              <td>HR loads the codes into the Directory or hands over a code ↔ name file. This has to be done before step 3</td>
             </tr>
             <tr>
-              <td>Người khác biết mã CBNV rồi gửi đơn mạo danh</td>
-              <td><span class="pill pill--stop">Cao</span></td>
-              <td>Giới hạn 5 đơn mỗi mã mỗi ngày; khóa 15 phút khi nhập sai nhiều lần; bốn chị duyệt là người biết rõ CBNV; mọi đơn tra cứu được nên người bị mạo danh phát hiện. Nếu vẫn chưa đủ thì quay lại đăng nhập cho người có email công ty</td>
+              <td>Someone learns an employee code and files in that person's name</td>
+              <td><span class="pill pill--stop">High</span></td>
+              <td>A cap of 5 requests per code per day; a 15-minute lock after repeated wrong codes; four approvers who know the staff; every request traceable, so the impersonated person can find it. If that is still not enough, restore sign-in for everyone holding a company email</td>
             </tr>
             <tr>
-              <td>Mã PIN bốt bị lan ra ngoài, người không phải bảo vệ cũng mở được bảng</td>
-              <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Bảng chỉ có đơn đã duyệt trong ngày, không có lý do nghỉ nên thiệt hại giới hạn. Chị Khoa đổi PIN được bất cứ lúc nào; đăng nhập đích danh cho từng bảo vệ thuộc Phase 2</td>
+              <td>The booth PIN spreads and non-guards can open the table</td>
+              <td><span class="pill pill--draft">Medium</span></td>
+              <td>The table holds only today's approved passes and no leave reasons, so the exposure is bounded. Chị Khoa can change the PIN at any time; named sign-in per guard is Phase 2</td>
             </tr>
             <tr>
-              <td>Bốt bảo vệ không có máy nối mạng, hoặc mất mạng giữa ca</td>
-              <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Xác nhận hạ tầng bốt trước khi triển khai. Mất mạng thì ghi sổ ca như hiện nay, chị Khoa nhập bù kèm lý do. Bản chạy offline thuộc Phase 2</td>
+              <td>The booth has no networked machine, or loses the network mid-shift</td>
+              <td><span class="pill pill--draft">Medium</span></td>
+              <td>Confirm the booth's setup before going live. During an outage the guard uses the shift logbook and Chị Khoa keys it in with a reason. Offline mode is Phase 2</td>
             </tr>
             <tr>
-              <td>Bảo vệ quên bấm nút, giờ ra vào thành số CBNV tự khai</td>
-              <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Màn chấm công có ô đếm <em>Thiếu giờ cổng</em> để chị Khoa thấy ngay; đơn thiếu giờ cổng bị đánh dấu chứ không lặng lẽ đi qua</td>
+              <td>The guard forgets to tap, so the times fall back to what the employee declared</td>
+              <td><span class="pill pill--draft">Medium</span></td>
+              <td>The timesheet screen counts <em>missing gate times</em> so Chị Khoa sees them at once; such requests are flagged rather than passing quietly</td>
             </tr>
             <tr>
-              <td>Bốn chị đều bận, đơn nằm chờ quá lâu</td>
-              <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Nhắc mốc 1h và 2h vào nhóm Chat, tab <em>Quá hạn</em> và ô đếm trên màn tổng quan. Phase 1 chưa leo cấp lên trên</td>
+              <td>All four approvers are busy and requests wait too long</td>
+              <td><span class="pill pill--draft">Medium</span></td>
+              <td>Reminders at 1 h and 2 h to the Chat space, the <em>Quá hạn</em> tab, and a counter on the overview screen. Escalation above the four is not in Phase 1</td>
             </tr>
             <tr>
-              <td>Chị nhận đơn rồi đi vắng, đơn bị giữ chết</td>
-              <td><span class="pill pill--mute">Thấp</span></td>
-              <td>Tự nhả về hàng chờ sau 30 phút; ba chị còn lại thấy lại nút Nhận xử lý</td>
+              <td>An approver claims a request then steps away, holding it hostage</td>
+              <td><span class="pill pill--mute">Low</span></td>
+              <td>The claim expires after 30 minutes and the other three see the Claim button again</td>
             </tr>
             <tr>
-              <td>Phase 1 chưa trừ ngày lễ tự động</td>
-              <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Chị Khoa sửa số giờ chốt kèm lý do khi kỳ nghỉ trùng ngày lễ. Bổ sung danh sách ngày lễ ở Phase 2</td>
+              <td>Phase 1 does not deduct public holidays</td>
+              <td><span class="pill pill--draft">Medium</span></td>
+              <td>Chị Khoa edits the final hours with a reason when leave overlaps a holiday. A holiday calendar is Phase 2</td>
             </tr>
             <tr>
-              <td>Thông báo vào nhóm chung nên người trong nhóm thấy ai đang xin nghỉ</td>
-              <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Tin chỉ ghi tên, loại đơn, thời gian, đường link — không ghi lý do. Nhóm Duyệt chỉ gồm bốn chị và chị Khoa; nhóm Bảo vệ chỉ nhận đơn ra vào cổng</td>
+              <td>A shared Chat space means everyone in it sees who is asking for leave</td>
+              <td><span class="pill pill--draft">Medium</span></td>
+              <td>Messages carry only name, type, dates and a link — never a reason. The approvers' space holds just the four approvers and Chị Khoa; the guards' space receives gate passes only</td>
             </tr>
             <tr>
-              <td>Directory thiếu chức vụ hoặc phòng ban nên form hiện “—”</td>
-              <td><span class="pill pill--draft">Trung bình</span></td>
-              <td>Rà soát Directory trước khi triển khai. Đơn vẫn gửi được với ô trống, chị Khoa sửa sau; ô trống hiện cảnh báo cho PNS</td>
+              <td>The Directory is missing job titles or departments, so the form shows "—"</td>
+              <td><span class="pill pill--draft">Medium</span></td>
+              <td>Audit the Directory before going live. Requests still file with an empty field and Chị Khoa fixes it later; empty fields raise a warning for HR</td>
             </tr>
             <tr>
-              <td>Form công khai bị gửi rác từ ngoài công ty</td>
-              <td><span class="pill pill--mute">Thấp</span></td>
-              <td>Phải khớp tên với mã CBNV mới gửi được; giới hạn theo mã và theo thiết bị. Đơn rác không khớp mã thì không vào được cơ sở dữ liệu</td>
+              <td>The public form is spammed from outside the company</td>
+              <td><span class="pill pill--mute">Low</span></td>
+              <td>Nothing sends unless the name and employee code match, and limits apply per code and per device. Junk that does not match a code never reaches the database</td>
             </tr>
             <tr>
-              <td>Thêm hoặc sửa quản xưởng, người duyệt phải nhờ nhóm phát triển</td>
-              <td><span class="pill pill--mute">Thấp</span></td>
-              <td>Ít xảy ra. Màn hình quản trị vai trò cho Nhân sự thuộc Phase 2</td>
+              <td>Adding or changing a supervisor or approver needs the development team</td>
+              <td><span class="pill pill--mute">Low</span></td>
+              <td>Rare. An HR-facing role admin screen is Phase 2</td>
             </tr>
           </tbody>
         </table>
@@ -1930,8 +1950,8 @@ flowchart LR
     </section>
 
     <footer class="signoff">
-      <div><span class="role">Người soạn</span><span class="line"></span><span class="date">Ngày …… / …… / ………</span></div>
-      <div><span class="role">Người phê duyệt</span><span class="line"></span><span class="date">Ngày …… / …… / ………</span></div>
+      <div><span class="role">Prepared by</span><span class="line"></span><span class="date">Date …… / …… / ………</span></div>
+      <div><span class="role">Approved by</span><span class="line"></span><span class="date">Date …… / …… / ………</span></div>
     </footer>
 
   </main>

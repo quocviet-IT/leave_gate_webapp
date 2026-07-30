@@ -1,63 +1,77 @@
-# Hệ thống Xin nghỉ phép & Giấy ra vào cổng
+# Leave Application & Gate Pass System
 
-Web app nội bộ CTYHP thay hai mẫu đơn giấy đang lưu hành. CBNV mở link hoặc quét mã QR để gửi
-đơn — không cần đăng nhập; một trong bốn chị nhận và duyệt; bảo vệ xác nhận giờ ra vào ngay tại
-bốt; đơn đã duyệt chảy về màn hình chấm công.
+An internal web app for CTYHP that replaces the two paper forms in use today. Employees open a
+link or scan a QR code to file a request — no login; one of the four approvers claims and decides
+it; the guard confirms the real times at the gate; approved requests flow to the timesheet screen.
 
-**Trạng thái:** PRD v0.5 (nháp) + khung web app đã dựng và chạy được. Nền cơ sở dữ liệu đã áp
-lên Supabase; logic tính giờ / SLA / mã đơn đã có kèm test. Các màn hình còn là chỗ trống có
-nhãn — xem [AGENTS.md](AGENTS.md) để biết bước kế tiếp.
+**Status:** PRD v0.5 (draft) plus a working scaffold. The database foundation is applied to
+Supabase and the working-time, SLA and request-code logic is in place with tests. The screens
+themselves are labelled placeholders — see [AGENTS.md](AGENTS.md) for what comes next.
 
 ```bash
 npm install
-cp .env.local.example .env.local   # điền URL + key của Supabase
-npm run migrate                    # áp migration
+cp .env.local.example .env.local   # fill in the Supabase URL and keys
+npm run migrate                    # apply migrations
 npm run dev
 ```
 
-Bốn cổng kiểm tra: `npm run build` · `npm test` · `npm run typecheck` · `npm run lint`, cộng
-`node scripts/smoke-pages.mjs http://localhost:3000` khi sửa giao diện.
+Four gates: `npm run build` · `npm test` · `npm run typecheck` · `npm run lint`, plus
+`node scripts/smoke-pages.mjs http://localhost:3000` after any UI change.
 
-Hệ thống chia **ba vùng**: vùng nhân viên công khai (`/don`, `/tra-cuu` — không đăng nhập, nhận
-diện bằng tên + mã CBNV), vùng quản trị (`/admin` — Google SSO `@ctyhp.vn`), và vùng bốt bảo vệ
-(`/bao-ve` — mã PIN của bốt).
+## Three access zones
 
-## Tài liệu
+The whole design follows from these, so nothing is shared between them by accident.
 
-| File | Nội dung |
+| Zone | Routes | Way in | Who |
+| --- | --- | --- | --- |
+| Employee | `/don`, `/tra-cuu` | no login — pick a name, type a matching employee code | all staff, including everyone without a company email |
+| Admin | `/admin/*` | Google Workspace SSO, `@ctyhp.vn` only | four approvers · C&B · workshop supervisors |
+| Gate booth | `/bao-ve` | booth PIN | the guard on duty |
+
+`anon` holds no table permissions at all: publishing a public form must not publish the staff
+directory with it. Name search, filing, lookup, withdrawal and the booth stamps each go through a
+database function that can also enforce the employee code, the booth PIN and rate limits.
+
+## Documents
+
+| File | Contents |
 | --- | --- |
-| [docs/PRD_Nghi_Phep_Ra_Vao_Cong.html](docs/PRD_Nghi_Phep_Ra_Vao_Cong.html) | PRD v0.5: bảng đối chiếu 17 góp ý của BGĐ, ba vùng, vai trò, 9 màn hình, 20 quy tắc nghiệp vụ, đồng bộ Directory, thứ tự làm, rủi ro |
-| [docs/DEMO_Nghi_Phep_Ra_Vao_Cong.html](docs/DEMO_Nghi_Phep_Ra_Vao_Cong.html) | Demo giao diện tương tác — **còn theo v0.4**, chưa cập nhật ba vùng và màn hình bảo vệ |
+| [docs/PRD_Nghi_Phep_Ra_Vao_Cong.html](docs/PRD_Nghi_Phep_Ra_Vao_Cong.html) | PRD v0.5: the 17 board review items mapped to where each landed, three zones, roles, 9 screens, 20 business rules, Directory sync, build order, risks |
+| [docs/DEMO_Nghi_Phep_Ra_Vao_Cong.html](docs/DEMO_Nghi_Phep_Ra_Vao_Cong.html) | Interactive UI demo — **still on v0.4**, predating the three zones and the gate booth screen |
 
-Mở trực tiếp bằng trình duyệt, không cần build.
+Both open directly in a browser; nothing to build. The documents are in English; the interface
+they describe is in Vietnamese, because that is what the staff read, so screen labels are quoted
+as they appear.
 
-## Phạm vi Phase 1
+## Phase 1 scope
 
-Form công khai một route với trường động · nhận diện bằng tên + mã CBNV · mã QR dán xưởng · trang
-tra cứu (theo dõi, rút đơn, nhập giờ thực tế, in) · hàng chờ duyệt có nút Nhận xử lý và khóa chống
-duyệt trùng · bốn tab cá nhân · quản xưởng tạo đơn hộ · màn hình bốt bảo vệ với nút Cho ra/Cho vào ·
-hai nhóm Google Chat · nhắc SLA 1h/2h · tự tính số giờ · chấm công (lọc, Excel, lý do điều chỉnh bắt
-buộc) · đồng bộ Google Workspace Directory · bản in theo mẫu giấy · dùng được trên điện thoại.
+One public form route with dynamic fields · identification by name plus employee code · QR codes
+for the workshops · lookup page (track, withdraw, real return time, print) · approval queue with
+Claim and a lock against double approval · four personal tabs · supervisors filing on behalf ·
+gate booth screen with Cho ra / Cho vào · two Google Chat spaces · SLA reminders at 1 h and 2 h ·
+computed hours · timesheet (filters, Excel, mandatory adjustment reason) · Google Workspace
+Directory sync · print layouts matching the paper forms · works on a phone.
 
-Để lại Phase 2: tự trừ ngày lễ, số ngày phép năm còn lại, nối máy chấm công/bảng lương, nhắn riêng
-Google Chat, quét QR từng đơn tại cổng, đăng nhập đích danh cho bảo vệ, màn hình quản trị phòng
-ban/CBNV, phân quyền duyệt theo phòng ban.
+Left to Phase 2: automatic public-holiday deduction, remaining annual leave, a payroll feed,
+direct Chat messages, per-request QR scanning at the gate, named sign-in for guards, an HR-facing
+admin screen for departments and staff, approval rights scoped by department.
 
-## Kỹ thuật dự kiến
+## Technology
 
-Next.js 16 · React 19 · Ant Design 6 · Supabase (Postgres, phân quyền ở tầng dữ liệu cho cả ba
-vùng) · Google Workspace SSO giới hạn tên miền `ctyhp.vn` cho vùng quản trị · mã PIN cho bốt bảo
-vệ · Google Chat webhook (2 nhóm) · Vercel.
+Next.js 16 · React 19 · Ant Design 6 · Supabase (Postgres, authorisation in the database for all
+three zones) · Google Workspace SSO for the admin zone · a booth PIN for the gate · Google Chat
+webhooks (two spaces) · Vercel.
 
-## Quan hệ với app kế toán
+## Relationship to the accounting app
 
-Đây là **hệ thống riêng**, tách hoàn toàn khỏi app kế toán CTYHP (`QUICKBOOK_WEBAPP`): repo riêng,
-cơ sở dữ liệu riêng, tài khoản riêng. CBNV vào app này không chạm được dữ liệu kế toán.
+This is a **separate system** from the CTYHP accounting app (`QUICKBOOK_WEBAPP`): its own repo,
+its own database, its own accounts. Employees using this app cannot reach accounting data.
 
-## Còn thiếu để bắt đầu
+## Missing before work can start
 
-1. **Nguồn mã CBNV** — Google Directory không có trường này, mà mã CBNV là thứ thay mật khẩu ở form
-   công khai. Thiếu nó thì bước 3 của thứ tự làm không chạy được.
-2. Danh sách phòng / ban / bộ phận chính thức.
-3. Danh sách quản xưởng được phép tạo đơn hộ.
-4. Mã PIN cho bốt và xác nhận bốt bảo vệ có máy nối mạng.
+1. **A source for the employee codes** — Google Directory has no such field, and the employee code
+   is what stands in for a password on the public form. Without it, step 3 of the build order
+   cannot run.
+2. The official list of departments and units.
+3. The list of supervisors allowed to file on behalf of workers.
+4. A PIN for the booth, and confirmation that the booth has a networked machine.
