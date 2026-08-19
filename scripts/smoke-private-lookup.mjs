@@ -199,6 +199,24 @@ async function main() {
     "kiểm tra này giả định giờ dự kiến vào lại đã quá hạn",
   );
 
+  // The printable sheet — PRD section IX. Only an approved request prints: a
+  // sheet with an empty approval box is what the app exists to stop.
+  const printPending = await get(`/tra-cuu/${leave.token}/in`);
+  check("a pending request refuses to print", printPending.html.includes("Chưa in được"));
+  check("and the refusal renders cleanly", noRenderError(printPending.html));
+
+  const printApproved = await get(`/tra-cuu/${gate.token}/in`);
+  check("an approved gate pass prints", printApproved.status === 200, String(printApproved.status));
+  check("with the paper form's own heading", printApproved.html.includes("GIẤY XIN PHÉP RA VÀO CỔNG"));
+  check(
+    "and the four signature boxes",
+    printApproved.html.includes("Bảo vệ tiếp nhận") && printApproved.html.includes("CBNV đăng ký"),
+  );
+  check("and no render boundary error", noRenderError(printApproved.html));
+
+  const printUnknown = await get(`/tra-cuu/${"b".repeat(32)}/in`);
+  check("an unknown token prints nothing", printUnknown.html.includes("Không tìm thấy đơn"));
+
   const unknown = await get(`/tra-cuu/${"a".repeat(32)}`);
   check("an unknown token shows the not-found state", unknown.html.includes("Không tìm thấy đơn"));
   check("an unknown token has no render boundary error", noRenderError(unknown.html));

@@ -1045,3 +1045,150 @@ textarea.field-control {
     break-inside: avoid;
   }
 }
+
+/* ============================================================ printed sheet
+   The two paper forms from PRD section IX, reproduced field for field. Serif
+   and black on white on purpose: this page is read on paper, where the app's
+   own type and colour mean nothing and cost toner. */
+
+.print-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.print-sheet {
+  background: #fff;
+  color: #000;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
+  line-height: 1.5;
+  max-width: 21cm;
+  margin: 0 auto;
+  padding: 1.5cm;
+  border: 1px solid #d0d5dd;
+}
+
+.print-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 1px solid #000;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.print-code {
+  font-size: 14pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.print-meta {
+  font-size: 10pt;
+  text-align: right;
+}
+
+.print-sheet h1 {
+  font-size: 16pt;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.print-to {
+  text-align: center;
+  margin: 0 0 1rem;
+}
+
+.print-line {
+  margin: 0.35rem 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.print-label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.print-value {
+  flex: 1;
+  border-bottom: 1px dotted #666;
+  min-height: 1.4em;
+}
+
+.print-paragraph {
+  margin: 0.75rem 0;
+  text-align: justify;
+}
+
+.print-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.print-tick {
+  font-size: 13pt;
+}
+
+.print-signatures {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.print-signature {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 10pt;
+}
+
+.print-signature-name {
+  font-weight: 600;
+  min-height: 1.2em;
+}
+
+.print-note {
+  margin-top: 1.5rem;
+  font-size: 10pt;
+  font-style: italic;
+}
+
+@media print {
+  /* Everything that is not the sheet is furniture for the screen. */
+  .print-actions,
+  .public-header,
+  .public-footer,
+  nav {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .print-sheet {
+    border: 0;
+    padding: 0;
+    max-width: none;
+  }
+
+  .print-signatures {
+    break-inside: avoid;
+  }
+
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+}

@@ -230,6 +230,16 @@ export default async function PrivateLookupPage({
         </section>
       ) : null}
 
+      {request.status === "approved" ? (
+        <section className="lookup-section lookup-section--action">
+          <h2>In đơn</h2>
+          <p>Bản in theo đúng bố cục mẫu giấy đang dùng, khổ A4.</p>
+          <Link className="button button--secondary" href={`/tra-cuu/${token}/in`}>
+            Mở bản in
+          </Link>
+        </section>
+      ) : null}
+
       <aside className="private-link-note">
         <strong>Đây là đường dẫn riêng của đơn.</strong>
         <p>Không gửi cho người khác vì đường dẫn này mở được toàn bộ thông tin phía trên.</p>

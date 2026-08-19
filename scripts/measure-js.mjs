@@ -38,6 +38,7 @@ const ROUTES = [
   `/don/xong?code=NP-2607-0148&token=${"a".repeat(32)}`,
   "/tra-cuu",
   `/tra-cuu/${"a".repeat(32)}`,
+  `/tra-cuu/${"a".repeat(32)}/in`,
   "/bao-ve",
   "/admin/dang-nhap",
   "/admin/khong-du-quyen",

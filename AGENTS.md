@@ -53,6 +53,11 @@ What exists for real:
   `npm run verify:reminders`. **Nothing has been posted to a real space yet:**
   `GCHAT_WEBHOOK_APPROVERS`, `GCHAT_WEBHOOK_GUARDS` and `CRON_SECRET` are all
   still at their example values, so the poster reports `skipped`.
+- Printable sheets at `/tra-cuu/<token>/in`, reproducing both paper forms
+  field for field (PRD section IX). Behind the private token like anything
+  else that shows a name, and only for an approved request. A Server
+  Component with no Ant Design in it — a printed page carries the form's own
+  type, not a design system's.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
@@ -75,7 +80,7 @@ time, in the PRD's order.
 7. ~~Timesheet: filters, gate-time column, mandatory adjustment reason, Excel~~ — done
 8. ~~Overview screen; supervisor filing on behalf~~ — done
 9. Two Google Chat spaces and the SLA reminder job — **built; waiting on the two webhook URLs and a real `CRON_SECRET`**
-10. Printable layouts matching the paper forms
+10. ~~Printable layouts matching the paper forms~~ — done
 11. End-to-end run: file on a phone → approve → booth stamp → timesheet
 
 ## Conventions
