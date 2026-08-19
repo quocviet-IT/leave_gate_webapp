@@ -1,11 +1,8 @@
 "use client";
 import { useActionState } from "react";
 import { Alert, Button, Card, Space, Table, Typography } from "antd";
-import {
-  EMPTY_IMPORT_STATE,
-  importEmployeeList,
-  type ImportState,
-} from "@/app/admin/(guarded)/nhan-su/actions";
+import { EMPTY_IMPORT_STATE, type ImportState } from "@/app/admin/(guarded)/nhan-su/action-state";
+import { importEmployeeList } from "@/app/admin/(guarded)/nhan-su/actions";
 import type { EmployeeSummary } from "@/lib/services/employees";
 
 const { Title, Paragraph, Text } = Typography;

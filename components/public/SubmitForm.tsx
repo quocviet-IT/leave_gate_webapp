@@ -1,11 +1,8 @@
 "use client";
 
 import { createContext, useActionState, useContext, type ReactNode } from "react";
-import {
-  EMPTY_FILE_STATE,
-  fileRequestAction,
-  type FileState,
-} from "@/app/(public)/don/actions";
+import { EMPTY_FILE_STATE, type FileState } from "@/app/(public)/don/action-state";
+import { fileRequestAction } from "@/app/(public)/don/actions";
 
 const FileStateContext = createContext<FileState>(EMPTY_FILE_STATE);
 

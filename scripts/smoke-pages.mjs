@@ -50,7 +50,22 @@ function expectationFor(route) {
   return "ok";
 }
 
-const routes = discoverRoutes().sort();
+/**
+ * Routes whose interesting screen only appears with query parameters. Route
+ * discovery walks the file tree, so it always lands on step 1 of the filing
+ * form and never renders the step that carries the submit button — which is
+ * exactly where a client component can throw. A placeholder employee id is
+ * enough: these steps only check the shape of what step 1 handed them.
+ */
+const SAMPLE_EMPLOYEE_ID = "11111111-1111-4111-8111-111111111111";
+const EXTRA_ROUTES = [
+  `/don?kind=gate&buoc=2&employeeId=${SAMPLE_EMPLOYEE_ID}`,
+  `/don?kind=leave&buoc=2&employeeId=${SAMPLE_EMPLOYEE_ID}`,
+  `/don?kind=leave&buoc=3&employeeId=${SAMPLE_EMPLOYEE_ID}` +
+    "&fromDate=2026-07-30&toDate=2026-07-30&reason=annual&note=Ve%20que",
+];
+
+const routes = [...discoverRoutes(), ...EXTRA_ROUTES].sort();
 console.log(`Kiểm ${routes.length} đường dẫn trên ${base}\n`);
 
 let failed = 0;
@@ -84,7 +99,7 @@ for (const route of routes) {
   }
 
   if (!outcome.ok) failed++;
-  console.log(`${outcome.ok ? "ok  " : "FAIL"} ${route.padEnd(26)} ${outcome.note}`);
+  console.log(`${outcome.ok ? "ok  " : "FAIL"} ${route.padEnd(48)} ${outcome.note}`);
 }
 
 console.log(

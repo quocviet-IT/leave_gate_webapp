@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import type { FileState } from "./action-state";
 import { deviceHash } from "@/lib/device";
 import {
   gateRequestSchema,
@@ -10,15 +11,6 @@ import {
 } from "@/lib/domain/schemas";
 import { computeGateMinutes, computeLeaveMinutes } from "@/lib/domain/workhours";
 import { fileRequest } from "@/lib/services/requests";
-
-export type FileState = {
-  ok: boolean;
-  message: string;
-  errors: Record<string, string>;
-  filed?: { code: string; token: string };
-};
-
-export const EMPTY_FILE_STATE: FileState = { ok: false, message: "", errors: {} };
 
 function value(formData: FormData, name: string): string {
   return String(formData.get(name) ?? "").trim();

@@ -72,6 +72,18 @@ Three zones, three ways in (PRD III). This shapes everything:
   property off one throws at render time. Plain components (`Button`, `Card`,
   `Alert`) are fine. Keep `page.tsx` a thin server wrapper. Guarded by
   `tests/unit/rsc-antd.test.ts`.
+- **A `"use server"` file may only export async functions.** Export a plain
+  constant from one — an empty form state, say — and every importer gets a
+  server *reference* instead: `typeof state === "function"`, so the first
+  `state.errors.x` read throws and the page 500s. Nothing catches it, because
+  the constant still types and builds fine. Keep form state in a sibling
+  `action-state.ts` with no directive. This shipped broken in `/don` and would
+  have shipped broken in `/tra-cuu`.
+- A screen is only verified once the branch holding the client component has
+  actually rendered. Both lookup smoke failures hid behind a branch that never
+  ran: step 1 of a form, or an expired deadline. Seed the state the branch
+  needs — `verify:*` scripts roll their transaction back, so nothing they
+  create is ever visible over HTTP.
 - Running `npm run build` then `npm run dev` over the same `.next` makes nested
   routes 404 in dev while single-segment routes still work. Delete `.next` first.
 - **`revoke … from public` does not stop `anon` from calling a function.** Two
