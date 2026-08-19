@@ -7,6 +7,7 @@ import {
   endOfNextWorkingDay,
   returnDriftMinutes,
 } from "@/lib/domain/workhours";
+import { notifyWithdrawn } from "@/lib/services/notify";
 import {
   lookupRequest,
   setActualReturn,
@@ -63,6 +64,10 @@ export async function withdrawRequestAction(
       errors: {},
     };
   }
+
+  // Posted into that request's own thread, so nobody decides a withdrawn one.
+  const withdrawn = await lookupRequest(parsed.data.lookupToken).catch(() => null);
+  if (withdrawn) await notifyWithdrawn(withdrawn.code);
 
   redirect(`/tra-cuu/${parsed.data.lookupToken}?cap-nhat=da-rut`);
 }

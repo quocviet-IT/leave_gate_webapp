@@ -44,6 +44,15 @@ What exists for real:
   there too. A supervisor files for their own workshop and nobody else's,
   checked in the database against `lg_app_user.department`.
   `npm run verify:supervisor`.
+- Google Chat and the SLA run. `lib/domain/chat-messages.ts` composes every
+  message and is where the two spaces differ: the guards' space carries a
+  name, a time and a code, never a reason. Posting is best-effort — a Chat
+  outage must not be why a request failed to file. The scheduled run is
+  `/api/cron/nhac-duyet`, authorised by `CRON_SECRET`, and each nudge is
+  claimed in the database before it is posted so two runs cannot double up.
+  `npm run verify:reminders`. **Nothing has been posted to a real space yet:**
+  `GCHAT_WEBHOOK_APPROVERS`, `GCHAT_WEBHOOK_GUARDS` and `CRON_SECRET` are all
+  still at their example values, so the poster reports `skipped`.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
@@ -65,7 +74,7 @@ time, in the PRD's order.
 6. ~~Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo~~ — done
 7. ~~Timesheet: filters, gate-time column, mandatory adjustment reason, Excel~~ — done
 8. ~~Overview screen; supervisor filing on behalf~~ — done
-9. Two Google Chat spaces and the SLA reminder job
+9. Two Google Chat spaces and the SLA reminder job — **built; waiting on the two webhook URLs and a real `CRON_SECRET`**
 10. Printable layouts matching the paper forms
 11. End-to-end run: file on a phone → approve → booth stamp → timesheet
 

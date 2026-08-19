@@ -5,6 +5,7 @@ import type { ApprovalActionState } from "./action-state";
 import { requireRole } from "@/lib/auth";
 import { claimSchema, decisionSchema } from "@/lib/domain/schemas";
 import { claimRequest, decideRequest, releaseRequest } from "@/lib/services/approvals";
+import { notifyDecision } from "@/lib/services/notify";
 
 function value(formData: FormData, name: string): string {
   return String(formData.get(name) ?? "").trim();
@@ -109,6 +110,8 @@ export async function decideRequestAction(
   } catch (cause) {
     return refused(parsed.data.requestId, cause, "Chưa lưu được quyết định. Thử lại.");
   }
+
+  await notifyDecision(parsed.data.requestId, parsed.data.decision, email);
 
   revalidatePath("/admin/duyet-don");
   return {

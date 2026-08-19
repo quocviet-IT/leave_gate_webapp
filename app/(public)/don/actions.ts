@@ -10,6 +10,7 @@ import {
   submitterSchema,
 } from "@/lib/domain/schemas";
 import { computeGateMinutes, computeLeaveMinutes } from "@/lib/domain/workhours";
+import { notifyFiled } from "@/lib/services/notify";
 import { fileRequest } from "@/lib/services/requests";
 
 function value(formData: FormData, name: string): string {
@@ -135,6 +136,12 @@ export async function fileRequestAction(
       errors: {},
     };
   }
+
+  // Best-effort: the approvers hearing about it must never be what decides
+  // whether the request went through.
+  const incomingHeaders = await headers();
+  const origin = incomingHeaders.get("origin") ?? "";
+  await notifyFiled(filed.code, `${origin}/admin/duyet-don`);
 
   const destination = new URLSearchParams({ code: filed.code, token: filed.token });
   redirect(`/don/xong?${destination.toString()}`);
