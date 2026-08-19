@@ -32,6 +32,13 @@ What exists for real:
   the board shows only today's approved gate passes and carries no reason at
   all, Cho ra must precede Cho vào, and a mis-tap is undoable for five
   minutes. A booth tap becomes the payroll figure. `npm run verify:booth`.
+- Timesheet at `/admin/cham-cong`: period filter, both hours columns with the
+  computed one locked, an adjustment reason of ten characters whenever they
+  differ, the gate-time column with its review flags, mark as done, and an
+  Excel download. `npm run verify:timesheet`.
+- `lib/xlsx.ts` writes the `.xlsx` by hand — a ZIP of five XML parts over
+  `node:zlib`, so the export needs no spreadsheet dependency. Its test reads
+  the ZIP back rather than trusting it.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
@@ -51,7 +58,7 @@ time, in the PRD's order.
 4. ~~Lookup page: track, withdraw, real return time; codes, tokens, QR~~ — done
 5. ~~Approval queue: claim, version lock, realtime, four tabs~~ — done
 6. ~~Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo~~ — done
-7. Timesheet: filters, gate-time column, mandatory adjustment reason, Excel
+7. ~~Timesheet: filters, gate-time column, mandatory adjustment reason, Excel~~ — done
 8. Overview screen; supervisor filing on behalf
 9. Two Google Chat spaces and the SLA reminder job
 10. Printable layouts matching the paper forms

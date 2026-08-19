@@ -16,6 +16,7 @@
     "verify:lookup": "node --env-file=.env.local scripts/verify-lookup.mjs",
     "verify:approvals": "node --env-file=.env.local scripts/verify-approvals.mjs",
     "verify:booth": "node --env-file=.env.local scripts/verify-booth.mjs",
+    "verify:timesheet": "node --env-file=.env.local scripts/verify-timesheet.mjs",
     "smoke:lookup": "node --env-file=.env.local scripts/smoke-private-lookup.mjs",
     "measure:js": "node scripts/measure-js.mjs",
     "smoke": "node --env-file=.env.local scripts/smoke-pages.mjs"
