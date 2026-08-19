@@ -106,6 +106,23 @@ export async function setActualReturnAction(
   }
 
   const actualDate = new Date(actualInAt);
+  // A return time cannot have happened yet if it is still ahead of us. Five
+  // minutes of slack covers a phone clock running fast; the same bound is
+  // enforced again in `lg_set_actual_return`.
+  if (Number.isNaN(actualDate.getTime())) {
+    return {
+      ok: false,
+      message: "Kiểm tra lại giờ vào lại thực tế.",
+      errors: { actualInAt: "Chưa nhập giờ vào lại hợp lệ" },
+    };
+  }
+  if (actualDate.getTime() > Date.now() + 5 * 60_000) {
+    return {
+      ok: false,
+      message: "Giờ vào lại thực tế không được ở tương lai.",
+      errors: { actualInAt: "Chỉ nhập giờ bạn đã thực sự quay lại" },
+    };
+  }
   const driftMinutes = returnDriftMinutes(
     new Date(request.detail.expectedInAt),
     actualDate,

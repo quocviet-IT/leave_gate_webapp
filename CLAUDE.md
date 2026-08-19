@@ -21,6 +21,8 @@ is wrong — say so, do not silently pick.
 - Lint: `npm run lint`
 - Apply migrations: `npm run migrate`
 - Smoke every route: `node scripts/smoke-pages.mjs http://localhost:PORT`
+- Verify the database rules: `npm run verify:employees` · `verify:submit` ·
+  `verify:lookup` · `verify:approvals`
 
 ## 2. How to verify (mandatory before claiming "done")
 
@@ -33,6 +35,10 @@ is wrong — say so, do not silently pick.
   input/output taken from PRD section XI. Never verify by "looks right in the UI".
 - Migration: `npm run migrate` is idempotent; re-run it and confirm the second
   run reports `skip`.
+- Admin screen: `smoke-pages.mjs` only ever sees the sign-in redirect, so it
+  proves nothing about `/admin/*`. Render the screen's client component to
+  static markup in `tests/unit/*.test.tsx` instead — see
+  `approval-queue-render.test.tsx`. Prove the test fails before trusting it.
 
 ## 3. Architecture & where logic lives
 

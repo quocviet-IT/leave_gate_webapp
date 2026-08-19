@@ -24,6 +24,10 @@ What exists for real:
   and nothing else, and `/tra-cuu/<token>` opens the request in full, withdraws
   it, and takes a real return time until the end of the next working day.
   `npm run smoke:lookup` seeds a request, renders every branch and deletes it.
+- Approval queue at `/admin/duyet-don`: four tabs, Claim with a 30-minute
+  release, optimistic version lock, and a realtime subscription so four
+  approvers never work off the same stale table. Approving writes the timesheet
+  row. `npm run verify:approvals` covers rules 7 to 10 in the database.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
@@ -41,7 +45,7 @@ time, in the PRD's order.
    for supervisors — **done** (P1). Google Directory sync replaces the paste in P9.
 3. Public form, one route, dynamic fields — **blocked: no employee-code source**
 4. ~~Lookup page: track, withdraw, real return time; codes, tokens, QR~~ — done
-5. Approval queue: claim, version lock, realtime, four tabs
+5. ~~Approval queue: claim, version lock, realtime, four tabs~~ — done
 6. Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo
 7. Timesheet: filters, gate-time column, mandatory adjustment reason, Excel
 8. Overview screen; supervisor filing on behalf

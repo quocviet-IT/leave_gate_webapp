@@ -184,6 +184,38 @@ async function main() {
     ),
   );
 
+  const future = await file(
+    employeeId,
+    "gate",
+    {
+      reason: "leave",
+      reasonText: "",
+      note: "Ra ngoài việc riêng",
+      outAt: "2026-08-02T10:00:00+07:00",
+      expectedInAt: "2026-08-02T14:00:00+07:00",
+    },
+    "lookup-gate-4",
+  );
+  await client.query("update lg_request set status = 'approved' where code = $1", [future.code]);
+  check(
+    "a return time in the future is refused",
+    await expectRaise(
+      `select lg_set_actual_return(
+         $1, now() + interval '2 days', $2::int, $3, now() + interval '3 days'
+       )`,
+      [future.token, 0, "Nhập nhầm ngày"],
+    ),
+  );
+  check(
+    "a return time a couple of minutes ahead still passes, for clock skew",
+    !(await expectRaise(
+      `select lg_set_actual_return(
+         $1, now() + interval '2 minutes', $2::int, $3, now() + interval '1 day'
+       )`,
+      [future.token, 0, ""],
+    )),
+  );
+
   const grants = await client.query(
     `select
        has_function_privilege('anon', 'lg_lookup_by_token(text)', 'execute') as anon_lookup,
