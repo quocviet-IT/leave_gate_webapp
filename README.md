@@ -4,9 +4,15 @@ An internal web app for CTYHP that replaces the two paper forms in use today. Em
 link or scan a QR code to file a request — no login; one of the four approvers claims and decides
 it; the guard confirms the real times at the gate; approved requests flow to the timesheet screen.
 
-**Status:** PRD v0.5 (draft) plus a working scaffold. The database foundation is applied to
-Supabase and the working-time, SLA and request-code logic is in place with tests. The screens
-themselves are labelled placeholders — see [AGENTS.md](AGENTS.md) for what comes next.
+**Status:** every Phase 1 screen is built against PRD v0.5 and verified — filing, both lookup
+depths, the approval queue, the gate booth, the timesheet with its Excel export, the overview,
+filing on behalf, the two Chat spaces, the SLA run and both printable forms. One request has been
+walked end to end over the real database (`npm run verify:e2e`).
+
+**Before it can be used for real,** three things are still needed from the company: a spreadsheet
+of staff for C&B to paste in, the two Google Chat webhook URLs, and a PIN for the booth. Until the
+webhooks arrive the Chat poster reports `skipped` rather than failing. See
+[AGENTS.md](AGENTS.md).
 
 ```bash
 npm install

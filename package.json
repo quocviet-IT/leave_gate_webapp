@@ -19,6 +19,7 @@
     "verify:timesheet": "node --env-file=.env.local scripts/verify-timesheet.mjs",
     "verify:supervisor": "node --env-file=.env.local scripts/verify-supervisor.mjs",
     "verify:reminders": "node --env-file=.env.local scripts/verify-reminders.mjs",
+    "verify:e2e": "node --env-file=.env.local scripts/verify-end-to-end.mjs",
     "smoke:lookup": "node --env-file=.env.local scripts/smoke-private-lookup.mjs",
     "measure:js": "node scripts/measure-js.mjs",
     "smoke": "node --env-file=.env.local scripts/smoke-pages.mjs"

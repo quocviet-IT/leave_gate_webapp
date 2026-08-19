@@ -6,9 +6,16 @@ work here.
 
 ## State of the build
 
-The scaffold is in place and verified: build, typecheck, lint and 63 unit tests
-pass, migrations `0001`–`0002` are applied to the live Supabase project, and all
-10 routes answer correctly (`scripts/smoke-pages.mjs`).
+Every Phase 1 screen is built and verified. Build, typecheck, lint and 233 unit
+tests pass; migrations `0001`–`0014` are applied to the live Supabase project;
+all 16 routes answer correctly (`scripts/smoke-pages.mjs`), the two lookup
+depths and both printable forms render against seeded data
+(`scripts/smoke-private-lookup.mjs`), and one request has been walked end to
+end (`npm run verify:e2e`). The public pages carry no horizontal overflow at
+375px.
+
+`components/ScreenSkeleton.tsx` and `components/PublicNotice.tsx` are gone: no
+route renders a placeholder any more.
 
 What exists for real:
 
@@ -63,7 +70,12 @@ What exists for real:
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
   `npm run measure:js` against a production server proves it.
 
-What is a labelled placeholder: the screens themselves. Each unbuilt route
+- `npm run verify:e2e -- http://localhost:PORT` walks one request the whole
+  way — file, approve, both booth taps, the timesheet edit, the audit trail —
+  over the real database and a running server, then deletes what it made.
+  Unlike the other `verify:*` scripts it COMMITS, because a transaction rolled
+  back is invisible to the pages it then opens over HTTP.
+Every Phase 1 screen is built. What remains is not a screen but a connection:
 renders `components/ScreenSkeleton.tsx`, which names the build step from PRD
 section XV and lists what the finished screen holds. Replace one skeleton at a
 time, in the PRD's order.
@@ -81,7 +93,7 @@ time, in the PRD's order.
 8. ~~Overview screen; supervisor filing on behalf~~ — done
 9. Two Google Chat spaces and the SLA reminder job — **built; waiting on the two webhook URLs and a real `CRON_SECRET`**
 10. ~~Printable layouts matching the paper forms~~ — done
-11. End-to-end run: file on a phone → approve → booth stamp → timesheet
+11. ~~End-to-end run: file on a phone → approve → booth stamp → timesheet~~ — done (`npm run verify:e2e`)
 
 ## Conventions
 
