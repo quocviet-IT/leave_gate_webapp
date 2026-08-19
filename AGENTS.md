@@ -39,6 +39,11 @@ What exists for real:
 - `lib/xlsx.ts` writes the `.xlsx` by hand — a ZIP of five XML parts over
   `node:zlib`, so the export needs no spreadsheet dependency. Its test reads
   the ZIP back rather than trusting it.
+- Overview at `/admin` and filing on behalf at `/admin/tao-don-ho`. The
+  overview is counts only — no name, no reason — because supervisors land
+  there too. A supervisor files for their own workshop and nobody else's,
+  checked in the database against `lg_app_user.department`.
+  `npm run verify:supervisor`.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
@@ -59,7 +64,7 @@ time, in the PRD's order.
 5. ~~Approval queue: claim, version lock, realtime, four tabs~~ — done
 6. ~~Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo~~ — done
 7. ~~Timesheet: filters, gate-time column, mandatory adjustment reason, Excel~~ — done
-8. Overview screen; supervisor filing on behalf
+8. ~~Overview screen; supervisor filing on behalf~~ — done
 9. Two Google Chat spaces and the SLA reminder job
 10. Printable layouts matching the paper forms
 11. End-to-end run: file on a phone → approve → booth stamp → timesheet

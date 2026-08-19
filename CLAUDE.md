@@ -22,7 +22,8 @@ is wrong — say so, do not silently pick.
 - Apply migrations: `npm run migrate`
 - Smoke every route: `node scripts/smoke-pages.mjs http://localhost:PORT`
 - Verify the database rules: `npm run verify:employees` · `verify:submit` ·
-  `verify:lookup` · `verify:approvals` · `verify:booth` · `verify:timesheet`
+  `verify:lookup` · `verify:approvals` · `verify:booth` · `verify:timesheet` ·
+  `verify:supervisor`
 
 ## 2. How to verify (mandatory before claiming "done")
 
