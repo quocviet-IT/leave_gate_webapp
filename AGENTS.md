@@ -20,6 +20,10 @@ What exists for real:
 - Google sign-in for the admin zone.
 - Employee master data: a paste-import for C&B at `/admin/nhan-su`, and a bounded
   public name search that never returns the employee number.
+- Public lookup, both depths: `/tra-cuu` answers a request code with a status
+  and nothing else, and `/tra-cuu/<token>` opens the request in full, withdraws
+  it, and takes a real return time until the end of the next working day.
+  `npm run smoke:lookup` seeds a request, renders every branch and deletes it.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
@@ -36,7 +40,7 @@ time, in the PRD's order.
 2. Staff master data: C&B pastes the list, the public form can search it; roles
    for supervisors — **done** (P1). Google Directory sync replaces the paste in P9.
 3. Public form, one route, dynamic fields — **blocked: no employee-code source**
-4. Lookup page: track, withdraw, real return time; codes, tokens, QR
+4. ~~Lookup page: track, withdraw, real return time; codes, tokens, QR~~ — done
 5. Approval queue: claim, version lock, realtime, four tabs
 6. Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo
 7. Timesheet: filters, gate-time column, mandatory adjustment reason, Excel

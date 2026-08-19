@@ -12,6 +12,62 @@ export type FileRequestInput = {
 
 export type FiledRequest = { code: string; token: string };
 
+type LookupEmployee = {
+  fullName: string;
+  title?: string;
+  department?: string;
+};
+
+type LookupBase = {
+  id: string;
+  code: string;
+  kind: "leave" | "gate";
+  status: "pending" | "claimed" | "approved" | "rejected" | "withdrawn";
+  employee: LookupEmployee;
+  submittedAt: string;
+  computedMinutes: number;
+  claimedBy?: string;
+  claimedAt?: string;
+  decidedBy?: string;
+  decidedAt?: string;
+  decisionNote?: string;
+  withdrawnAt?: string;
+  withdrawReason?: string;
+};
+
+export type LeaveLookupRequest = LookupBase & {
+  kind: "leave";
+  detail: {
+    fromDate: string;
+    toDate: string;
+    halfDay?: "morning" | "afternoon";
+    reason: "unpaid" | "annual" | "sick" | "marriage" | "maternity" | "bereavement" | "special" | "other";
+    reasonText?: string;
+    note: string;
+    handoverName?: string;
+    makeupDate?: string;
+  };
+};
+
+export type GateLookupRequest = LookupBase & {
+  kind: "gate";
+  detail: {
+    reason: "business_trip" | "leave" | "other";
+    reasonText?: string;
+    note: string;
+    outAt: string;
+    expectedInAt: string;
+    actualInAt?: string;
+    actualInSource?: "booth" | "employee" | "cnb";
+    driftMinutes?: number;
+    driftReason?: string;
+    boothOutAt?: string;
+    boothInAt?: string;
+  };
+};
+
+export type LookupRequest = LeaveLookupRequest | GateLookupRequest;
+
 /**
  * Files a request. Uses the service-role client on purpose: `lg_submit_request`
  * is granted to service_role only, so the browser cannot reach it even though it
@@ -38,4 +94,41 @@ export async function statusByCode(code: string): Promise<string | null> {
   const { data, error } = await sb.rpc("lg_status_by_code", { p_code: code });
   if (error) throw new Error(error.message);
   return (data as string | null) ?? null;
+}
+
+/** Full detail for a valid private lookup token. Never returns the token itself. */
+export async function lookupRequest(token: string): Promise<LookupRequest | null> {
+  const sb = createSupabaseAdminClient();
+  const { data, error } = await sb.rpc("lg_lookup_by_token", { p_token: token });
+  if (error) throw new Error(error.message);
+  return (data as LookupRequest | null) ?? null;
+}
+
+export async function withdrawRequest(token: string, reason: string): Promise<void> {
+  const sb = createSupabaseAdminClient();
+  const { error } = await sb.rpc("lg_withdraw_request", {
+    p_token: token,
+    p_reason: reason || null,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export type SetActualReturnInput = {
+  token: string;
+  actualInAt: string;
+  driftMinutes: number;
+  driftReason: string;
+  deadline: string;
+};
+
+export async function setActualReturn(input: SetActualReturnInput): Promise<void> {
+  const sb = createSupabaseAdminClient();
+  const { error } = await sb.rpc("lg_set_actual_return", {
+    p_token: input.token,
+    p_actual_in_at: input.actualInAt,
+    p_drift_minutes: input.driftMinutes,
+    p_drift_reason: input.driftReason,
+    p_deadline: input.deadline,
+  });
+  if (error) throw new Error(error.message);
 }
