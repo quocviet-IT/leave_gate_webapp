@@ -28,6 +28,10 @@ What exists for real:
   release, optimistic version lock, and a realtime subscription so four
   approvers never work off the same stale table. Approving writes the timesheet
   row. `npm run verify:approvals` covers rules 7 to 10 in the database.
+- Gate booth at `/bao-ve`: a PIN buys a 30-day session token on that machine,
+  the board shows only today's approved gate passes and carries no reason at
+  all, Cho ra must precede Cho vào, and a mis-tap is undoable for five
+  minutes. A booth tap becomes the payroll figure. `npm run verify:booth`.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
   pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
@@ -46,7 +50,7 @@ time, in the PRD's order.
 3. Public form, one route, dynamic fields — **blocked: no employee-code source**
 4. ~~Lookup page: track, withdraw, real return time; codes, tokens, QR~~ — done
 5. ~~Approval queue: claim, version lock, realtime, four tabs~~ — done
-6. Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo
+6. ~~Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo~~ — done
 7. Timesheet: filters, gate-time column, mandatory adjustment reason, Excel
 8. Overview screen; supervisor filing on behalf
 9. Two Google Chat spaces and the SLA reminder job

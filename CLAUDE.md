@@ -22,7 +22,7 @@ is wrong — say so, do not silently pick.
 - Apply migrations: `npm run migrate`
 - Smoke every route: `node scripts/smoke-pages.mjs http://localhost:PORT`
 - Verify the database rules: `npm run verify:employees` · `verify:submit` ·
-  `verify:lookup` · `verify:approvals`
+  `verify:lookup` · `verify:approvals` · `verify:booth`
 
 ## 2. How to verify (mandatory before claiming "done")
 
@@ -116,7 +116,9 @@ Three zones, three ways in (PRD III). This shapes everything:
 
 - Never force-push to `main`.
 - Never grant `anon` a table policy "just to test" the public form.
-- Never let a booth screen show a leave reason (PRD rule 14 and 19).
+- Never let a booth screen show a leave reason (PRD rule 14 and 19). The board
+  function selects its columns by name and the render test asserts the words
+  are absent — keep both when the screen changes.
 - Never let a final-hours edit save without a reason (PRD rule 16).
 - Never trust a client-sent hours figure — recompute with `lib/domain/workhours.ts`.
 - Never swallow an error (empty catch, ignoring `{ error }`).
