@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import RequestForm from "@/components/public/RequestForm";
 
 /**
@@ -9,12 +9,6 @@ import RequestForm from "@/components/public/RequestForm";
  * this covers the branches a URL cannot reach, and asserts the shape the
  * redesign promised: one page, one submit button, no steps.
  */
-
-vi.mock("@/lib/db/client", () => ({
-  createSupabaseBrowserClient: () => {
-    throw new Error("the form must not reach Supabase during render");
-  },
-}));
 
 const render = (kind?: "leave" | "gate") =>
   renderToStaticMarkup(<RequestForm initialKind={kind} />);
@@ -41,6 +35,32 @@ describe("the filing form is one page", () => {
   });
 });
 
+describe("the person types who they are", () => {
+  it("a name, a department and an optional job title", () => {
+    const html = render();
+    expect(html).toContain('name="employeeName"');
+    expect(html).toContain('name="employeeDepartment"');
+    expect(html).toContain('name="employeeTitle"');
+    expect(html).toContain("Họ và tên");
+    expect(html).toContain("Bộ phận");
+  });
+
+  it("with no staff-list picker anywhere on the form", () => {
+    const html = render();
+    // The picker was a combobox that queried Supabase from the browser. Filing
+    // no longer depends on the staff list existing at all.
+    expect(html).not.toContain('role="combobox"');
+    expect(html).not.toContain("Gõ ít nhất 2 ký tự");
+    expect(html).not.toContain('name="employeeId"');
+  });
+
+  it("on both kinds — a gate pass needs a name just as much", () => {
+    const html = render("gate");
+    expect(html).toContain('name="employeeName"');
+    expect(html).toContain('name="employeeDepartment"');
+  });
+});
+
 describe("the form shows the fields for the chosen kind", () => {
   it("leave by default, including what used to be step three", () => {
     const html = render();
@@ -48,6 +68,7 @@ describe("the form shows the fields for the chosen kind", () => {
     expect(html).toContain("Đến hết ngày");
     expect(html).toContain("Lý do nghỉ");
     expect(html).toContain("Bàn giao công việc cho");
+    expect(html).toContain('name="handoverName"');
     expect(html).toContain("Tôi cam kết");
     expect(html).toContain('name="makeupDate"');
   });
@@ -57,7 +78,7 @@ describe("the form shows the fields for the chosen kind", () => {
     expect(html).toContain("Thời gian ra");
     expect(html).toContain("Dự kiến vào lại");
     expect(html).not.toContain('name="fromDate"');
-    expect(html).not.toContain('name="handoverEmployeeId"');
+    expect(html).not.toContain('name="handoverName"');
     expect(html).not.toContain("Tôi cam kết");
   });
 

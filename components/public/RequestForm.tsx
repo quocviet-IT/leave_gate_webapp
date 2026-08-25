@@ -3,8 +3,8 @@
 import { useState } from "react";
 import GateFields from "./GateFields";
 import HoursLine from "./HoursLine";
+import IdentityFields from "./IdentityFields";
 import LeaveFields from "./LeaveFields";
-import NamePicker from "./NamePicker";
 import SubmitForm, { ActionFieldError } from "./SubmitForm";
 
 export type RequestKind = "leave" | "gate";
@@ -69,8 +69,7 @@ export default function RequestForm({ initialKind = "leave" }: { initialKind?: R
           <ActionFieldError field="kind" />
         </fieldset>
 
-        <NamePicker fieldName="employeeId" label="Tôi tên là" includeProfileFields />
-        <ActionFieldError field="employeeId" />
+        <IdentityFields />
 
         {kind === "leave" ? (
           <LeaveFields reason={reason} onReasonChange={setReason} />

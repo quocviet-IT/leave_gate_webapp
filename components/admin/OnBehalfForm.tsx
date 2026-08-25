@@ -120,7 +120,10 @@ export default function OnBehalfForm({ employees }: { employees: SupervisorEmplo
               </Space>
               {state.errors.fromDate ? <Text type="danger">{state.errors.fromDate}</Text> : null}
               {state.errors.toDate ? <Text type="danger">{state.errors.toDate}</Text> : null}
-              <Input name="handoverEmployeeId" type="hidden" defaultValue="" />
+              <Input name="handoverName" placeholder="Bàn giao công việc cho (ghi tên)" />
+              {state.errors.handoverName ? (
+                <Text type="danger">{state.errors.handoverName}</Text>
+              ) : null}
             </>
           ) : (
             <>

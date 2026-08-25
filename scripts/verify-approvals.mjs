@@ -40,9 +40,21 @@ async function raises(sql, params) {
   }
 }
 
+/** A leave application filed under a typed name, with no staff row behind it. */
+const TYPED_LEAVE = {
+  fromDate: "2026-07-30",
+  toDate: "2026-07-30",
+  halfDay: null,
+  reason: "annual",
+  reasonText: "",
+  note: "Việc riêng",
+  handoverName: "Ai Đó",
+  makeupDate: null,
+};
+
 async function file(employeeId, device, filedByEmail = null) {
   const result = await client.query(
-    `select lg_submit_request($1::uuid, 'leave'::lg_request_kind, $2::jsonb, 480, $3) as r`,
+    `select lg_submit_request('', '', '', 'leave'::lg_request_kind, $2::jsonb, 480, $3, $1::uuid) as r`,
     [
       employeeId,
       JSON.stringify({
@@ -231,6 +243,46 @@ async function main() {
     [behalfRow.id, behalfRow.version, TRAN],
   );
   check("filing on somebody's behalf also blocks deciding it", behalfDecision !== null);
+
+  // Rule 9 on the typed-name path. There is no staff row to read an email from,
+  // so the test falls back to matching the typed name against the approver's own
+  // name on lg_app_user. Weaker than an email comparison and known to be: the
+  // last check here is the hole, asserted so nobody discovers it by accident.
+  const typedOwn = await client.query(
+    `select lg_submit_request('Chị Diệu', 'Nhân sự', '', 'leave', $1::jsonb, 480, 'typed-own') as r`,
+    [JSON.stringify(TYPED_LEAVE)],
+  );
+  const typedOwnRow = await row(typedOwn.rows[0].r.code);
+  const typedOwnDecision = await raises(
+    "select lg_decide_request($1::uuid, $2::int, $3, 'approved', null, 30)",
+    [typedOwnRow.id, typedOwnRow.version, DIEU],
+  );
+  check(
+    "an approver cannot decide a typed request that carries their own name",
+    typedOwnDecision !== null,
+    typedOwnDecision ?? "được duyệt, lẽ ra phải bị chặn",
+  );
+
+  const typedOtherDecides = await raises(
+    "select lg_decide_request($1::uuid, $2::int, $3, 'approved', null, 30)",
+    [typedOwnRow.id, typedOwnRow.version, TRAN],
+  );
+  check("but another approver still can", typedOtherDecides === null, typedOtherDecides ?? "");
+
+  const typedMisspelt = await client.query(
+    `select lg_submit_request('Chị  Diệu', 'Nhân sự', '', 'leave', $1::jsonb, 480, 'typed-spaced') as r`,
+    [JSON.stringify(TYPED_LEAVE)],
+  );
+  const spacedRow = await row(typedMisspelt.rows[0].r.code);
+  const spacedDecision = await raises(
+    "select lg_decide_request($1::uuid, $2::int, $3, 'approved', null, 30)",
+    [spacedRow.id, spacedRow.version, DIEU],
+  );
+  check(
+    "extra spacing in the typed name does not get past rule 9",
+    spacedDecision !== null,
+    spacedDecision ?? "được duyệt, lẽ ra phải bị chặn",
+  );
 
   // ------------------------------------------------------------- withdrawn
   const toWithdraw = await file(workerId, "approve-withdraw");

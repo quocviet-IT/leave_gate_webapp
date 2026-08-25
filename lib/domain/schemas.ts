@@ -20,13 +20,43 @@ const dateOnly = z
 
 const isoInstant = z.string().datetime({ offset: true });
 
+/** A person's name as typed. The message differs by whose name it is. */
+const typedName = (missing: string) =>
+  z.string().trim().min(2, missing).max(100, "Tên quá dài");
+
 /**
- * Who is filing. Filing is fully public, so the only requirement is that the
- * name was *chosen from the synced list* rather than typed: an id, never a free
- * string. Nothing here is a credential — the approvers are the control point.
+ * Who is filing.
+ *
+ * This used to require an id chosen from the synced staff list, so a person
+ * could only file under a name the company had already registered. The board
+ * asked for a typed name instead on 2026-08-25, accepting that the form can
+ * now be filed under anybody's name — see CLAUDE.md section 6. Nothing here is
+ * a credential either way; the approvers are the control point.
+ *
+ * The department is not decoration: it is how an approver knows which workshop
+ * a request came from, and it used to arrive free with the staff row.
  */
 export const submitterSchema = z.object({
-  employeeId: z.string().uuid("Phải chọn tên trong danh sách"),
+  employeeName: typedName("Ghi họ và tên của bạn"),
+  employeeDepartment: z
+    .string()
+    .trim()
+    .min(2, "Ghi bộ phận hoặc xưởng của bạn")
+    .max(100, "Tên bộ phận quá dài"),
+  employeeTitle: z.string().trim().max(100, "Chức vụ quá dài").optional().default(""),
+  // Set only when a supervisor filed on behalf and picked from their own
+  // department's list. The public form never sends one.
+  employeeId: z.string().uuid().optional(),
+});
+
+/**
+ * Who a supervisor is filing for. A different way in, so a different rule: the
+ * person is chosen from the supervisor's own department list, which means an
+ * id — and the name, title and department come from that row rather than from
+ * anything typed.
+ */
+export const onBehalfSubmitterSchema = z.object({
+  employeeId: z.string().uuid("Chọn người trong xưởng của bạn"),
 });
 
 export const leaveRequestSchema = z
@@ -38,7 +68,7 @@ export const leaveRequestSchema = z
     reason: z.enum(LEAVE_REASONS),
     reasonText: z.string().trim().max(500).optional().default(""),
     note: z.string().trim().min(1, "Ghi rõ lý do nghỉ").max(1000),
-    handoverEmployeeId: z.string().uuid("Chọn người nhận bàn giao"),
+    handoverName: typedName("Ghi tên người nhận bàn giao"),
     makeupDate: dateOnly.nullish(),
     committed: z.literal(true, { message: "Phải tích cam kết trước khi gửi" }),
   })

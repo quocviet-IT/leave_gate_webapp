@@ -111,7 +111,7 @@ async function main() {
   const inOneHour = new Date(Date.now() + 3600_000).toISOString();
   const filed = (
     await client.query(
-      `select lg_submit_request($1::uuid, 'gate'::lg_request_kind, $2::jsonb, 180, 'e2e-phone') as r`,
+      `select lg_submit_request('', '', '', 'gate'::lg_request_kind, $2::jsonb, 180, 'e2e-phone', $1::uuid) as r`,
       [
         employeeId,
         JSON.stringify({

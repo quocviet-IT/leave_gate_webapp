@@ -66,7 +66,7 @@ async function main() {
   const employeeId = employee.rows[0].id;
 
   const filed = await client.query(
-    `select lg_submit_request($1::uuid, 'leave'::lg_request_kind, $2::jsonb, 480, 'sla-1') as r`,
+    `select lg_submit_request('', '', '', 'leave'::lg_request_kind, $2::jsonb, 480, 'sla-1', $1::uuid) as r`,
     [
       employeeId,
       JSON.stringify({
@@ -137,7 +137,7 @@ async function main() {
 
   // ------------------------------------------------- a claim stops the clock
   const claimed = await client.query(
-    `select lg_submit_request($1::uuid, 'leave'::lg_request_kind, $2::jsonb, 480, 'sla-2') as r`,
+    `select lg_submit_request('', '', '', 'leave'::lg_request_kind, $2::jsonb, 480, 'sla-2', $1::uuid) as r`,
     [
       employeeId,
       JSON.stringify({

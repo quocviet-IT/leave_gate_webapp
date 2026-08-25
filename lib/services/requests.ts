@@ -2,7 +2,11 @@ import "server-only";
 import { createSupabaseAdminClient } from "@/lib/db/admin";
 
 export type FileRequestInput = {
-  employeeId: string;
+  employeeName: string;
+  employeeDepartment: string;
+  employeeTitle?: string;
+  /** Only a supervisor filing on behalf has one; the public form never does. */
+  employeeId?: string;
   kind: "leave" | "gate";
   detail: Record<string, unknown>;
   /** Computed by lib/domain/workhours.ts on the server. Never sent by a browser. */
@@ -76,11 +80,14 @@ export type LookupRequest = LeaveLookupRequest | GateLookupRequest;
 export async function fileRequest(input: FileRequestInput): Promise<FiledRequest> {
   const sb = createSupabaseAdminClient();
   const { data, error } = await sb.rpc("lg_submit_request", {
-    p_employee_id: input.employeeId,
+    p_employee_name: input.employeeName,
+    p_employee_department: input.employeeDepartment,
+    p_employee_title: input.employeeTitle ?? "",
     p_kind: input.kind,
     p_detail: input.detail,
     p_computed_minutes: input.computedMinutes,
     p_device_hash: input.deviceHash,
+    p_employee_id: input.employeeId ?? null,
   });
   if (error) throw new Error(error.message);
   const filed = data as FiledRequest | null;

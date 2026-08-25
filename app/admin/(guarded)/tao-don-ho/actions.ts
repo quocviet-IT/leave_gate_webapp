@@ -5,7 +5,11 @@ import { revalidatePath } from "next/cache";
 import type { OnBehalfState } from "./action-state";
 import { requireRole } from "@/lib/auth";
 import { deviceHash } from "@/lib/device";
-import { gateRequestSchema, leaveRequestSchema, submitterSchema } from "@/lib/domain/schemas";
+import {
+  gateRequestSchema,
+  leaveRequestSchema,
+  onBehalfSubmitterSchema,
+} from "@/lib/domain/schemas";
 import { computeGateMinutes, computeLeaveMinutes } from "@/lib/domain/workhours";
 import { fileOnBehalf, supervisorEmployees } from "@/lib/services/supervisor";
 
@@ -57,7 +61,9 @@ export async function fileOnBehalfAction(
     return { ok: false, message: "Loại đơn không hợp lệ.", errors: { kind: "Chọn loại đơn" } };
   }
 
-  const submitter = submitterSchema.safeParse({ employeeId: value(formData, "employeeId") });
+  const submitter = onBehalfSubmitterSchema.safeParse({
+    employeeId: value(formData, "employeeId"),
+  });
   if (!submitter.success) {
     return {
       ok: false,
@@ -78,7 +84,7 @@ export async function fileOnBehalfAction(
       reason: value(formData, "reason"),
       reasonText: value(formData, "reasonText"),
       note: value(formData, "note"),
-      handoverEmployeeId: value(formData, "handoverEmployeeId"),
+      handoverName: value(formData, "handoverName"),
       makeupDate: value(formData, "makeupDate") || null,
       committed: formData.get("committed") === "on",
     });

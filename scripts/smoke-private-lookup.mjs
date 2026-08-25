@@ -45,7 +45,7 @@ async function get(path) {
 
 async function file(employeeId, kind, detail, minutes, device) {
   const result = await client.query(
-    "select lg_submit_request($1::uuid, $2::lg_request_kind, $3::jsonb, $4::int, $5) as r",
+    "select lg_submit_request('', '', '', $2::lg_request_kind, $3::jsonb, $4::int, $5, $1::uuid) as r",
     [employeeId, kind, JSON.stringify(detail), minutes, device],
   );
   return result.rows[0].r;

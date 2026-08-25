@@ -1,7 +1,6 @@
 "use client";
 
 import { LEAVE_REASON_OPTIONS } from "@/lib/domain/reasons";
-import NamePicker from "./NamePicker";
 import ReasonField from "./ReasonField";
 import { ActionFieldError } from "./SubmitForm";
 
@@ -66,8 +65,18 @@ export default function LeaveFields({
         <ActionFieldError field="note" />
       </div>
 
-      <NamePicker fieldName="handoverEmployeeId" label="Bàn giao công việc cho" />
-      <ActionFieldError field="handoverEmployeeId" />
+      <div className="form-field">
+        <label htmlFor="handoverName">Bàn giao công việc cho</label>
+        <input
+          id="handoverName"
+          className="field-control"
+          name="handoverName"
+          type="text"
+          maxLength={100}
+          placeholder="Ghi tên người nhận bàn giao"
+        />
+        <ActionFieldError field="handoverName" />
+      </div>
 
       <div className="form-field">
         <label htmlFor="makeupDate">Đề xuất ngày làm bù</label>

@@ -26,15 +26,25 @@ What exists for real:
 - Route tree for all three zones, with the admin auth boundary enforced.
 - Google sign-in for the admin zone.
 - Employee master data: a paste-import for C&B at `/admin/nhan-su`, and a bounded
-  public name search that never returns the employee number.
+  name search that never returns the employee number. The public form no longer
+  uses that search; the supervisor's on-behalf screen does.
 - The filing form at `/don`: one page, one submit button. A kind toggle swaps
   the field group in place, and the group that is not showing is unmounted, so
   a gate pass cannot carry a leave date it merely stopped displaying.
   `?kind=gate` opens straight on the gate form for a QR code that knows which
   it wants. `components/public/RequestForm.tsx` holds the state;
-  `LeaveFields`, `GateFields` and `ReasonField` hold the fields.
-  `tests/unit/request-form-render.test.tsx` renders both kinds, because a URL
-  cannot press the toggle.
+  `IdentityFields`, `LeaveFields`, `GateFields` and `ReasonField` hold the
+  fields. `tests/unit/request-form-render.test.tsx` renders both kinds, because
+  a URL cannot press the toggle.
+- **The person types their own name** (migration `0015`, board decision
+  2026-08-25). There is no staff-list picker on the public form any more, and
+  no Supabase client in the public bundle at all. `lg_request.employee_id` is
+  null for every public filing, so read the person off `employee_snapshot` and
+  never join `lg_employee`. What this gave up, and what still bounds it, is in
+  CLAUDE.md section 6 — read it before changing anything here.
+- Employee master data still exists and still matters: supervisors filing on
+  behalf pick from it, and that path keeps the employee id and every guarantee
+  that comes with it.
 - Public lookup, both depths: `/tra-cuu` answers a request code with a status
   and nothing else, and `/tra-cuu/<token>` opens the request in full, withdraws
   it, and takes a real return time until the end of the next working day.
@@ -129,3 +139,16 @@ used tomorrow; the fourth only silences the Chat nudges.
 | A booth PIN | set once in `lg_booth` | `/bao-ve` cannot be signed into, so no gate stamp is possible |
 | The four approvers', C&B's and the supervisors' `@ctyhp.vn` addresses | `lg_app_user` — 5 rows are seeded, confirm they are the right people | a wrong address means that person lands on `/admin/khong-du-quyen` |
 | Two Google Chat webhook URLs | `GCHAT_WEBHOOK_APPROVERS`, `GCHAT_WEBHOOK_GUARDS` | posting reports `skipped`; nothing else is affected |
+
+## Filing on behalf was broken, and is fixed
+
+Found on 2026-08-25 while re-keying the handover field: `OnBehalfForm` sent
+`handoverEmployeeId` from a hidden input that was always empty, and
+`leaveRequestSchema` required it to be a UUID. A supervisor filing a **leave**
+application therefore always got "Chọn người nhận bàn giao" and could never
+submit. Gate passes were unaffected, which is why it went unnoticed.
+
+`verify:supervisor` did not catch it because it calls the database function
+directly and never crosses the server action, and the render test renders the
+form without submitting it. The form now asks for a handover name like the
+public one does.

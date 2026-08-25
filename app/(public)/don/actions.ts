@@ -53,7 +53,11 @@ export async function fileRequestAction(
     return { ok: false, message: "Loại đơn không hợp lệ.", errors: { kind: "Chọn loại đơn" } };
   }
 
-  const submitter = submitterSchema.safeParse({ employeeId: value(formData, "employeeId") });
+  const submitter = submitterSchema.safeParse({
+    employeeName: value(formData, "employeeName"),
+    employeeDepartment: value(formData, "employeeDepartment"),
+    employeeTitle: value(formData, "employeeTitle"),
+  });
   if (!submitter.success) {
     return {
       ok: false,
@@ -76,7 +80,7 @@ export async function fileRequestAction(
         reason: value(formData, "reason"),
         reasonText: value(formData, "reasonText"),
         note: value(formData, "note"),
-        handoverEmployeeId: value(formData, "handoverEmployeeId"),
+        handoverName: value(formData, "handoverName"),
         makeupDate: value(formData, "makeupDate") || null,
         committed: formData.get("committed") === "on",
       });
@@ -123,7 +127,9 @@ export async function fileRequestAction(
     });
     const throttleKey = await deviceHash(throttleHeaders, todayInIct());
     filed = await fileRequest({
-      employeeId: submitter.data.employeeId,
+      employeeName: submitter.data.employeeName,
+      employeeDepartment: submitter.data.employeeDepartment,
+      employeeTitle: submitter.data.employeeTitle,
       kind,
       detail: parsedDetail,
       computedMinutes,

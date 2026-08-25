@@ -9,9 +9,13 @@ import {
   withdrawSchema,
 } from "@/lib/domain/schemas";
 
-const employeeId = "11111111-1111-4111-8111-111111111111";
-const handoverId = "22222222-2222-4222-8222-222222222222";
 const token = "a".repeat(32);
+
+const submitter = {
+  employeeName: "Tạ Quốc Việt",
+  employeeDepartment: "Xưởng A",
+  employeeTitle: "Công nhân",
+};
 
 const leave = {
   kind: "leave" as const,
@@ -20,7 +24,7 @@ const leave = {
   reason: "annual" as const,
   reasonText: "",
   note: "Về quê thăm gia đình",
-  handoverEmployeeId: handoverId,
+  handoverName: "Nguyễn Văn Bình",
   committed: true as const,
 };
 
@@ -62,7 +66,7 @@ describe("leave form", () => {
 
   it("requires a handover person", () => {
     const withoutHandover: Record<string, unknown> = { ...leave };
-    delete withoutHandover.handoverEmployeeId;
+    delete withoutHandover.handoverName;
     expect(leaveRequestSchema.safeParse(withoutHandover).success).toBe(false);
   });
 });
@@ -92,27 +96,26 @@ describe("gate-pass form", () => {
 });
 
 describe("who is filing", () => {
-  it("needs only a name chosen from the list", () => {
-    expect(
-      submitRequestSchema.safeParse({
-        submitter: { employeeId },
-        detail: leave,
-      }).success,
-    ).toBe(true);
+  it("needs a typed name and a department", () => {
+    expect(submitRequestSchema.safeParse({ submitter, detail: leave }).success).toBe(true);
   });
 
-  it("refuses a typed name instead of a chosen one", () => {
+  it("refuses a request with no name on it at all", () => {
     expect(
       submitRequestSchema.safeParse({
-        submitter: { employeeId: "Nguyễn Văn Bình" },
+        submitter: { ...submitter, employeeName: "" },
         detail: leave,
       }).success,
     ).toBe(false);
   });
 
   it("asks for no credential, because filing is public", () => {
-    const parsed = submitRequestSchema.parse({ submitter: { employeeId }, detail: leave });
-    expect(Object.keys(parsed.submitter)).toEqual(["employeeId"]);
+    const parsed = submitRequestSchema.parse({ submitter, detail: leave });
+    expect(Object.keys(parsed.submitter).sort()).toEqual([
+      "employeeDepartment",
+      "employeeName",
+      "employeeTitle",
+    ]);
   });
 });
 

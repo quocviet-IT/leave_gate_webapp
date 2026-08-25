@@ -47,7 +47,7 @@ async function raises(sql, params) {
 /** A gate pass leaving today, so it lands on the booth's board. */
 async function gatePass(employeeId, device, hoursFromNow = 0) {
   const result = await client.query(
-    `select lg_submit_request($1::uuid, 'gate'::lg_request_kind, $2::jsonb, 180, $3) as r`,
+    `select lg_submit_request('', '', '', 'gate'::lg_request_kind, $2::jsonb, 180, $3, $1::uuid) as r`,
     [
       employeeId,
       JSON.stringify({
@@ -131,7 +131,7 @@ async function main() {
   );
 
   const leaveRequest = await client.query(
-    `select lg_submit_request($1::uuid, 'leave'::lg_request_kind, $2::jsonb, 480, $3) as r`,
+    `select lg_submit_request('', '', '', 'leave'::lg_request_kind, $2::jsonb, 480, $3, $1::uuid) as r`,
     [
       employeeId,
       JSON.stringify({
