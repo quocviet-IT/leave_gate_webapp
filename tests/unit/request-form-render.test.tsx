@@ -139,3 +139,38 @@ describe("what is required is not marked; what is optional is", () => {
     expect(html).not.toContain("cho người được chọn ở trên");
   });
 });
+
+describe("the card names the paper form being filled", () => {
+  it("a leave application by its own name", () => {
+    const html = render();
+    expect(html).toContain("ĐƠN XIN NGHỈ PHÉP");
+    expect(html).not.toContain("GIẤY XIN PHÉP RA VÀO CỔNG");
+  });
+
+  it("a gate pass by its own name", () => {
+    const html = render("gate");
+    expect(html).toContain("GIẤY XIN PHÉP RA VÀO CỔNG");
+    expect(html).not.toContain("ĐƠN XIN NGHỈ PHÉP");
+  });
+
+  it("with exactly one heading, so the page has one subject", () => {
+    expect((render().match(/<h1/g) ?? []).length).toBe(1);
+    expect((render("gate").match(/<h1/g) ?? []).length).toBe(1);
+  });
+});
+
+describe("the submit bar", () => {
+  it("keeps Gửi đơn reachable without hunting for it", () => {
+    const html = render();
+    expect(html).toContain("form-actions--sticky");
+    expect(html).toContain("Gửi đơn");
+  });
+
+  it("does not give starting over the same weight as sending", () => {
+    const html = render();
+    // "Làm lại" throws away everything typed. It is a quiet link, not a button
+    // the size of the one that files the request.
+    expect(html).toContain("action-reset");
+    expect(html).not.toContain("button button--secondary");
+  });
+});

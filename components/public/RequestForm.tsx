@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import FormMasthead from "./FormMasthead";
 import FormSection from "./FormSection";
 import GateFields from "./GateFields";
 import IdentityFields from "./IdentityFields";
@@ -41,10 +42,7 @@ export default function RequestForm({ initialKind = "leave" }: { initialKind?: R
 
   return (
     <>
-      <header className="form-heading">
-        <h1>Gửi đơn nghỉ phép hoặc ra vào cổng</h1>
-        <p>Không cần đăng nhập. Điền một lần rồi gửi.</p>
-      </header>
+      <FormMasthead kind={kind} />
 
       <SubmitForm formId={FORM_ID}>
         <FormSection title="Loại đơn">

@@ -58,6 +58,18 @@ What exists for real:
   the PRD never made it a rule, so it is optional here too — but a handover
   that *is* typed must still be a name rather than a stray keystroke.
 
+  The card carries the paper form's own title — `ĐƠN XIN NGHỈ PHÉP` or
+  `GIẤY XIN PHÉP RA VÀO CỔNG`, the same two names printed by
+  `PrintableRequest` — and renames itself when the kind toggle moves. Keep the
+  two in step: a worker who has filled these sheets for years reads the title
+  first, and the render test asserts each kind shows only its own.
+
+  The submit bar is `position: sticky`, which is why nothing in the public zone
+  may set `overflow` on `html`, `body` or the layout's `main`: any of them
+  creates a scroll container and the bar stops sticking. Horizontal overflow is
+  held off with `min-width: 0` on the grid and flex children instead — a date
+  input's intrinsic width is what pushes a phone page sideways.
+
   The form marks the **optional** fields, not the required ones. Almost
   everything is required, so marking the majority would be noise; the two
   exceptions are the information. Keep it that way when adding a field, and

@@ -40,8 +40,14 @@ export default function SubmitForm({
             <p>{state.message}</p>
           </div>
         ) : null}
-        <div className="form-actions">
-          <a className="button button--secondary" href="/don">
+        {/*
+          The bar sticks to the foot of the viewport so the button that files
+          the request is always one tap away, rather than at the end of a long
+          scroll on a phone. Starting over is a quiet link: it throws away
+          everything typed, and it should not look like the primary action.
+        */}
+        <div className="form-actions form-actions--sticky">
+          <a className="action-reset" href="/don">
             Làm lại
           </a>
           <button className="button button--primary" type="submit" disabled={pending}>

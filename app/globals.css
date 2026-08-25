@@ -19,6 +19,42 @@ body {
   padding: 0;
 }
 
+/* A form on a phone must never slide sideways — but `overflow-x: hidden` on the
+   body is not how to get that: it creates a scroll container and breaks the
+   sticky submit bar, which is the thing that makes the form usable on a phone
+   in the first place. Overflow is prevented instead by letting every grid and
+   flex child shrink; without `min-width: 0` a date input's intrinsic width wins
+   and pushes the page wide. */
+.form-field,
+.form-grid > *,
+.form-section,
+.form-section__body > * {
+  min-width: 0;
+}
+
+/* Movement is limited to what tells you something changed, and stops entirely
+   for anyone who has asked it to. */
+.field-control,
+.button,
+.choice,
+.action-reset {
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 body {
   background: var(--paper);
   color: var(--ink);
@@ -145,7 +181,44 @@ body {
   margin-top: auto;
 }
 
-/* ---- public filing form ---- */
+/* ---- public filing form ----
+
+   The card stands in for a printed sheet the workers already know, so it is
+   built like one: a masthead carrying the document's own name, ruled blocks
+   under it, and the summary boxed the way the paper boxes its hours. The one
+   thing paper cannot do — telling you the hours as you pick the dates — is the
+   thing given the most visual weight. */
+
+/* The card bleeds this much at the edges; kept in one place because the sticky
+   bar and the masthead both have to line up with it. */
+:root {
+  --card-pad: clamp(1rem, 3vw, 1.5rem);
+  --accent-deep: #1d3670;
+}
+
+.masthead {
+  margin: calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad)) 1.5rem;
+  padding: clamp(1rem, 3vw, 1.4rem) var(--card-pad);
+  background: var(--accent-deep);
+  color: #fff;
+}
+
+.masthead__title {
+  margin: 0;
+  font-size: clamp(1.05rem, 4.4vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.masthead__blurb {
+  margin: 0.5rem 0 0;
+  max-width: 34rem;
+  color: #cdd8ef;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
 
 .form-heading {
   display: flex;
@@ -443,23 +516,36 @@ textarea.field-control {
   font-size: 0.92rem;
 }
 
+/* The one thing the paper form could never do: the hours, while you pick the
+   dates. Boxed and given weight for that reason, not for decoration. */
 .hours-line {
   display: grid;
-  gap: 0.2rem;
-  padding: 0.8rem 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  gap: 0.3rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #c6d0e4;
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  background: var(--accent-soft);
 }
 
-.hours-line span,
-.hours-line small {
-  color: var(--ink-2);
-  font-size: 0.76rem;
+.hours-line span {
+  color: var(--accent-deep);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
 }
 
 .hours-line strong {
   color: var(--accent);
-  font-size: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.hours-line small {
+  color: var(--ink-2);
+  font-size: 0.73rem;
+  line-height: 1.4;
 }
 
 .commitment {
@@ -489,6 +575,41 @@ textarea.field-control {
 
 .form-actions--end {
   justify-content: flex-end;
+}
+
+/* Sticks to the foot of the viewport so the button that files the request is
+   always one tap away, however long the form runs. It bleeds to the card's
+   edges, which is why the card's padding is a variable. */
+.form-actions--sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  align-items: center;
+  margin: 1.6rem calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad));
+  padding: 0.85rem var(--card-pad) calc(0.85rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+/* Starting over throws away everything typed. A link, not a button the size of
+   the one that sends. */
+.action-reset {
+  padding: 0.6rem 0.1rem;
+  color: var(--ink-2);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.action-reset:hover {
+  color: var(--ink);
+}
+
+.action-reset:focus-visible {
+  outline: 3px solid rgba(42, 75, 155, 0.35);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .button {
@@ -553,6 +674,9 @@ textarea.field-control {
 }
 
 .form-alert {
+  /* The form itself sets no gap — each block spaces itself — so anything that
+     appears between blocks brings its own. */
+  margin-top: 1.5rem;
   padding: 0.75rem 0.85rem;
   border-left: 3px solid #a6372e;
   background: #faefee;
@@ -840,9 +964,39 @@ textarea.field-control {
 
 @media (max-width: 36rem) {
   .form-grid,
-  .choice-grid,
   .success-qr {
     grid-template-columns: 1fr;
+  }
+
+  /* The two kinds stay side by side. They are two short labels, and stacking
+     them costs about eighty pixels of scroll before the form even starts. */
+  .choice {
+    min-height: 0;
+    padding: 0.7rem;
+  }
+
+  .choice small {
+    font-size: 0.7rem;
+  }
+
+  /* A thumb, not a mouse. 48px on every control that gets tapped, and the date
+     pickers most of all. */
+  .field-control {
+    min-height: 3rem;
+    font-size: 1rem;
+  }
+
+  .button {
+    min-height: 3rem;
+  }
+
+  .commitment input {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .masthead__blurb {
+    font-size: 0.8rem;
   }
 
   .success-qr-image {
