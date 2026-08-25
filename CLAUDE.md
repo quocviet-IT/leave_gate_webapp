@@ -93,6 +93,14 @@ Three zones, three ways in (PRD III). This shapes everything:
   create is ever visible over HTTP.
 - Running `npm run build` then `npm run dev` over the same `.next` makes nested
   routes 404 in dev while single-segment routes still work. Delete `.next` first.
+- **What a client component imports, the browser downloads — transitively.**
+  A `"use client"` file importing one helper from `lib/domain/schemas.ts` pulls
+  zod in with it: that put `/don` at 215.5 KB against a 160 KB budget, a 65 KB
+  regression from a one-line import. Rules a browser needs live in a module
+  that imports nothing — `lib/domain/reasons.ts` is the pattern, and
+  `schemas.ts` reads from it rather than the other way round. `npm run
+  measure:js` against a production server is what catches this; build, test,
+  typecheck and lint all pass while it happens.
 - **`revoke … from public` does not stop `anon` from calling a function.** Two
   grants make a function reachable: Supabase's default privileges grant EXECUTE
   directly to `anon` and `authenticated`, and PostgreSQL's own default grants it to

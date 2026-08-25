@@ -67,10 +67,23 @@ validation as much as to working hours. Nothing else imports it.
 - `tests/unit/form-steps.test.ts` is deleted with the module it covers.
 - `scripts/smoke-pages.mjs` drops the three `?buoc=` URLs and keeps `/don`.
 
-## Risk
+## Risk, and what it turned out to be
 
-`/don` measures 150.1 KB against the 160 KB public budget, leaving ~10 KB. One
-page now carries both field groups and two `NamePicker` instances where three
-pages carried them separately. The modules are shared, so the increase should be
-small, but `npm run measure:js` decides it. If the budget is exceeded the answer
-is to fix it, not to raise the budget.
+`/don` measured 150.1 KB against the 160 KB public budget, leaving ~10 KB. The
+worry was that one page carrying both field groups and two `NamePicker`
+instances would not fit.
+
+It did not fit, but not for that reason. The first build measured **215.5 KB** —
+55 KB over. The field groups were nearly free; the cost was a single import.
+`ReasonField` is a client component and read `needsReasonText` from
+`lib/domain/schemas.ts`, so zod went to the browser with it.
+
+The fix was to move the reason codes, their form labels and the rule into
+`lib/domain/reasons.ts`, a module that imports nothing, and have `schemas.ts`
+read from it. `/don` now measures **151.4 KB** — 1.3 KB more than the three-page
+wizard it replaces.
+
+Moving the labels there closed a second gap that had nothing to do with size:
+the option list the form offered and the enum the server accepted were two
+hand-copied lists with nothing holding them level. `tests/unit/reasons.test.ts`
+now asserts they match.

@@ -27,6 +27,14 @@ What exists for real:
 - Google sign-in for the admin zone.
 - Employee master data: a paste-import for C&B at `/admin/nhan-su`, and a bounded
   public name search that never returns the employee number.
+- The filing form at `/don`: one page, one submit button. A kind toggle swaps
+  the field group in place, and the group that is not showing is unmounted, so
+  a gate pass cannot carry a leave date it merely stopped displaying.
+  `?kind=gate` opens straight on the gate form for a QR code that knows which
+  it wants. `components/public/RequestForm.tsx` holds the state;
+  `LeaveFields`, `GateFields` and `ReasonField` hold the fields.
+  `tests/unit/request-form-render.test.tsx` renders both kinds, because a URL
+  cannot press the toggle.
 - Public lookup, both depths: `/tra-cuu` answers a request code with a status
   and nothing else, and `/tra-cuu/<token>` opens the request in full, withdraws
   it, and takes a real return time until the end of the next working day.
@@ -88,7 +96,8 @@ company, and none of them is code. See "Before it can be used for real" below.
 1. ~~Foundation: project, database, admin sign-in~~ — done
 2. Staff master data: C&B pastes the list, the public form can search it; roles
    for supervisors — **done** (P1). Google Directory sync replaces the paste in P9.
-3. ~~Public form, one route, dynamic fields~~ — done. It searches whatever
+3. ~~Public form, one route, dynamic fields~~ — done, and rebuilt as a single
+   page on 2026-08-25: the three-step wizard is gone. It searches whatever
    `lg_employee` holds, so it is live but empty until C&B pastes the list.
 4. ~~Lookup page: track, withdraw, real return time; codes, tokens, QR~~ — done
 5. ~~Approval queue: claim, version lock, realtime, four tabs~~ — done

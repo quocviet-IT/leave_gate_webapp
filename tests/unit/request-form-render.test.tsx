@@ -1,0 +1,75 @@
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it, vi } from "vitest";
+import RequestForm from "@/components/public/RequestForm";
+
+/**
+ * The public form is the one screen every employee touches, and it ships
+ * without a login to hide behind — a component that throws while rendering
+ * takes the whole product down. `smoke-pages.mjs` covers `/don` over HTTP;
+ * this covers the branches a URL cannot reach, and asserts the shape the
+ * redesign promised: one page, one submit button, no steps.
+ */
+
+vi.mock("@/lib/db/client", () => ({
+  createSupabaseBrowserClient: () => {
+    throw new Error("the form must not reach Supabase during render");
+  },
+}));
+
+const render = (kind?: "leave" | "gate") =>
+  renderToStaticMarkup(<RequestForm initialKind={kind} />);
+
+describe("the filing form is one page", () => {
+  it("has a single form and a single submit button", () => {
+    const html = render();
+    expect(html.match(/<form/g) ?? []).toHaveLength(1);
+    expect(html.match(/type="submit"/g) ?? []).toHaveLength(1);
+    expect(html).toContain("Gửi đơn");
+  });
+
+  it("carries none of the wizard's step furniture", () => {
+    const html = render();
+    expect(html).not.toContain("Tiếp tục");
+    expect(html).not.toContain("Bước 1");
+    expect(html).not.toContain("Quay lại");
+  });
+
+  it("offers both kinds to choose between", () => {
+    const html = render();
+    expect(html).toContain("Xin nghỉ phép");
+    expect(html).toContain("Ra vào cổng");
+  });
+});
+
+describe("the form shows the fields for the chosen kind", () => {
+  it("leave by default, including what used to be step three", () => {
+    const html = render();
+    expect(html).toContain("Nghỉ từ ngày");
+    expect(html).toContain("Đến hết ngày");
+    expect(html).toContain("Lý do nghỉ");
+    expect(html).toContain("Bàn giao công việc cho");
+    expect(html).toContain("Tôi cam kết");
+    expect(html).toContain('name="makeupDate"');
+  });
+
+  it("a gate pass, with no leave field left behind", () => {
+    const html = render("gate");
+    expect(html).toContain("Thời gian ra");
+    expect(html).toContain("Dự kiến vào lại");
+    expect(html).not.toContain('name="fromDate"');
+    expect(html).not.toContain('name="handoverEmployeeId"');
+    expect(html).not.toContain("Tôi cam kết");
+  });
+
+  it("the hours line for whichever kind is showing", () => {
+    expect(render()).toContain("Chọn ngày để xem số giờ");
+    expect(render("gate")).toContain("Chọn giờ ra và giờ vào lại");
+  });
+});
+
+describe("the reason text box", () => {
+  it("stays hidden until a reason asks for it", () => {
+    expect(render()).not.toContain('name="reasonText"');
+    expect(render("gate")).not.toContain('name="reasonText"');
+  });
+});

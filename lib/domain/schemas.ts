@@ -7,23 +7,10 @@
  */
 
 import { z } from "zod";
+import { GATE_REASONS, LEAVE_REASONS, needsReasonText } from "./reasons";
 import { LATE_TOLERANCE_MINUTES } from "./workhours";
 
-export const LEAVE_REASONS = [
-  "unpaid",
-  "annual",
-  "sick",
-  "marriage",
-  "maternity",
-  "bereavement",
-  "special",
-  "other",
-] as const;
-
-export const GATE_REASONS = ["business_trip", "leave", "other"] as const;
-
-/** Reasons that force the person to write what they mean. */
-const LEAVE_REASONS_NEEDING_TEXT: readonly string[] = ["special", "other"];
+export { GATE_REASONS, LEAVE_REASONS } from "./reasons";
 
 export const halfDaySchema = z.enum(["morning", "afternoon"]);
 
@@ -63,7 +50,7 @@ export const leaveRequestSchema = z
     message: "Nghỉ nửa ngày chỉ áp dụng cho một ngày",
     path: ["halfDay"],
   })
-  .refine((v) => !LEAVE_REASONS_NEEDING_TEXT.includes(v.reason) || v.reasonText.length > 0, {
+  .refine((v) => !needsReasonText("leave", v.reason) || v.reasonText.length > 0, {
     message: "Chọn lý do này thì phải ghi rõ",
     path: ["reasonText"],
   });
@@ -81,7 +68,7 @@ export const gateRequestSchema = z
     message: "Giờ vào lại phải sau giờ ra",
     path: ["expectedInAt"],
   })
-  .refine((v) => v.reason !== "other" || v.reasonText.length > 0, {
+  .refine((v) => !needsReasonText("gate", v.reason) || v.reasonText.length > 0, {
     message: 'Chọn "Khác" thì phải ghi rõ',
     path: ["reasonText"],
   });

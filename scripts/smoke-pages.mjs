@@ -51,19 +51,16 @@ function expectationFor(route) {
 }
 
 /**
- * Routes whose interesting screen only appears with query parameters. Route
- * discovery walks the file tree, so it always lands on step 1 of the filing
- * form and never renders the step that carries the submit button — which is
- * exactly where a client component can throw. A placeholder employee id is
- * enough: these steps only check the shape of what step 1 handed them.
+ * Routes whose interesting screen only appears with query parameters. The
+ * filing form is one page now, so `/don` alone renders the submit button;
+ * `?kind=gate` is the other half of the form, and route discovery walking the
+ * file tree would never ask for it.
+ *
+ * Which fields each kind shows, and that switching kind leaves nothing of the
+ * other behind, are asserted in `tests/unit/request-form-render.test.tsx` —
+ * a URL cannot press the toggle.
  */
-const SAMPLE_EMPLOYEE_ID = "11111111-1111-4111-8111-111111111111";
-const EXTRA_ROUTES = [
-  `/don?kind=gate&buoc=2&employeeId=${SAMPLE_EMPLOYEE_ID}`,
-  `/don?kind=leave&buoc=2&employeeId=${SAMPLE_EMPLOYEE_ID}`,
-  `/don?kind=leave&buoc=3&employeeId=${SAMPLE_EMPLOYEE_ID}` +
-    "&fromDate=2026-07-30&toDate=2026-07-30&reason=annual&note=Ve%20que",
-];
+const EXTRA_ROUTES = ["/don?kind=gate"];
 
 const routes = [...discoverRoutes(), ...EXTRA_ROUTES].sort();
 console.log(`Kiểm ${routes.length} đường dẫn trên ${base}\n`);

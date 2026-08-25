@@ -175,34 +175,6 @@ body {
   font-size: 0.9rem;
 }
 
-.step-track {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem;
-  margin: 0.5rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.step-track li {
-  min-height: 0.25rem;
-  background: var(--rule);
-  position: relative;
-}
-
-.step-track li[aria-current="step"],
-.step-track li:has(~ li[aria-current="step"]) {
-  background: var(--accent);
-}
-
-.step-track span {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-}
-
 .request-form {
   display: flex;
   flex-direction: column;
