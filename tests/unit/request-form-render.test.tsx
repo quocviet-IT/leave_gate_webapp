@@ -36,13 +36,14 @@ describe("the filing form is one page", () => {
 });
 
 describe("the person types who they are", () => {
-  it("a name, a department and an optional job title", () => {
+  it("a name, a job title and a department — all three, all required", () => {
     const html = render();
     expect(html).toContain('name="employeeName"');
-    expect(html).toContain('name="employeeDepartment"');
     expect(html).toContain('name="employeeTitle"');
+    expect(html).toContain('name="employeeDepartment"');
     expect(html).toContain("Họ và tên");
-    expect(html).toContain("Bộ phận");
+    expect(html).toContain("Chức vụ");
+    expect(html).toContain("Phòng ban");
   });
 
   it("with no staff-list picker anywhere on the form", () => {
@@ -92,5 +93,49 @@ describe("the reason text box", () => {
   it("stays hidden until a reason asks for it", () => {
     expect(render()).not.toContain('name="reasonText"');
     expect(render("gate")).not.toContain('name="reasonText"');
+  });
+});
+
+describe("the form reads as a few short blocks, not one long stack", () => {
+  it("names each block of a leave application", () => {
+    const html = render();
+    expect(html).toContain("Người xin nghỉ");
+    expect(html).toContain("Thời gian nghỉ");
+    expect(html).toContain("Lý do");
+    expect(html).toContain("Bàn giao");
+  });
+
+  it("and each block of a gate pass, which has no handover", () => {
+    const html = render("gate");
+    expect(html).toContain("Người xin phép");
+    expect(html).toContain("Thời gian ra vào");
+    expect(html).not.toContain("Bàn giao");
+  });
+});
+
+describe("what is required is not marked; what is optional is", () => {
+  it("marks the two optional fields and nothing else", () => {
+    const html = render();
+    const optionalTags = html.match(/Không bắt buộc/g) ?? [];
+    // Handover and the make-up date. Everything else on a leave application is
+    // required, so marking the majority would be noise — the exceptions carry
+    // the information.
+    expect(optionalTags).toHaveLength(2);
+  });
+
+  it("a gate pass has no optional field at all", () => {
+    expect((render("gate").match(/Không bắt buộc/g) ?? []).length).toBe(0);
+  });
+
+  it("asks for a department by the name people use for it", () => {
+    const html = render();
+    expect(html).toContain("Phòng ban");
+    expect(html).not.toContain("Bộ phận / Xưởng");
+  });
+
+  it("no longer says the handover was chosen, because it may be blank", () => {
+    const html = render();
+    expect(html).toContain("Tôi cam kết");
+    expect(html).not.toContain("cho người được chọn ở trên");
   });
 });

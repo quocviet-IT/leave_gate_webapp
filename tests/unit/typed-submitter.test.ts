@@ -19,10 +19,10 @@ describe("who is filing, typed", () => {
     expect(submitterSchema.safeParse(typed).success).toBe(true);
   });
 
-  it("does not need a job title", () => {
+  it("needs a job title as well — see the block at the end of this file", () => {
     const withoutTitle: Record<string, unknown> = { ...typed };
     delete withoutTitle.employeeTitle;
-    expect(submitterSchema.safeParse(withoutTitle).success).toBe(true);
+    expect(submitterSchema.safeParse(withoutTitle).success).toBe(false);
   });
 
   it("refuses a blank name", () => {
@@ -68,14 +68,14 @@ describe("the handover is a typed name too", () => {
     expect(leaveRequestSchema.safeParse(leave).success).toBe(true);
   });
 
-  it("still insists somebody is named — rule 4 wants a handover", () => {
-    const withoutHandover: Record<string, unknown> = { ...leave };
-    delete withoutHandover.handoverName;
-    expect(leaveRequestSchema.safeParse(withoutHandover).success).toBe(false);
+  it("keeps what was typed", () => {
+    const parsed = leaveRequestSchema.parse({ ...leave, handoverName: "  Nguyễn Văn Bình  " });
+    expect(parsed.handoverName).toBe("Nguyễn Văn Bình");
   });
 
-  it("refuses a blank handover", () => {
-    expect(leaveRequestSchema.safeParse({ ...leave, handoverName: "  " }).success).toBe(false);
+  it("treats whitespace as nothing typed rather than as a name", () => {
+    const parsed = leaveRequestSchema.parse({ ...leave, handoverName: "  " });
+    expect(parsed.handoverName).toBe("");
   });
 });
 
@@ -96,5 +96,47 @@ describe("a supervisor filing on behalf picks from a list, so the rules differ",
     if (!parsed.success) {
       expect(parsed.error.issues[0]?.message).toBe("Chọn người trong xưởng của bạn");
     }
+  });
+});
+
+describe("what the form insists on, and what it lets go", () => {
+  it("insists on a job title — it is on the paper form and the approver reads it", () => {
+    const withoutTitle: Record<string, unknown> = { ...typed };
+    delete withoutTitle.employeeTitle;
+    expect(submitterSchema.safeParse(withoutTitle).success).toBe(false);
+    expect(submitterSchema.safeParse({ ...typed, employeeTitle: "  " }).success).toBe(false);
+  });
+
+  it("lets the handover go — the paper form leaves that line blank too", () => {
+    const leave = {
+      kind: "leave" as const,
+      fromDate: "2026-07-30",
+      toDate: "2026-07-30",
+      halfDay: null,
+      reason: "annual" as const,
+      reasonText: "",
+      note: "Về quê thăm gia đình",
+      committed: true as const,
+    };
+    expect(leaveRequestSchema.safeParse(leave).success).toBe(true);
+    expect(leaveRequestSchema.safeParse({ ...leave, handoverName: "" }).success).toBe(true);
+    expect(leaveRequestSchema.safeParse({ ...leave, handoverName: "Nguyễn Văn Bình" }).success).toBe(
+      true,
+    );
+  });
+
+  it("but a handover that is typed still has to be a name, not a stray keystroke", () => {
+    const leave = {
+      kind: "leave" as const,
+      fromDate: "2026-07-30",
+      toDate: "2026-07-30",
+      halfDay: null,
+      reason: "annual" as const,
+      reasonText: "",
+      note: "Về quê thăm gia đình",
+      handoverName: "x",
+      committed: true as const,
+    };
+    expect(leaveRequestSchema.safeParse(leave).success).toBe(false);
   });
 });

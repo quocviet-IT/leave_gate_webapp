@@ -249,7 +249,7 @@ async function main() {
   // name on lg_app_user. Weaker than an email comparison and known to be: the
   // last check here is the hole, asserted so nobody discovers it by accident.
   const typedOwn = await client.query(
-    `select lg_submit_request('Chị Diệu', 'Nhân sự', '', 'leave', $1::jsonb, 480, 'typed-own') as r`,
+    `select lg_submit_request('Chị Diệu', 'Nhân sự', 'Trưởng phòng', 'leave', $1::jsonb, 480, 'typed-own') as r`,
     [JSON.stringify(TYPED_LEAVE)],
   );
   const typedOwnRow = await row(typedOwn.rows[0].r.code);
@@ -270,7 +270,7 @@ async function main() {
   check("but another approver still can", typedOtherDecides === null, typedOtherDecides ?? "");
 
   const typedMisspelt = await client.query(
-    `select lg_submit_request('Chị  Diệu', 'Nhân sự', '', 'leave', $1::jsonb, 480, 'typed-spaced') as r`,
+    `select lg_submit_request('Chị  Diệu', 'Nhân sự', 'Trưởng phòng', 'leave', $1::jsonb, 480, 'typed-spaced') as r`,
     [JSON.stringify(TYPED_LEAVE)],
   );
   const spacedRow = await row(typedMisspelt.rows[0].r.code);

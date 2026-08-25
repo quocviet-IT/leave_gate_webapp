@@ -36,8 +36,8 @@ What exists for real:
   `IdentityFields`, `LeaveFields`, `GateFields` and `ReasonField` hold the
   fields. `tests/unit/request-form-render.test.tsx` renders both kinds, because
   a URL cannot press the toggle.
-- **The person types their own name** (migration `0015`, board decision
-  2026-08-25). There is no staff-list picker on the public form any more, and
+- **The person types their own name** (migrations `0015` and `0016`, board
+  decision 2026-08-25). There is no staff-list picker on the public form any more, and
   no Supabase client in the public bundle at all. `lg_request.employee_id` is
   null for every public filing, so read the person off `employee_snapshot` and
   never join `lg_employee`. What this gave up, and what still bounds it, is in
@@ -45,6 +45,23 @@ What exists for real:
 - Employee master data still exists and still matters: supervisors filing on
   behalf pick from it, and that path keeps the employee id and every guarantee
   that comes with it.
+- What the public form requires, decided by the board on 2026-08-25 and
+  enforced in the schemas *and* in `lg_submit_request`:
+
+  | Required | Optional |
+  | --- | --- |
+  | Họ và tên · Chức vụ · Phòng ban | Bàn giao công việc cho |
+  | Nghỉ từ ngày · Đến hết ngày | Đề xuất ngày làm bù |
+  | Lý do · Diễn giải | |
+
+  The handover used to be required. It is a blank line on the paper form, and
+  the PRD never made it a rule, so it is optional here too — but a handover
+  that *is* typed must still be a name rather than a stray keystroke.
+
+  The form marks the **optional** fields, not the required ones. Almost
+  everything is required, so marking the majority would be noise; the two
+  exceptions are the information. Keep it that way when adding a field, and
+  `request-form-render.test.tsx` counts the tags to make sure.
 - Public lookup, both depths: `/tra-cuu` answers a request code with a status
   and nothing else, and `/tra-cuu/<token>` opens the request in full, withdraws
   it, and takes a real return time until the end of the next working day.

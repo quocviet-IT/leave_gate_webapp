@@ -64,10 +64,10 @@ describe("leave form", () => {
     expect(leaveRequestSchema.safeParse({ ...leave, committed: false }).success).toBe(false);
   });
 
-  it("requires a handover person", () => {
+  it("does not require a handover — the paper form leaves that line blank too", () => {
     const withoutHandover: Record<string, unknown> = { ...leave };
     delete withoutHandover.handoverName;
-    expect(leaveRequestSchema.safeParse(withoutHandover).success).toBe(false);
+    expect(leaveRequestSchema.safeParse(withoutHandover).success).toBe(true);
   });
 });
 

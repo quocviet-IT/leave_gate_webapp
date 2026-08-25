@@ -1,6 +1,7 @@
 "use client";
 
 import { needsReasonText, type RequestKind } from "@/lib/domain/reasons";
+import FieldLabel from "./FieldLabel";
 import { ActionFieldError } from "./SubmitForm";
 
 /**
@@ -27,7 +28,7 @@ export default function ReasonField({
   return (
     <>
       <div className="form-field">
-        <label htmlFor="reason">{label}</label>
+        <FieldLabel htmlFor="reason">{label}</FieldLabel>
         <select
           id="reason"
           className="field-control"
@@ -47,7 +48,7 @@ export default function ReasonField({
 
       {needsReasonText(kind, value) ? (
         <div className="form-field">
-          <label htmlFor="reasonText">Ghi rõ lý do</label>
+          <FieldLabel htmlFor="reasonText">Ghi rõ lý do</FieldLabel>
           <input
             id="reasonText"
             className="field-control"

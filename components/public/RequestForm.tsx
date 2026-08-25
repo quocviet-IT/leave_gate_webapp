@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import FormSection from "./FormSection";
 import GateFields from "./GateFields";
-import HoursLine from "./HoursLine";
 import IdentityFields from "./IdentityFields";
 import LeaveFields from "./LeaveFields";
 import SubmitForm, { ActionFieldError } from "./SubmitForm";
@@ -20,8 +20,8 @@ const KINDS = [
  * The whole public form, on one page — PRD section X.
  *
  * It was three screens, carried between them in the query string, so the form
- * would work without JavaScript. It never did: the name picker queries Supabase
- * from the browser, and choosing a name is the first thing the form asks. The
+ * would work without JavaScript. It never did: the name picker queried Supabase
+ * from the browser, and choosing a name was the first thing the form asked. The
  * steps cost a page load each and bought nothing.
  *
  * Changing kind unmounts the other group rather than hiding it. An unmounted
@@ -47,8 +47,7 @@ export default function RequestForm({ initialKind = "leave" }: { initialKind?: R
       </header>
 
       <SubmitForm formId={FORM_ID}>
-        <fieldset className="form-field">
-          <legend>Loại đơn</legend>
+        <FormSection title="Loại đơn">
           <div className="choice-grid">
             {KINDS.map(([value, title, hint]) => (
               <label className="choice" key={value}>
@@ -67,17 +66,17 @@ export default function RequestForm({ initialKind = "leave" }: { initialKind?: R
             ))}
           </div>
           <ActionFieldError field="kind" />
-        </fieldset>
+        </FormSection>
 
-        <IdentityFields />
+        <FormSection title={kind === "leave" ? "Người xin nghỉ" : "Người xin phép"}>
+          <IdentityFields />
+        </FormSection>
 
         {kind === "leave" ? (
-          <LeaveFields reason={reason} onReasonChange={setReason} />
+          <LeaveFields formId={FORM_ID} reason={reason} onReasonChange={setReason} />
         ) : (
-          <GateFields reason={reason} onReasonChange={setReason} />
+          <GateFields formId={FORM_ID} reason={reason} onReasonChange={setReason} />
         )}
-
-        <HoursLine formId={FORM_ID} kind={kind} />
       </SubmitForm>
     </>
   );

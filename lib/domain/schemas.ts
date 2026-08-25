@@ -33,17 +33,24 @@ const typedName = (missing: string) =>
  * now be filed under anybody's name — see CLAUDE.md section 6. Nothing here is
  * a credential either way; the approvers are the control point.
  *
- * The department is not decoration: it is how an approver knows which workshop
- * a request came from, and it used to arrive free with the staff row.
+ * All three of name, title and department are required, because all three are
+ * printed on the paper form this replaces and an approver reads them together:
+ * a name alone does not say who in a company of several hundred, and the
+ * department is how a request reaches the right approver. None of them used to
+ * be asked for — they arrived free with the staff row.
  */
 export const submitterSchema = z.object({
   employeeName: typedName("Ghi họ và tên của bạn"),
+  employeeTitle: z
+    .string()
+    .trim()
+    .min(2, "Ghi chức vụ của bạn")
+    .max(100, "Chức vụ quá dài"),
   employeeDepartment: z
     .string()
     .trim()
-    .min(2, "Ghi bộ phận hoặc xưởng của bạn")
-    .max(100, "Tên bộ phận quá dài"),
-  employeeTitle: z.string().trim().max(100, "Chức vụ quá dài").optional().default(""),
+    .min(2, "Ghi phòng ban của bạn")
+    .max(100, "Tên phòng ban quá dài"),
   // Set only when a supervisor filed on behalf and picked from their own
   // department's list. The public form never sends one.
   employeeId: z.string().uuid().optional(),
@@ -68,7 +75,15 @@ export const leaveRequestSchema = z
     reason: z.enum(LEAVE_REASONS),
     reasonText: z.string().trim().max(500).optional().default(""),
     note: z.string().trim().min(1, "Ghi rõ lý do nghỉ").max(1000),
-    handoverName: typedName("Ghi tên người nhận bàn giao"),
+    // Optional, like the blank line for it on the paper form. Typed or left
+    // alone — but a single stray character is neither.
+    handoverName: z
+      .string()
+      .trim()
+      .max(100, "Tên quá dài")
+      .refine((v) => v === "" || v.length >= 2, "Ghi đủ tên người nhận bàn giao")
+      .optional()
+      .default(""),
     makeupDate: dateOnly.nullish(),
     committed: z.literal(true, { message: "Phải tích cam kết trước khi gửi" }),
   })

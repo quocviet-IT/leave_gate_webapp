@@ -196,6 +196,38 @@ async function main() {
       "typed-nodept",
     ]),
   );
+  check(
+    "a missing job title is refused — it is on the paper form the approver reads",
+    await expectRaise("select lg_submit_request($1, $2, '', 'leave', $3::jsonb, 480, $4)", [
+      "Tạ Quốc Việt",
+      "Xưởng A",
+      JSON.stringify(typedLeave),
+      "typed-notitle",
+    ]),
+  );
+
+  // The handover is optional now, matching the blank line for it on paper.
+  const noHandover = { ...LEAVE };
+  delete noHandover.handoverEmployeeId;
+  const filedBlank = await client.query(
+    "select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5) as r",
+    ["Đỗ Thị Không Bàn Giao", "Xưởng C", "Công nhân", JSON.stringify(noHandover), "typed-nohand"],
+  );
+  check(
+    "a leave application with no handover is accepted",
+    /^NP-\d{4}-\d{4}$/.test(filedBlank.rows[0].r.code ?? ""),
+    filedBlank.rows[0].r.code,
+  );
+  const blankHandover = await client.query(
+    `select l.handover_name from lg_leave_detail l
+     join lg_request r on r.id = l.request_id where r.code = $1`,
+    [filedBlank.rows[0].r.code],
+  );
+  check(
+    "and it stores no handover rather than an empty string",
+    blankHandover.rows[0].handover_name === null,
+    String(blankHandover.rows[0].handover_name),
+  );
 
   // Five a day still holds, now counted per name rather than per staff row.
   for (let i = 2; i <= 5; i++) {
@@ -229,7 +261,7 @@ async function main() {
       await client.query("select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5) as r", [
         "Lê Thị Hoa",
         "Xưởng B",
-        "",
+        "Tổ trưởng",
         JSON.stringify(typedLeave),
         "typed-other",
       ])

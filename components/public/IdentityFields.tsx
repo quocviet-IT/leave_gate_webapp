@@ -1,5 +1,6 @@
 "use client";
 
+import FieldLabel from "./FieldLabel";
 import { ActionFieldError } from "./SubmitForm";
 
 /**
@@ -10,8 +11,10 @@ import { ActionFieldError } from "./SubmitForm";
  * (CLAUDE.md section 6 records what that gave up). Two consequences worth
  * knowing when editing this file:
  *
- * - The department is asked for because it no longer arrives free with the
- *   staff row, and an approver needs to know which workshop a request is from.
+ * - Name, title and department are all required, because all three are printed
+ *   on the paper form and an approver reads them together. They used to arrive
+ *   free with the staff row; now they are three things to type, which is why
+ *   they sit on one block of their own at the top rather than scattered.
  * - Nothing here queries anything, so the public form no longer needs a
  *   database client in the browser at all.
  */
@@ -19,7 +22,7 @@ export default function IdentityFields() {
   return (
     <>
       <div className="form-field">
-        <label htmlFor="employeeName">Họ và tên</label>
+        <FieldLabel htmlFor="employeeName">Họ và tên</FieldLabel>
         <input
           id="employeeName"
           className="field-control"
@@ -27,6 +30,7 @@ export default function IdentityFields() {
           type="text"
           maxLength={100}
           autoComplete="name"
+          autoCapitalize="words"
           placeholder="Ví dụ: Tạ Quốc Việt"
         />
         <ActionFieldError field="employeeName" />
@@ -34,28 +38,28 @@ export default function IdentityFields() {
 
       <div className="form-grid">
         <div className="form-field">
-          <label htmlFor="employeeDepartment">Bộ phận / Xưởng</label>
-          <input
-            id="employeeDepartment"
-            className="field-control"
-            name="employeeDepartment"
-            type="text"
-            maxLength={100}
-            placeholder="Ví dụ: Xưởng A"
-          />
-          <ActionFieldError field="employeeDepartment" />
-        </div>
-        <div className="form-field">
-          <label htmlFor="employeeTitle">Chức vụ</label>
+          <FieldLabel htmlFor="employeeTitle">Chức vụ</FieldLabel>
           <input
             id="employeeTitle"
             className="field-control"
             name="employeeTitle"
             type="text"
             maxLength={100}
-            placeholder="Không bắt buộc"
+            placeholder="Ví dụ: Công nhân"
           />
           <ActionFieldError field="employeeTitle" />
+        </div>
+        <div className="form-field">
+          <FieldLabel htmlFor="employeeDepartment">Phòng ban</FieldLabel>
+          <input
+            id="employeeDepartment"
+            className="field-control"
+            name="employeeDepartment"
+            type="text"
+            maxLength={100}
+            placeholder="Ví dụ: Sản xuất"
+          />
+          <ActionFieldError field="employeeDepartment" />
         </div>
       </div>
     </>
