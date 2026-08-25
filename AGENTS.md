@@ -57,9 +57,10 @@ What exists for real:
   outage must not be why a request failed to file. The scheduled run is
   `/api/cron/nhac-duyet`, authorised by `CRON_SECRET`, and each nudge is
   claimed in the database before it is posted so two runs cannot double up.
-  `npm run verify:reminders`. **Nothing has been posted to a real space yet:**
-  `GCHAT_WEBHOOK_APPROVERS`, `GCHAT_WEBHOOK_GUARDS` and `CRON_SECRET` are all
-  still at their example values, so the poster reports `skipped`.
+  `npm run verify:reminders`. `CRON_SECRET` now holds a real value, and the
+  route answers 401 without it and 200 with it. **Nothing has been posted to a
+  real space yet:** `GCHAT_WEBHOOK_APPROVERS` and `GCHAT_WEBHOOK_GUARDS` are
+  still empty, so the poster reports `skipped`.
 - Printable sheets at `/tra-cuu/<token>/in`, reproducing both paper forms
   field for field (PRD section IX). Behind the private token like anything
   else that shows a name, and only for an approved request. A Server
@@ -67,7 +68,7 @@ What exists for real:
   type, not a design system's.
 - Zone-scoped bundles: Ant Design is loaded by `app/admin/layout.tsx` and
   `app/bao-ve/layout.tsx` only. The root layout must stay free of it, and public
-  pages use `components/PublicNotice.tsx` rather than the Ant Design skeleton.
+  pages carry their own plain markup rather than an Ant Design shell.
   `npm run measure:js` against a production server proves it.
 
 - `npm run verify:e2e -- http://localhost:PORT` walks one request the whole
@@ -75,23 +76,27 @@ What exists for real:
   over the real database and a running server, then deletes what it made.
   Unlike the other `verify:*` scripts it COMMITS, because a transaction rolled
   back is invisible to the pages it then opens over HTTP.
+
+## Before it can be used for real
+
 Every Phase 1 screen is built. What remains is not a screen but a connection:
-renders `components/ScreenSkeleton.tsx`, which names the build step from PRD
-section XV and lists what the finished screen holds. Replace one skeleton at a
-time, in the PRD's order.
+the staff list, the two Chat webhooks and the booth PIN all come from the
+company, and none of them is code. See "Before it can be used for real" below.
 
 ## Build order (PRD section XV)
 
 1. ~~Foundation: project, database, admin sign-in~~ — done
 2. Staff master data: C&B pastes the list, the public form can search it; roles
    for supervisors — **done** (P1). Google Directory sync replaces the paste in P9.
-3. Public form, one route, dynamic fields — **blocked: no employee-code source**
+3. ~~Public form, one route, dynamic fields~~ — done. It searches whatever
+   `lg_employee` holds, so it is live but empty until C&B pastes the list.
 4. ~~Lookup page: track, withdraw, real return time; codes, tokens, QR~~ — done
 5. ~~Approval queue: claim, version lock, realtime, four tabs~~ — done
 6. ~~Guard booth: PIN, today's table, Cho ra / Cho vào, 5-minute undo~~ — done
 7. ~~Timesheet: filters, gate-time column, mandatory adjustment reason, Excel~~ — done
 8. ~~Overview screen; supervisor filing on behalf~~ — done
-9. Two Google Chat spaces and the SLA reminder job — **built; waiting on the two webhook URLs and a real `CRON_SECRET`**
+9. Two Google Chat spaces and the SLA reminder job — **built; `CRON_SECRET` is
+   set, still waiting on the two webhook URLs**
 10. ~~Printable layouts matching the paper forms~~ — done
 11. ~~End-to-end run: file on a phone → approve → booth stamp → timesheet~~ — done (`npm run verify:e2e`)
 
@@ -103,3 +108,15 @@ time, in the PRD's order.
 - UI text Vietnamese, code English. Roles in code: `approver`, `cnb`,
   `supervisor`.
 - Minutes are the unit end-to-end; convert to hours only at the UI edge.
+
+## What the company still owes
+
+Four things, none of them code. The first three are what stops the app being
+used tomorrow; the fourth only silences the Chat nudges.
+
+| Needed | Where it goes | Until then |
+| --- | --- | --- |
+| Staff spreadsheet — name, job title, department, employee number | C&B pastes it at `/admin/nhan-su` | `lg_employee` is empty, so the name picker on `/don` finds nobody and no request can be filed |
+| A booth PIN | set once in `lg_booth` | `/bao-ve` cannot be signed into, so no gate stamp is possible |
+| The four approvers', C&B's and the supervisors' `@ctyhp.vn` addresses | `lg_app_user` — 5 rows are seeded, confirm they are the right people | a wrong address means that person lands on `/admin/khong-du-quyen` |
+| Two Google Chat webhook URLs | `GCHAT_WEBHOOK_APPROVERS`, `GCHAT_WEBHOOK_GUARDS` | posting reports `skipped`; nothing else is affected |
