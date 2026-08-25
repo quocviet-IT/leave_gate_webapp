@@ -26,8 +26,13 @@ is wrong — say so, do not silently pick.
   `verify:reminders`
 - Verify the admin zone actually opens (needs a running server and both
   passwords): `npm run verify:admin -- http://localhost:PORT <duyet> <nhansu>`
+- Verify the guard booth opens (needs a running server and the PIN):
+  `npm run verify:booth-signin -- http://localhost:PORT <PIN>`
 - Issue or reset the two admin passwords:
   `npm run admin:accounts -- <duyet> <nhansu>`
+- Issue or change the booth PIN: `npm run booth:pin -- "Cổng chính" <PIN>`.
+  Changing it signs every booth machine out, which is how a leaked PIN is
+  revoked.
 
 ## 2. How to verify (mandatory before claiming "done")
 
@@ -47,6 +52,10 @@ is wrong — say so, do not silently pick.
   Since 2026-08-25 `npm run verify:admin` also signs in for real and opens
   every admin screen over HTTP, which is the only check that covers the guard
   chain end to end. Run it after touching `lib/auth.ts`, `proxy.ts` or a role.
+- The booth has the same blind spot and the same answer: `smoke-pages.mjs` only
+  ever sees the PIN prompt. `npm run verify:booth-signin` exchanges a real PIN
+  for a session, renders the board, and asserts no leave reason reached it.
+  Neither credential lives in a migration — `supabase/migrations` is public.
 
 ## 3. Architecture & where logic lives
 

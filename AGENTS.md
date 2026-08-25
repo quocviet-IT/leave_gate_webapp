@@ -102,6 +102,11 @@ What exists for real:
   the board shows only today's approved gate passes and carries no reason at
   all, Cho ra must precede Cho vào, and a mis-tap is undoable for five
   minutes. A booth tap becomes the payroll figure. `npm run verify:booth`.
+  The PIN itself had never been issued — `lg_set_booth_pin` was only ever called
+  inside test transactions that roll back, so `lg_booth` held no rows and the
+  guard could not sign in, for exactly the reason nobody could sign in to
+  `/admin`. `npm run booth:pin` is the tool that was missing, and
+  `npm run verify:booth-signin` proves the board opens with a real PIN.
 - Timesheet at `/admin/cham-cong`: period filter, both hours columns with the
   computed one locked, an adjustment reason of ten characters whenever they
   differ, the gate-time column with its review flags, mark as done, and an
