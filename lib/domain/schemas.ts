@@ -7,23 +7,10 @@
  */
 
 import { z } from "zod";
+import { GATE_REASONS, LEAVE_REASONS, needsReasonText } from "./reasons";
 import { LATE_TOLERANCE_MINUTES } from "./workhours";
 
-export const LEAVE_REASONS = [
-  "unpaid",
-  "annual",
-  "sick",
-  "marriage",
-  "maternity",
-  "bereavement",
-  "special",
-  "other",
-] as const;
-
-export const GATE_REASONS = ["business_trip", "leave", "other"] as const;
-
-/** Reasons that force the person to write what they mean. */
-const LEAVE_REASONS_NEEDING_TEXT: readonly string[] = ["special", "other"];
+export { GATE_REASONS, LEAVE_REASONS } from "./reasons";
 
 export const halfDaySchema = z.enum(["morning", "afternoon"]);
 
@@ -33,13 +20,50 @@ const dateOnly = z
 
 const isoInstant = z.string().datetime({ offset: true });
 
+/** A person's name as typed. The message differs by whose name it is. */
+const typedName = (missing: string) =>
+  z.string().trim().min(2, missing).max(100, "Tên quá dài");
+
 /**
- * Who is filing. Filing is fully public, so the only requirement is that the
- * name was *chosen from the synced list* rather than typed: an id, never a free
- * string. Nothing here is a credential — the approvers are the control point.
+ * Who is filing.
+ *
+ * This used to require an id chosen from the synced staff list, so a person
+ * could only file under a name the company had already registered. The board
+ * asked for a typed name instead on 2026-08-25, accepting that the form can
+ * now be filed under anybody's name — see CLAUDE.md section 6. Nothing here is
+ * a credential either way; the approvers are the control point.
+ *
+ * All three of name, title and department are required, because all three are
+ * printed on the paper form this replaces and an approver reads them together:
+ * a name alone does not say who in a company of several hundred, and the
+ * department is how a request reaches the right approver. None of them used to
+ * be asked for — they arrived free with the staff row.
  */
 export const submitterSchema = z.object({
-  employeeId: z.string().uuid("Phải chọn tên trong danh sách"),
+  employeeName: typedName("Ghi họ và tên của bạn"),
+  employeeTitle: z
+    .string()
+    .trim()
+    .min(2, "Ghi chức vụ của bạn")
+    .max(100, "Chức vụ quá dài"),
+  employeeDepartment: z
+    .string()
+    .trim()
+    .min(2, "Ghi phòng ban của bạn")
+    .max(100, "Tên phòng ban quá dài"),
+  // Set only when a supervisor filed on behalf and picked from their own
+  // department's list. The public form never sends one.
+  employeeId: z.string().uuid().optional(),
+});
+
+/**
+ * Who a supervisor is filing for. A different way in, so a different rule: the
+ * person is chosen from the supervisor's own department list, which means an
+ * id — and the name, title and department come from that row rather than from
+ * anything typed.
+ */
+export const onBehalfSubmitterSchema = z.object({
+  employeeId: z.string().uuid("Chọn người trong xưởng của bạn"),
 });
 
 export const leaveRequestSchema = z
@@ -51,7 +75,15 @@ export const leaveRequestSchema = z
     reason: z.enum(LEAVE_REASONS),
     reasonText: z.string().trim().max(500).optional().default(""),
     note: z.string().trim().min(1, "Ghi rõ lý do nghỉ").max(1000),
-    handoverEmployeeId: z.string().uuid("Chọn người nhận bàn giao"),
+    // Optional, like the blank line for it on the paper form. Typed or left
+    // alone — but a single stray character is neither.
+    handoverName: z
+      .string()
+      .trim()
+      .max(100, "Tên quá dài")
+      .refine((v) => v === "" || v.length >= 2, "Ghi đủ tên người nhận bàn giao")
+      .optional()
+      .default(""),
     makeupDate: dateOnly.nullish(),
     committed: z.literal(true, { message: "Phải tích cam kết trước khi gửi" }),
   })
@@ -63,7 +95,7 @@ export const leaveRequestSchema = z
     message: "Nghỉ nửa ngày chỉ áp dụng cho một ngày",
     path: ["halfDay"],
   })
-  .refine((v) => !LEAVE_REASONS_NEEDING_TEXT.includes(v.reason) || v.reasonText.length > 0, {
+  .refine((v) => !needsReasonText("leave", v.reason) || v.reasonText.length > 0, {
     message: "Chọn lý do này thì phải ghi rõ",
     path: ["reasonText"],
   });
@@ -81,7 +113,7 @@ export const gateRequestSchema = z
     message: "Giờ vào lại phải sau giờ ra",
     path: ["expectedInAt"],
   })
-  .refine((v) => v.reason !== "other" || v.reasonText.length > 0, {
+  .refine((v) => !needsReasonText("gate", v.reason) || v.reasonText.length > 0, {
     message: 'Chọn "Khác" thì phải ghi rõ',
     path: ["reasonText"],
   });

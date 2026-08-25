@@ -4,9 +4,16 @@ An internal web app for CTYHP that replaces the two paper forms in use today. Em
 link or scan a QR code to file a request — no login; one of the four approvers claims and decides
 it; the guard confirms the real times at the gate; approved requests flow to the timesheet screen.
 
-**Status:** PRD v0.5 (draft) plus a working scaffold. The database foundation is applied to
-Supabase and the working-time, SLA and request-code logic is in place with tests. The screens
-themselves are labelled placeholders — see [AGENTS.md](AGENTS.md) for what comes next.
+**Status:** every Phase 1 screen is built against PRD v0.5 and verified — filing, both lookup
+depths, the approval queue, the gate booth, the timesheet with its Excel export, the overview,
+filing on behalf, the two Chat spaces, the SLA run and both printable forms. One request has been
+walked end to end over the real database (`npm run verify:e2e`).
+
+**Before it can be used for real,** the company still owes a PIN for the booth and the two Google
+Chat webhook URLs; until the webhooks arrive the Chat poster reports `skipped` rather than failing.
+A staff spreadsheet is no longer a prerequisite for filing — since 2026-08-25 the public form takes
+a typed name — but supervisors filing on behalf still pick from that list. See
+[AGENTS.md](AGENTS.md).
 
 ```bash
 npm install
@@ -24,13 +31,17 @@ The whole design follows from these, so nothing is shared between them by accide
 
 | Zone | Routes | Way in | Who |
 | --- | --- | --- | --- |
-| Employee | `/don`, `/tra-cuu` | no login, no code — pick a name from the staff list | all staff, including everyone without a company email |
+| Employee | `/don`, `/tra-cuu` | no login, no code — type your own name | all staff, including everyone without a company email |
 | Admin | `/admin/*` | Google Workspace SSO, `@ctyhp.vn` only | four approvers · C&B · workshop supervisors |
 | Gate booth | `/bao-ve` | booth PIN | the guard on duty |
 
 `anon` holds no table permissions at all: publishing a public form must not publish the staff
-directory with it. Name search, filing, lookup, withdrawal and the booth stamps each go through a
-database function that can also apply the rate limits and the booth PIN.
+directory with it. Filing, lookup, withdrawal and the booth stamps each go through a database
+function that can also apply the rate limits and the booth PIN.
+
+Since 2026-08-25 the form takes a **typed** name rather than one picked from the staff list — a
+board decision that widens the impersonation risk on purpose. What still bounds it, and what got
+weaker, is written out in [CLAUDE.md](CLAUDE.md) section 6 and in migration `0015`.
 
 Two strings do different jobs and must not be confused. The **request code** (`NP-2607-0148`) is a
 human reference — sequential, therefore guessable, and worth only a status when quoted. The
@@ -50,7 +61,7 @@ as they appear.
 
 ## Phase 1 scope
 
-One public form route with dynamic fields · name picked from the staff list, nothing to type · QR codes
+One public form route with dynamic fields, all on one page · the person types their own name · QR codes
 for the workshops · lookup page (track, withdraw, real return time, print) · approval queue with
 Claim and a lock against double approval · four personal tabs · supervisors filing on behalf ·
 gate booth screen with Cho ra / Cho vào · two Google Chat spaces · SLA reminders at 1 h and 2 h ·
@@ -75,8 +86,8 @@ its own database, its own accounts. Employees using this app cannot reach accoun
 ## Missing before work can start
 
 1. **A spreadsheet of staff** — name, job title, department, and the employee number as the row
-   key. C&B pastes it into the admin zone; re-pasting updates in place. Nobody can be chosen on the
-   public form until this exists.
+   key. C&B pastes it into the admin zone; re-pasting updates in place. No longer blocks the public
+   form, which takes a typed name, but supervisors filing on behalf pick from this list.
 2. The official list of departments and units (it comes from the same file).
 3. The list of supervisors allowed to file on behalf of workers.
 4. A PIN for the booth, and confirmation that the booth has a networked machine.

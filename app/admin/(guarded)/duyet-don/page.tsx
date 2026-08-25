@@ -1,23 +1,32 @@
-import ScreenSkeleton from "@/components/ScreenSkeleton";
+import ApprovalQueue from "@/components/admin/ApprovalQueue";
+import { requireRole } from "@/lib/auth";
+import { createSupabaseServerClient } from "@/lib/db/server";
+import { serverNow } from "@/lib/server-time";
+import { listQueue } from "@/lib/services/approvals";
 
 export const metadata = { title: "Duyệt đơn — Quản trị CTYHP" };
 
-export default function ApprovalQueuePage() {
+/** Account email → display name, so a row can say "Chị Diệu đang xử lý". */
+async function approverNames(): Promise<Record<string, string>> {
+  const sb = await createSupabaseServerClient();
+  const { data, error } = await sb.from("lg_app_user").select("email, full_name");
+  if (error) throw new Error(error.message);
+  const names: Record<string, string> = {};
+  for (const person of data ?? []) names[person.email] = person.full_name;
+  return names;
+}
+
+export default async function ApprovalQueuePage() {
+  const { user } = await requireRole("approver");
+  const email = (user.email ?? "").toLowerCase();
+  const [rows, holderNames] = await Promise.all([listQueue(email), approverNames()]);
+
   return (
-    <ScreenSkeleton
-      title="Hàng chờ duyệt"
-      step={5}
-      prdSection="VII · XII"
-      contains={[
-        "Bốn tab: Tất cả đơn chờ · Tôi đã nhận · Tôi đã duyệt · Quá hạn",
-        "Nút Nhận xử lý trên mỗi dòng; nhận rồi tự nhả sau 30 phút",
-        "Nút Duyệt và Từ chối chỉ hiện sau khi đã nhận xử lý",
-        "Dòng người khác đang giữ bị xám lại kèm tên người giữ",
-        "Đơn của chính mình bị ẩn nút Duyệt",
-        "Chặn thao tác trên dữ liệu cũ, báo rõ ai vừa duyệt và lúc nào",
-        "Bảng tự cập nhật khi máy khác đổi trạng thái đơn",
-        "Cột Chờ tô đỏ khi quá mốc 2 giờ làm việc",
-      ]}
+    <ApprovalQueue
+      rows={rows}
+      email={email}
+      serverNow={serverNow().toISOString()}
+      holderNames={holderNames}
     />
   );
 }

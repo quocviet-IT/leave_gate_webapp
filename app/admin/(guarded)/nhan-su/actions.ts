@@ -1,17 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { ImportState } from "./action-state";
 import { requireRole } from "@/lib/auth";
-import { parseEmployeeList, type ImportIssue } from "@/lib/domain/employees";
+import { parseEmployeeList } from "@/lib/domain/employees";
 import { importEmployees } from "@/lib/services/employees";
-
-export type ImportState = {
-  ok: boolean;
-  message: string;
-  issues: ImportIssue[];
-};
-
-export const EMPTY_IMPORT_STATE: ImportState = { ok: false, message: "", issues: [] };
 
 /**
  * Parse first, then write. Rows that fail parsing are reported by line and

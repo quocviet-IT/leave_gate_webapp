@@ -50,7 +50,19 @@ function expectationFor(route) {
   return "ok";
 }
 
-const routes = discoverRoutes().sort();
+/**
+ * Routes whose interesting screen only appears with query parameters. The
+ * filing form is one page now, so `/don` alone renders the submit button;
+ * `?kind=gate` is the other half of the form, and route discovery walking the
+ * file tree would never ask for it.
+ *
+ * Which fields each kind shows, and that switching kind leaves nothing of the
+ * other behind, are asserted in `tests/unit/request-form-render.test.tsx` —
+ * a URL cannot press the toggle.
+ */
+const EXTRA_ROUTES = ["/don?kind=gate"];
+
+const routes = [...discoverRoutes(), ...EXTRA_ROUTES].sort();
 console.log(`Kiểm ${routes.length} đường dẫn trên ${base}\n`);
 
 let failed = 0;
@@ -84,7 +96,7 @@ for (const route of routes) {
   }
 
   if (!outcome.ok) failed++;
-  console.log(`${outcome.ok ? "ok  " : "FAIL"} ${route.padEnd(26)} ${outcome.note}`);
+  console.log(`${outcome.ok ? "ok  " : "FAIL"} ${route.padEnd(48)} ${outcome.note}`);
 }
 
 console.log(

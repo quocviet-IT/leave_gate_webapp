@@ -1,24 +1,23 @@
-import PublicNotice from "@/components/PublicNotice";
+import RequestForm, { type RequestKind } from "@/components/public/RequestForm";
 
-export const metadata = { title: "Gửi đơn — Nhân sự CTYHP" };
+export const metadata = { title: "Gửi đơn - Nhân sự CTYHP" };
 
-export default function NewRequestPage() {
-  return (
-    <PublicNotice
-      title="Gửi đơn — form công khai"
-      step={3}
-      prdSection="X · XII"
-      contains={[
-        "Ô Loại đơn: Xin nghỉ phép hoặc Ra vào cổng, đổi các trường bên dưới",
-        "Tìm và chọn tên trong danh sách CBNV đồng bộ từ Google Directory",
-        "Ô mã CBNV, phải khớp với tên đã chọn mới gửi được",
-        "Chức vụ và phòng ban tự hiện ra, chỉ đọc",
-        "Nghỉ phép: khoảng ngày, nửa ngày, 8 lý do, diễn giải, bàn giao, ngày làm bù, cam kết",
-        "Ra vào cổng: lý do, diễn giải, giờ ra, giờ vào lại dự kiến",
-        "Dòng tự tính số giờ ngay khi chọn ngày hoặc giờ",
-        "Gửi xong hiện mã đơn và link theo dõi riêng",
-      ]}
-      blockedBy="Chưa có nguồn mã CBNV. Google Directory không chứa trường này, nên chưa đối chiếu được tên với mã — Phòng Nhân sự cần nạp mã vào Directory hoặc gửi file mã ↔ họ tên."
-    />
-  );
+type SearchParams = Record<string, string | string[] | undefined>;
+
+/**
+ * One page, one form — the steps are gone. `?kind=gate` opens straight on the
+ * gate pass so a QR code at the guard booth can skip the choice; anything else
+ * opens on leave, which is the commoner errand.
+ */
+function kindOf(value: string | string[] | undefined): RequestKind {
+  return (Array.isArray(value) ? value[0] : value) === "gate" ? "gate" : "leave";
+}
+
+export default async function NewRequestPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const params = await searchParams;
+  return <RequestForm initialKind={kindOf(params.kind)} />;
 }

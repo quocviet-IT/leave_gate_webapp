@@ -21,6 +21,9 @@ is wrong — say so, do not silently pick.
 - Lint: `npm run lint`
 - Apply migrations: `npm run migrate`
 - Smoke every route: `node scripts/smoke-pages.mjs http://localhost:PORT`
+- Verify the database rules: `npm run verify:employees` · `verify:submit` ·
+  `verify:lookup` · `verify:approvals` · `verify:booth` · `verify:timesheet` ·
+  `verify:supervisor` · `verify:reminders`
 
 ## 2. How to verify (mandatory before claiming "done")
 
@@ -33,6 +36,10 @@ is wrong — say so, do not silently pick.
   input/output taken from PRD section XI. Never verify by "looks right in the UI".
 - Migration: `npm run migrate` is idempotent; re-run it and confirm the second
   run reports `skip`.
+- Admin screen: `smoke-pages.mjs` only ever sees the sign-in redirect, so it
+  proves nothing about `/admin/*`. Render the screen's client component to
+  static markup in `tests/unit/*.test.tsx` instead — see
+  `approval-queue-render.test.tsx`. Prove the test fails before trusting it.
 
 ## 3. Architecture & where logic lives
 
@@ -40,7 +47,7 @@ Three zones, three ways in (PRD III). This shapes everything:
 
 | Zone | Routes | Way in |
 | --- | --- | --- |
-| Employee, public | `/don`, `/tra-cuu` | none at all — a name chosen from the staff list |
+| Employee, public | `/don`, `/tra-cuu` | none at all — the person types their own name |
 | Admin | `/admin/*` | Google Workspace SSO, domain `ctyhp.vn` |
 | Guard booth | `/bao-ve` | booth PIN |
 
@@ -58,6 +65,11 @@ Three zones, three ways in (PRD III). This shapes everything:
   not publish the staff directory. Name search, submit, lookup, withdraw and the
   booth stamps are all SECURITY DEFINER functions, which is where the rate limits
   and the booth PIN are enforced.
+- Since migration `0015` the public form types a name rather than choosing one,
+  so `lg_request.employee_id` is **nullable** and is null for every public
+  filing. Anything reading a person off a request must read
+  `employee_snapshot`, not join `lg_employee` — a join silently returns nothing.
+  `employee_snapshot.typed` says which it was.
 - **The request code proves nothing.** It is sequential. Any path taking a
   request code answers with a status only; full detail, withdrawal and real-return
   edits require the 128-bit lookup token from the private link. Never widen this.
@@ -72,8 +84,28 @@ Three zones, three ways in (PRD III). This shapes everything:
   property off one throws at render time. Plain components (`Button`, `Card`,
   `Alert`) are fine. Keep `page.tsx` a thin server wrapper. Guarded by
   `tests/unit/rsc-antd.test.ts`.
+- **A `"use server"` file may only export async functions.** Export a plain
+  constant from one — an empty form state, say — and every importer gets a
+  server *reference* instead: `typeof state === "function"`, so the first
+  `state.errors.x` read throws and the page 500s. Nothing catches it, because
+  the constant still types and builds fine. Keep form state in a sibling
+  `action-state.ts` with no directive. This shipped broken in `/don` and would
+  have shipped broken in `/tra-cuu`.
+- A screen is only verified once the branch holding the client component has
+  actually rendered. Both lookup smoke failures hid behind a branch that never
+  ran: step 1 of a form, or an expired deadline. Seed the state the branch
+  needs — `verify:*` scripts roll their transaction back, so nothing they
+  create is ever visible over HTTP.
 - Running `npm run build` then `npm run dev` over the same `.next` makes nested
   routes 404 in dev while single-segment routes still work. Delete `.next` first.
+- **What a client component imports, the browser downloads — transitively.**
+  A `"use client"` file importing one helper from `lib/domain/schemas.ts` pulls
+  zod in with it: that put `/don` at 215.5 KB against a 160 KB budget, a 65 KB
+  regression from a one-line import. Rules a browser needs live in a module
+  that imports nothing — `lib/domain/reasons.ts` is the pattern, and
+  `schemas.ts` reads from it rather than the other way round. `npm run
+  measure:js` against a production server is what catches this; build, test,
+  typecheck and lint all pass while it happens.
 - **`revoke … from public` does not stop `anon` from calling a function.** Two
   grants make a function reachable: Supabase's default privileges grant EXECUTE
   directly to `anon` and `authenticated`, and PostgreSQL's own default grants it to
@@ -98,7 +130,9 @@ Three zones, three ways in (PRD III). This shapes everything:
 
 - Never force-push to `main`.
 - Never grant `anon` a table policy "just to test" the public form.
-- Never let a booth screen show a leave reason (PRD rule 14 and 19).
+- Never let a booth screen show a leave reason (PRD rule 14 and 19). The board
+  function selects its columns by name and the render test asserts the words
+  are absent — keep both when the screen changes.
 - Never let a final-hours edit save without a reason (PRD rule 16).
 - Never trust a client-sent hours figure — recompute with `lib/domain/workhours.ts`.
 - Never swallow an error (empty catch, ignoring `{ error }`).
@@ -106,11 +140,29 @@ Three zones, three ways in (PRD III). This shapes everything:
 ## 6. Open questions the board still owns
 
 1. Anyone who can open the public link can file under another person's name
-   (PRD v0.6 rule 3). Mitigations shipped: names only from the staff list, 5 per
-   employee per day, one per device per minute, device fingerprint in the audit
-   log, and the approval screen showing the person's recent requests. The
-   residual gap — an impersonated person cannot discover the request — is
-   accepted. Closing it needs company email for everyone, or a shared department
-   PIN on the form.
-2. Nobody can be chosen on the public form until C&B pastes a staff list.
-   That is the only remaining prerequisite, and it is a spreadsheet.
+   (PRD v0.6 rule 3). **The board widened this deliberately on 2026-08-25:** the
+   form now takes a typed name instead of one chosen from the staff list, so a
+   person can file under any name at all, including one that belongs to nobody.
+   The concern was raised and the instruction repeated; migration `0015` carries
+   the reasoning.
+
+   What is left holding it: 5 per day per typed name (`lg_name_key` normalises
+   case and spacing), 30 per day per device, one per device per minute, the
+   device fingerprint in the audit log, `employee_snapshot.typed = true` marking
+   which requests were never matched to a staff row, and the approvers, who are
+   the real control point and know their own people.
+
+   Two things got weaker and both are worth knowing before touching this:
+   - Rule 9 — an approver may not decide their own request — used to compare
+     account emails through the employee id. With no id it compares the typed
+     name against `lg_app_user.full_name`. An approver who types their name
+     differently can decide their own request. `verify:approvals` asserts the
+     part that still works.
+   - The five-a-day limit is now keyed on a string the filer chooses. It is a
+     speed bump. The per-device ceiling is what actually bounds abuse.
+
+   Closing any of this needs an identity the public form does not have: company
+   email for everyone, or a shared department PIN.
+2. The staff list is no longer a prerequisite for filing — the public form works
+   with `lg_employee` empty. It still matters for supervisors filing on behalf
+   (`/admin/tao-don-ho` picks from it) and for the timesheet to name real people.

@@ -58,7 +58,7 @@ async function main() {
   const employeeId = emp.rows[0].id;
 
   const first = await client.query(
-    "select lg_submit_request($1::uuid, 'leave', $2::jsonb, $3::int, $4) as r",
+    "select lg_submit_request('', '', '', 'leave', $2::jsonb, $3::int, $4, $1::uuid) as r",
     [employeeId, JSON.stringify(LEAVE), 24 * 60, "device-a"],
   );
   const filed = first.rows[0].r;
@@ -96,14 +96,14 @@ async function main() {
 
   // One filing per device per minute.
   const throttled = await expectRaise(
-    "select lg_submit_request($1::uuid, 'leave', $2::jsonb, $3::int, $4)",
+    "select lg_submit_request('', '', '', 'leave', $2::jsonb, $3::int, $4, $1::uuid)",
     [employeeId, JSON.stringify(LEAVE), 480, "device-a"],
   );
   check("a second filing from the same device within a minute is refused", throttled);
 
   // Five a day per employee: four more from other devices, then the sixth fails.
   for (let i = 2; i <= 5; i++) {
-    await client.query("select lg_submit_request($1::uuid, 'leave', $2::jsonb, $3::int, $4)", [
+    await client.query("select lg_submit_request('', '', '', 'leave', $2::jsonb, $3::int, $4, $1::uuid)", [
       employeeId,
       JSON.stringify(LEAVE),
       480,
@@ -111,7 +111,7 @@ async function main() {
     ]);
   }
   const capped = await expectRaise(
-    "select lg_submit_request($1::uuid, 'leave', $2::jsonb, $3::int, $4)",
+    "select lg_submit_request('', '', '', 'leave', $2::jsonb, $3::int, $4, $1::uuid)",
     [employeeId, JSON.stringify(LEAVE), 480, "device-6"],
   );
   check("a sixth filing in one day is refused", capped);
@@ -119,14 +119,158 @@ async function main() {
   // A leaver cannot be filed for, even with a valid id.
   await client.query("update lg_employee set active = false where id = $1", [employeeId]);
   const inactive = await expectRaise(
-    "select lg_submit_request($1::uuid, 'leave', $2::jsonb, $3::int, $4)",
+    "select lg_submit_request('', '', '', 'leave', $2::jsonb, $3::int, $4, $1::uuid)",
     [employeeId, JSON.stringify(LEAVE), 480, "device-7"],
   );
   check("an inactive employee cannot be filed for", inactive);
 
+  // ---------------------------------------------------------------------
+  // The typed-name path (board decision, 2026-08-25). No employee id at all:
+  // the name, department and title are whatever the person wrote.
+  // ---------------------------------------------------------------------
+  const TYPED = ["Tạ Quốc Việt", "Xưởng A", "Công nhân"];
+  const typedLeave = { ...LEAVE, handoverName: "Nguyễn Văn Bình" };
+
+  const typedFiled = await client.query(
+    "select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5) as r",
+    [...TYPED, JSON.stringify(typedLeave), "typed-1"],
+  );
+  check(
+    "a request can be filed under a typed name, with no staff row behind it",
+    /^NP-\d{4}-\d{4}$/.test(typedFiled.rows[0].r.code ?? ""),
+    typedFiled.rows[0].r.code,
+  );
+
+  const typedRow = await client.query(
+    "select employee_id, employee_snapshot from lg_request where code = $1",
+    [typedFiled.rows[0].r.code],
+  );
+  check("and it points at no staff row", typedRow.rows[0].employee_id === null);
+  check(
+    "the typed name, department and title are what the snapshot keeps",
+    typedRow.rows[0].employee_snapshot.full_name === "Tạ Quốc Việt" &&
+      typedRow.rows[0].employee_snapshot.department === "Xưởng A" &&
+      typedRow.rows[0].employee_snapshot.title === "Công nhân",
+    JSON.stringify(typedRow.rows[0].employee_snapshot),
+  );
+  check(
+    "and the snapshot records that it was typed rather than chosen",
+    typedRow.rows[0].employee_snapshot.typed === true,
+  );
+
+  const typedHandover = await client.query(
+    `select l.handover_name from lg_leave_detail l
+     join lg_request r on r.id = l.request_id where r.code = $1`,
+    [typedFiled.rows[0].r.code],
+  );
+  check(
+    "the handover is kept as typed too",
+    typedHandover.rows[0].handover_name === "Nguyễn Văn Bình",
+    String(typedHandover.rows[0].handover_name),
+  );
+
+  check(
+    "a blank name is refused",
+    await expectRaise("select lg_submit_request('', $1, $2, 'leave', $3::jsonb, 480, $4)", [
+      "Xưởng A",
+      "Công nhân",
+      JSON.stringify(typedLeave),
+      "typed-blank",
+    ]),
+  );
+  check(
+    "a one-letter name is refused",
+    await expectRaise("select lg_submit_request('A', $1, $2, 'leave', $3::jsonb, 480, $4)", [
+      "Xưởng A",
+      "Công nhân",
+      JSON.stringify(typedLeave),
+      "typed-short",
+    ]),
+  );
+  check(
+    "a missing department is refused — the approver routes on it",
+    await expectRaise("select lg_submit_request($1, '', $2, 'leave', $3::jsonb, 480, $4)", [
+      "Tạ Quốc Việt",
+      "Công nhân",
+      JSON.stringify(typedLeave),
+      "typed-nodept",
+    ]),
+  );
+  check(
+    "a missing job title is refused — it is on the paper form the approver reads",
+    await expectRaise("select lg_submit_request($1, $2, '', 'leave', $3::jsonb, 480, $4)", [
+      "Tạ Quốc Việt",
+      "Xưởng A",
+      JSON.stringify(typedLeave),
+      "typed-notitle",
+    ]),
+  );
+
+  // The handover is optional now, matching the blank line for it on paper.
+  const noHandover = { ...LEAVE };
+  delete noHandover.handoverEmployeeId;
+  const filedBlank = await client.query(
+    "select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5) as r",
+    ["Đỗ Thị Không Bàn Giao", "Xưởng C", "Công nhân", JSON.stringify(noHandover), "typed-nohand"],
+  );
+  check(
+    "a leave application with no handover is accepted",
+    /^NP-\d{4}-\d{4}$/.test(filedBlank.rows[0].r.code ?? ""),
+    filedBlank.rows[0].r.code,
+  );
+  const blankHandover = await client.query(
+    `select l.handover_name from lg_leave_detail l
+     join lg_request r on r.id = l.request_id where r.code = $1`,
+    [filedBlank.rows[0].r.code],
+  );
+  check(
+    "and it stores no handover rather than an empty string",
+    blankHandover.rows[0].handover_name === null,
+    String(blankHandover.rows[0].handover_name),
+  );
+
+  // Five a day still holds, now counted per name rather than per staff row.
+  for (let i = 2; i <= 5; i++) {
+    await client.query("select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5)", [
+      ...TYPED,
+      JSON.stringify(typedLeave),
+      `typed-${i}`,
+    ]);
+  }
+  check(
+    "a sixth request under one typed name is refused",
+    await expectRaise("select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5)", [
+      ...TYPED,
+      JSON.stringify(typedLeave),
+      "typed-6",
+    ]),
+  );
+  check(
+    "and case and spacing do not make it a different name",
+    await expectRaise("select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5)", [
+      "  tạ  quốc   việt ",
+      "Xưởng A",
+      "Công nhân",
+      JSON.stringify(typedLeave),
+      "typed-7",
+    ]),
+  );
+  check(
+    "but a genuinely different name is not caught by somebody else's limit",
+    (
+      await client.query("select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5) as r", [
+        "Lê Thị Hoa",
+        "Xưởng B",
+        "Tổ trưởng",
+        JSON.stringify(typedLeave),
+        "typed-other",
+      ])
+    ).rows[0].r.code !== undefined,
+  );
+
   // anon must not be able to reach the write path at all.
   const grants = await client.query(
-    `select has_function_privilege('anon', 'lg_submit_request(uuid, lg_request_kind, jsonb, integer, text)', 'execute') as anon_can`,
+    `select has_function_privilege('anon', 'lg_submit_request(text, text, text, lg_request_kind, jsonb, integer, text, uuid)', 'execute') as anon_can`,
   );
   check("anon cannot execute lg_submit_request", grants.rows[0].anon_can === false);
 
