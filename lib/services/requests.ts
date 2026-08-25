@@ -5,7 +5,7 @@ export type FileRequestInput = {
   employeeName: string;
   employeeDepartment: string;
   employeeTitle?: string;
-  /** Only a supervisor filing on behalf has one; the public form never does. */
+  /** Only a caller that already knows the staff row; the public form never does. */
   employeeId?: string;
   kind: "leave" | "gate";
   detail: Record<string, unknown>;

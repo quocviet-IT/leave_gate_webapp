@@ -14,7 +14,7 @@ export default async function GuardedAdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, role } = await requireRole("approver", "cnb", "supervisor");
+  const { user, role } = await requireRole("approver", "cnb");
   return (
     <AdminShell role={role} email={user.email ?? ""}>
       {children}

@@ -128,7 +128,12 @@ async function main() {
   // The typed-name path (board decision, 2026-08-25). No employee id at all:
   // the name, department and title are whatever the person wrote.
   // ---------------------------------------------------------------------
-  const TYPED = ["Tạ Quốc Việt", "Xưởng A", "Công nhân"];
+  // A name nothing real will ever be filed under. The daily limit counts rows
+  // in lg_submit_attempt, and that table keeps committed rows from real
+  // filings and from verify:e2e — so a realistic name here makes the run
+  // depend on what happened earlier today. It did: "Tạ Quốc Việt" had already
+  // been used through the live form, and the limit tripped four requests early.
+  const TYPED = ["Zz Kiểm Thử Gõ Tay", "Xưởng ZZ", "Công nhân"];
   const typedLeave = { ...LEAVE, handoverName: "Nguyễn Văn Bình" };
 
   const typedFiled = await client.query(
@@ -148,9 +153,9 @@ async function main() {
   check("and it points at no staff row", typedRow.rows[0].employee_id === null);
   check(
     "the typed name, department and title are what the snapshot keeps",
-    typedRow.rows[0].employee_snapshot.full_name === "Tạ Quốc Việt" &&
-      typedRow.rows[0].employee_snapshot.department === "Xưởng A" &&
-      typedRow.rows[0].employee_snapshot.title === "Công nhân",
+    typedRow.rows[0].employee_snapshot.full_name === TYPED[0] &&
+      typedRow.rows[0].employee_snapshot.department === TYPED[1] &&
+      typedRow.rows[0].employee_snapshot.title === TYPED[2],
     JSON.stringify(typedRow.rows[0].employee_snapshot),
   );
   check(
@@ -190,8 +195,8 @@ async function main() {
   check(
     "a missing department is refused — the approver routes on it",
     await expectRaise("select lg_submit_request($1, '', $2, 'leave', $3::jsonb, 480, $4)", [
-      "Tạ Quốc Việt",
-      "Công nhân",
+      TYPED[0],
+      TYPED[2],
       JSON.stringify(typedLeave),
       "typed-nodept",
     ]),
@@ -199,8 +204,8 @@ async function main() {
   check(
     "a missing job title is refused — it is on the paper form the approver reads",
     await expectRaise("select lg_submit_request($1, $2, '', 'leave', $3::jsonb, 480, $4)", [
-      "Tạ Quốc Việt",
-      "Xưởng A",
+      TYPED[0],
+      TYPED[1],
       JSON.stringify(typedLeave),
       "typed-notitle",
     ]),
@@ -230,6 +235,20 @@ async function main() {
   );
 
   // Five a day still holds, now counted per name rather than per staff row.
+  // Counted from what is already there rather than from zero, so a stray
+  // committed row under this name cannot make the run fail or falsely pass.
+  const already = await client.query(
+    `select count(*)::int as n from lg_submit_attempt
+     where name_key = lg_name_key($1)
+       and (at at time zone 'Asia/Ho_Chi_Minh')::date = (now() at time zone 'Asia/Ho_Chi_Minh')::date`,
+    [TYPED[0]],
+  );
+  check(
+    "the test name starts the day unused, or the limits below prove nothing",
+    already.rows[0].n === 1,
+    `đã có ${already.rows[0].n} lần gửi dưới tên kiểm thử`,
+  );
+
   for (let i = 2; i <= 5; i++) {
     await client.query("select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5)", [
       ...TYPED,
@@ -248,9 +267,9 @@ async function main() {
   check(
     "and case and spacing do not make it a different name",
     await expectRaise("select lg_submit_request($1, $2, $3, 'leave', $4::jsonb, 480, $5)", [
-      "  tạ  quốc   việt ",
-      "Xưởng A",
-      "Công nhân",
+      "  zz  kiểm   thử  gõ tay ",
+      TYPED[1],
+      TYPED[2],
       JSON.stringify(typedLeave),
       "typed-7",
     ]),
@@ -277,7 +296,10 @@ async function main() {
   // The whole privilege surface, not just the one function. Supabase's default
   // privileges grant EXECUTE straight to anon, so a new function is public unless
   // a migration says otherwise — exactly how lg_submit_request slipped through.
-  const ALLOWED_FOR_ANON = ["lg_search_employees", "lg_status_by_code"];
+  // One function, since 0017. The public form types a name rather than
+  // searching the staff list, so lg_search_employees lost its browser caller
+  // and its anon grant with it.
+  const ALLOWED_FOR_ANON = ["lg_status_by_code"];
   const surface = await client.query(`
     select p.proname as fn
     from pg_proc p
@@ -290,19 +312,24 @@ async function main() {
   const reachable = surface.rows.map((r) => r.fn);
   const unexpected = reachable.filter((fn) => !ALLOWED_FOR_ANON.includes(fn));
   check(
-    "anon reaches only the two functions the public form needs",
+    "anon reaches only the one function the public form needs",
     unexpected.length === 0,
     `còn gọi được: ${unexpected.join(", ")}`,
   );
 
-  // And the two it does keep must still work, or the public form is broken.
+  // And the one it does keep must still work, or /tra-cuu is broken.
   const stillWorks = await client.query(
     `select has_function_privilege('anon', 'lg_search_employees(text)', 'execute') as search,
             has_function_privilege('anon', 'lg_status_by_code(text)', 'execute') as status`,
   );
   check(
-    "anon keeps the name search and the status lookup",
-    stillWorks.rows[0].search === true && stillWorks.rows[0].status === true,
+    "anon keeps the status lookup",
+    stillWorks.rows[0].status === true,
+    JSON.stringify(stillWorks.rows[0]),
+  );
+  check(
+    "and has lost the name search it no longer calls",
+    stillWorks.rows[0].search === false,
     JSON.stringify(stillWorks.rows[0]),
   );
 

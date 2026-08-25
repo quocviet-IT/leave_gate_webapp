@@ -23,7 +23,11 @@ is wrong — say so, do not silently pick.
 - Smoke every route: `node scripts/smoke-pages.mjs http://localhost:PORT`
 - Verify the database rules: `npm run verify:employees` · `verify:submit` ·
   `verify:lookup` · `verify:approvals` · `verify:booth` · `verify:timesheet` ·
-  `verify:supervisor` · `verify:reminders`
+  `verify:reminders`
+- Verify the admin zone actually opens (needs a running server and both
+  passwords): `npm run verify:admin -- http://localhost:PORT <duyet> <nhansu>`
+- Issue or reset the two admin passwords:
+  `npm run admin:accounts -- <duyet> <nhansu>`
 
 ## 2. How to verify (mandatory before claiming "done")
 
@@ -40,6 +44,9 @@ is wrong — say so, do not silently pick.
   proves nothing about `/admin/*`. Render the screen's client component to
   static markup in `tests/unit/*.test.tsx` instead — see
   `approval-queue-render.test.tsx`. Prove the test fails before trusting it.
+  Since 2026-08-25 `npm run verify:admin` also signs in for real and opens
+  every admin screen over HTTP, which is the only check that covers the guard
+  chain end to end. Run it after touching `lib/auth.ts`, `proxy.ts` or a role.
 
 ## 3. Architecture & where logic lives
 
@@ -48,7 +55,7 @@ Three zones, three ways in (PRD III). This shapes everything:
 | Zone | Routes | Way in |
 | --- | --- | --- |
 | Employee, public | `/don`, `/tra-cuu` | none at all — the person types their own name |
-| Admin | `/admin/*` | Google Workspace SSO, domain `ctyhp.vn` |
+| Admin | `/admin/*` | a username and password the company issues |
 | Guard booth | `/bao-ve` | booth PIN |
 
 - Pure rules: `lib/domain/` — `workhours.ts` (all working-time arithmetic),
@@ -60,6 +67,10 @@ Three zones, three ways in (PRD III). This shapes everything:
   only).
 - Auth and role guards: `lib/auth.ts`. Admin pages sit under
   `app/admin/(guarded)/`; `dang-nhap` and `khong-du-quyen` sit outside it.
+  Two roles only — `approver` and `cnb`. A person signs in with a username;
+  `lib/domain/admin-accounts.ts` turns it into the address Supabase keys the
+  account on, and imports nothing so the sign-in form does not drag a library
+  into the bundle.
 - Writes go through Postgres functions in `supabase/migrations/`, not through
   table policies. `anon` deliberately has **no** table access: a public form must
   not publish the staff directory. Name search, submit, lookup, withdraw and the
@@ -163,6 +174,9 @@ Three zones, three ways in (PRD III). This shapes everything:
 
    Closing any of this needs an identity the public form does not have: company
    email for everyone, or a shared department PIN.
-2. The staff list is no longer a prerequisite for filing — the public form works
-   with `lg_employee` empty. It still matters for supervisors filing on behalf
-   (`/admin/tao-don-ho` picks from it) and for the timesheet to name real people.
+2. The staff list is no longer a prerequisite for anything. The public form
+   works with `lg_employee` empty, and the supervisor screen that read it was
+   removed on 2026-08-25. It is kept because the timesheet reconciliation and
+   the Directory sync in P9 both want a staff list, but nothing on the request
+   path reads it today — so nothing breaks while it stays empty, and nothing
+   proves it right while it fills.

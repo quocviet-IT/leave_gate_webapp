@@ -51,19 +51,10 @@ export const submitterSchema = z.object({
     .trim()
     .min(2, "Ghi phòng ban của bạn")
     .max(100, "Tên phòng ban quá dài"),
-  // Set only when a supervisor filed on behalf and picked from their own
-  // department's list. The public form never sends one.
+  // Kept for a caller that already knows the staff row — nothing in the app
+  // sends one since the supervisor screen was removed on 2026-08-25, but the
+  // database function still accepts an id and the two should agree.
   employeeId: z.string().uuid().optional(),
-});
-
-/**
- * Who a supervisor is filing for. A different way in, so a different rule: the
- * person is chosen from the supervisor's own department list, which means an
- * id — and the name, title and department come from that row rather than from
- * anything typed.
- */
-export const onBehalfSubmitterSchema = z.object({
-  employeeId: z.string().uuid("Chọn người trong xưởng của bạn"),
 });
 
 export const leaveRequestSchema = z
@@ -127,8 +118,6 @@ export const requestDetailSchema = z.discriminatedUnion("kind", [
 export const submitRequestSchema = z.object({
   submitter: submitterSchema,
   detail: requestDetailSchema,
-  /** Set when a supervisor files for a worker; the account doing the filing. */
-  onBehalfOf: z.string().email().nullish(),
 });
 
 const lookupToken = z.string().regex(/^[0-9a-f]{32}$/, "Đường dẫn tra cứu không hợp lệ");

@@ -42,7 +42,7 @@ describe("who is filing, typed", () => {
     expect(parsed.employeeName).toBe("Tạ Quốc Việt");
   });
 
-  it("still carries an employee id when a supervisor picked one", () => {
+  it("still carries an employee id when the caller already knows the staff row", () => {
     const parsed = submitterSchema.parse({
       ...typed,
       employeeId: "11111111-1111-4111-8111-111111111111",
@@ -76,26 +76,6 @@ describe("the handover is a typed name too", () => {
   it("treats whitespace as nothing typed rather than as a name", () => {
     const parsed = leaveRequestSchema.parse({ ...leave, handoverName: "  " });
     expect(parsed.handoverName).toBe("");
-  });
-});
-
-describe("a supervisor filing on behalf picks from a list, so the rules differ", () => {
-  it("needs an employee id and nothing typed", async () => {
-    const { onBehalfSubmitterSchema } = await import("@/lib/domain/schemas");
-    expect(
-      onBehalfSubmitterSchema.safeParse({
-        employeeId: "11111111-1111-4111-8111-111111111111",
-      }).success,
-    ).toBe(true);
-  });
-
-  it("refuses a request with nobody chosen", async () => {
-    const { onBehalfSubmitterSchema } = await import("@/lib/domain/schemas");
-    const parsed = onBehalfSubmitterSchema.safeParse({ employeeId: "" });
-    expect(parsed.success).toBe(false);
-    if (!parsed.success) {
-      expect(parsed.error.issues[0]?.message).toBe("Chọn người trong xưởng của bạn");
-    }
   });
 });
 

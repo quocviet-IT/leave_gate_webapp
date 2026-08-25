@@ -43,7 +43,7 @@ async function main() {
   await client.query("begin");
 
   // C&B may import.
-  await actAs("anhkhoa@ctyhp.vn");
+  await actAs("nhansu@ctyhp.vn");
   const first = await client.query("select lg_import_employees($1::jsonb) as r", [JSON.stringify(ROWS)]);
   check("import inserts new rows", first.rows[0].r.inserted === 2, JSON.stringify(first.rows[0].r));
 
@@ -62,7 +62,7 @@ async function main() {
   check("the import is audited", audited.rows[0].n >= 2, `n=${audited.rows[0].n}`);
 
   // An approver is not C&B and must be refused.
-  await actAs("dieu@ctyhp.vn");
+  await actAs("duyet@ctyhp.vn");
   let refused = false;
   try {
     await client.query("savepoint s1");
@@ -92,7 +92,7 @@ async function main() {
   check("search is bounded to 8 rows", capped.rows[0].n > 0 && capped.rows[0].n <= 8, `n=${capped.rows[0].n}`);
 
   // A leaver must not be filed for, so they drop out of the picker.
-  await actAs("anhkhoa@ctyhp.vn");
+  await actAs("nhansu@ctyhp.vn");
   await client.query("update lg_employee set active = false where code = 'ZZTEST02'");
   const leaver = await client.query("select * from lg_search_employees('lan')");
   check("an inactive employee is not searchable", leaver.rows.length === 0, JSON.stringify(leaver.rows));

@@ -4,7 +4,7 @@ import ApprovalQueue from "@/components/admin/ApprovalQueue";
 import type { QueueRow } from "@/lib/services/approvals";
 
 /**
- * The admin screens sit behind Google sign-in, so `smoke-pages.mjs` only ever
+ * The admin screens sit behind sign-in, so `smoke-pages.mjs` only ever
  * sees their redirect — a component that throws while rendering would reach
  * production unnoticed, which is exactly how the filing form shipped broken.
  *

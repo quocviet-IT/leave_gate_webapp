@@ -11,9 +11,9 @@ const { Title, Text } = Typography;
 /**
  * What is stuck, at a glance — PRD section XII.
  *
- * Counts only: no name, no reason, no request. Everybody in the admin zone
- * lands here, including supervisors, and a supervisor has no business reading
- * another department's leave reasons off the front page.
+ * Counts only: no name, no reason, no request. Both roles land here, and C&B
+ * has no business reading leave reasons off the front page — those belong to
+ * the approver's queue and the private link.
  */
 export default function OverviewPanel({
   counts,

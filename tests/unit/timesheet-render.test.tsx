@@ -4,7 +4,7 @@ import TimesheetTable from "@/components/admin/TimesheetTable";
 import type { TimesheetRow } from "@/lib/domain/timesheet";
 
 /**
- * `/admin/cham-cong` is behind Google sign-in, so the page smoke only sees its
+ * `/admin/cham-cong` is behind sign-in, so the page smoke only sees its
  * redirect. This renders the screen the way a browser would.
  */
 

@@ -10,19 +10,17 @@ const { Text } = Typography;
 const ROLE_LABELS: Record<AppRole, string> = {
   approver: "Người duyệt",
   cnb: "C&B Nhân sự",
-  supervisor: "Quản xưởng",
 };
 
 type NavItem = { key: string; label: string; roles: AppRole[] };
 
 /** Menu follows the roles in PRD section V: each person sees only their own work. */
 const NAV: NavItem[] = [
-  { key: "/admin", label: "Tổng quan", roles: ["approver", "cnb", "supervisor"] },
+  { key: "/admin", label: "Tổng quan", roles: ["approver", "cnb"] },
   { key: "/admin/duyet-don", label: "Duyệt đơn", roles: ["approver"] },
   { key: "/admin/cham-cong", label: "Chấm công", roles: ["cnb"] },
   { key: "/admin/nhan-su", label: "Nhân sự", roles: ["cnb"] },
   { key: "/admin/poster", label: "Poster QR", roles: ["cnb"] },
-  { key: "/admin/tao-don-ho", label: "Tạo đơn hộ", roles: ["supervisor"] },
 ];
 
 export default function AdminShell({

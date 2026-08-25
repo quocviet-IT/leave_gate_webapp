@@ -24,7 +24,23 @@ What exists for real:
 - Database foundation: tables, constraints, indexes, RLS with `anon` denied
   everywhere, role helpers, per-month code sequence, version-bump trigger.
 - Route tree for all three zones, with the admin auth boundary enforced.
-- Google sign-in for the admin zone.
+- Sign-in for the admin zone: a username and password, not Google. Google SSO
+  was never usable — the provider is not enabled on the Supabase project, so
+  `/auth/v1/authorize?provider=google` answers `400 provider is not enabled`
+  and nobody had ever signed in. Two issued accounts replaced it on
+  2026-08-25: `duyet` (approver) and `nhansu` (cnb). `npm run admin:accounts`
+  creates or resets them; `npm run verify:admin` signs in and opens every
+  screen over HTTP. **The supervisor role is gone** — `/admin/tao-don-ho` with
+  it. A supervisor helping a worker now fills the public form, which needs no
+  account at all.
+
+  One shared approver account is a deliberate trade the board made, and it
+  costs three things worth knowing: `decided_by_email` no longer names a
+  person, rule 9 (không tự duyệt đơn của mình) is inert because a shared
+  account's name matches nobody, and Claim no longer separates two people. The
+  version lock is what still makes a shared login safe. Splitting the account
+  back out is one row in `lg_app_user` per person — nothing in the design
+  blocks it.
 - Employee master data: a paste-import for C&B at `/admin/nhan-su`, and a bounded
   name search that never returns the employee number. The public form no longer
   uses that search; the supervisor's on-behalf screen does.
@@ -93,11 +109,10 @@ What exists for real:
 - `lib/xlsx.ts` writes the `.xlsx` by hand — a ZIP of five XML parts over
   `node:zlib`, so the export needs no spreadsheet dependency. Its test reads
   the ZIP back rather than trusting it.
-- Overview at `/admin` and filing on behalf at `/admin/tao-don-ho`. The
-  overview is counts only — no name, no reason — because supervisors land
-  there too. A supervisor files for their own workshop and nobody else's,
-  checked in the database against `lg_app_user.department`.
-  `npm run verify:supervisor`.
+- Overview at `/admin`. Counts only — no name, no reason — because C&B lands
+  there too, and the names and reasons belong to the approver's queue and the
+  private link. Filing on behalf at `/admin/tao-don-ho` was removed with the
+  supervisor role on 2026-08-25.
 - Google Chat and the SLA run. `lib/domain/chat-messages.ts` composes every
   message and is where the two spaces differ: the guards' space carries a
   name, a time and a code, never a reason. Posting is best-effort — a Chat
@@ -177,7 +192,9 @@ Found on 2026-08-25 while re-keying the handover field: `OnBehalfForm` sent
 application therefore always got "Chọn người nhận bàn giao" and could never
 submit. Gate passes were unaffected, which is why it went unnoticed.
 
-`verify:supervisor` did not catch it because it calls the database function
-directly and never crosses the server action, and the render test renders the
-form without submitting it. The form now asks for a handover name like the
-public one does.
+`verify:supervisor` did not catch it because it called the database function
+directly and never crossed the server action, and the render test rendered the
+form without submitting it. The form asked for a handover name after that, and
+the whole screen was removed a few hours later with the supervisor role — but
+the lesson stands: a check that skips the server action does not cover the
+server action.

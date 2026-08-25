@@ -32,7 +32,7 @@ The whole design follows from these, so nothing is shared between them by accide
 | Zone | Routes | Way in | Who |
 | --- | --- | --- | --- |
 | Employee | `/don`, `/tra-cuu` | no login, no code — type your own name | all staff, including everyone without a company email |
-| Admin | `/admin/*` | Google Workspace SSO, `@ctyhp.vn` only | four approvers · C&B · workshop supervisors |
+| Admin | `/admin/*` | a username and password the company issues | one shared approver account · C&B |
 | Gate booth | `/bao-ve` | booth PIN | the guard on duty |
 
 `anon` holds no table permissions at all: publishing a public form must not publish the staff
@@ -75,7 +75,7 @@ admin screen for departments and staff, approval rights scoped by department.
 ## Technology
 
 Next.js 16 · React 19 · Ant Design 6 · Supabase (Postgres, authorisation in the database for all
-three zones) · Google Workspace SSO for the admin zone · a booth PIN for the gate · Google Chat
+three zones) · issued username and password for the admin zone · a booth PIN for the gate · Google Chat
 webhooks (two spaces) · Vercel.
 
 ## Relationship to the accounting app

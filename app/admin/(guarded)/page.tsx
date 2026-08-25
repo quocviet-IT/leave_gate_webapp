@@ -22,7 +22,7 @@ export default async function AdminOverviewPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  const { role } = await requireRole("approver", "cnb", "supervisor");
+  const { role } = await requireRole("approver", "cnb");
   const params = await searchParams;
   const now = serverNow();
   const month = /^\d{4}-\d{2}$/.test(one(params.thang)) ? one(params.thang) : currentMonth(now);

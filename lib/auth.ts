@@ -21,8 +21,8 @@ export async function getSessionUser(): Promise<User | null> {
 
 /**
  * The signed-in person's role, or null when they are not signed in or hold no
- * role. The domain check runs here too: a Google account outside the company
- * counts as no role at all, whatever the session says.
+ * role. The domain check runs here too: an account outside the company counts
+ * as no role at all, whatever the session says.
  */
 export async function getUserRole(): Promise<AppRole | null> {
   const sb = await createSupabaseServerClient();
@@ -59,10 +59,6 @@ export function isApprover(role: AppRole | null): boolean {
 /** Compensation & benefits — the only role that may edit final hours. */
 export function isCnb(role: AppRole | null): boolean {
   return role === "cnb";
-}
-
-export function isSupervisor(role: AppRole | null): boolean {
-  return role === "supervisor";
 }
 
 /**
