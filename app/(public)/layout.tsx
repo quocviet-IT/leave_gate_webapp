@@ -32,12 +32,18 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         </Link>
         <strong style={{ fontSize: "1.05rem" }}>Nghỉ phép &amp; ra vào cổng</strong>
       </header>
+      {/*
+        The padding is `--card-pad` rather than a literal, because the masthead
+        and the sticky submit bar bleed to this card's edges with a negative
+        margin of exactly that size. Two literals would drift apart and the
+        bleed would stop lining up.
+      */}
       <main
         style={{
           background: "#fff",
           border: "1px solid #dbe1ea",
           borderTop: "3px solid #2a4b9b",
-          padding: "clamp(1rem, 3vw, 1.5rem)",
+          padding: "var(--card-pad)",
         }}
       >
         {children}

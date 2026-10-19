@@ -2,10 +2,11 @@ import "server-only";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 /**
- * Service-role client. It bypasses RLS, so it exists for exactly two jobs that
- * no anon-key client can do: the nightly Directory sync, and the scheduled SLA
- * reminder run. Never import it from a client component, and never use it to
- * serve a request on behalf of a person — those paths stay under RLS.
+ * Service-role client. It bypasses RLS, so it is limited to server-owned jobs:
+ * Directory sync, scheduled reminders, and the public filing Server Action.
+ * The filing RPC is deliberately not granted to anon because the browser must
+ * never be allowed to supply its own computed minutes. Never import this client
+ * from a Client Component or use it for an authenticated person's read path.
  */
 export function isAdminClientConfigured(): boolean {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";

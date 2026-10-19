@@ -1,67 +1,110 @@
 "use client";
-import { useState } from "react";
-import { Alert, Button, Card, Space, Typography } from "antd";
+import { useState, type FormEvent } from "react";
+import { Alert, Button, Card, Input, Space, Typography } from "antd";
 import { createSupabaseBrowserClient } from "@/lib/db/client";
+import { accountEmail } from "@/lib/domain/admin-accounts";
 
 const { Title, Paragraph, Text } = Typography;
 
 /**
- * One button, no email field, no password — PRD screen 5. The `hd` parameter
- * asks Google to show only company accounts; the domain is enforced again on the
- * server and in the database, because a query parameter is a hint, not a rule.
+ * Username and password — PRD screen 5, rewritten on 2026-08-25.
+ *
+ * This was one Google button. The provider was never enabled on the Supabase
+ * project, so the button had never signed anybody in; the board chose issued
+ * accounts instead. A person types `duyet`, not an address: `accountEmail`
+ * turns it into the one Supabase knows, and refuses anything outside the
+ * company before a request is made, so an outside address gets a clear answer
+ * rather than a generic failure.
  */
 export default function SignInCard({ domain }: { domain: string }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  async function signIn() {
-    setBusy(true);
+  async function signIn(event: FormEvent) {
+    event.preventDefault();
     setError(null);
+
+    const email = accountEmail(username);
+    if (!email) {
+      setError(`Tên đăng nhập không hợp lệ. Dùng tài khoản @${domain} công ty cấp.`);
+      return;
+    }
+    if (password === "") {
+      setError("Nhập mật khẩu.");
+      return;
+    }
+
+    setBusy(true);
     try {
       const sb = createSupabaseBrowserClient();
-      const { error: signInError } = await sb.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/admin`,
-          queryParams: { hd: domain, prompt: "select_account" },
-        },
-      });
-      if (signInError) throw signInError;
-    } catch (cause) {
+      const { error: signInError } = await sb.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        // Supabase says "Invalid login credentials" for a wrong username and a
+        // wrong password alike, and that is the right amount to say.
+        setError("Tên đăng nhập hoặc mật khẩu không đúng.");
+        setBusy(false);
+        return;
+      }
+      // A full load, not a client-side push: the session cookie has just been
+      // set and the admin pages read it on the server.
+      window.location.assign("/admin");
+    } catch {
       setBusy(false);
-      setError(
-        cause instanceof Error
-          ? cause.message
-          : "Không mở được trang đăng nhập Google. Thử lại sau ít phút.",
-      );
+      setError("Không đăng nhập được. Kiểm tra mạng rồi thử lại.");
     }
   }
 
   return (
     <Card style={{ maxWidth: 420, margin: "clamp(1.5rem, 8vh, 5rem) auto" }}>
-      <Space direction="vertical" size="middle" style={{ display: "flex" }}>
-        <div>
-          <Title level={4} style={{ marginBottom: 4 }}>
-            Vùng quản trị
-          </Title>
-          <Text type="secondary">Duyệt đơn · chấm công · tạo đơn hộ</Text>
-        </div>
+      <form onSubmit={signIn}>
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+          <div>
+            <Title level={4} style={{ marginBottom: 4 }}>
+              Vùng quản trị
+            </Title>
+            <Text type="secondary">Duyệt đơn · chấm công · nhân sự</Text>
+          </div>
 
-        <Button type="primary" size="large" block loading={busy} onClick={signIn}>
-          Đăng nhập bằng email công ty
-        </Button>
+          <label>
+            <Text strong>Tên đăng nhập</Text>
+            <Input
+              size="large"
+              autoComplete="username"
+              autoCapitalize="off"
+              autoCorrect="off"
+              placeholder="Ví dụ: duyet"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+          </label>
 
-        <Paragraph type="secondary" style={{ marginBottom: 0, fontSize: 13 }}>
-          Chọn tài khoản <Text code>@{domain}</Text> của bạn. Không cần nhập email, không cần mật
-          khẩu. Tài khoản ngoài công ty sẽ bị từ chối.
-        </Paragraph>
+          <label>
+            <Text strong>Mật khẩu</Text>
+            <Input.Password
+              size="large"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </label>
 
-        {error ? <Alert type="error" showIcon message="Chưa đăng nhập được" description={error} /> : null}
+          <Button type="primary" size="large" block loading={busy} htmlType="submit">
+            Đăng nhập
+          </Button>
 
-        <Paragraph type="secondary" style={{ marginBottom: 0, fontSize: 13 }}>
-          Bạn là CBNV muốn gửi đơn? Không cần đăng nhập — mở <a href="/don">form gửi đơn</a>.
-        </Paragraph>
-      </Space>
+          {error ? <Alert type="error" showIcon message="Chưa đăng nhập được" description={error} /> : null}
+
+          <Paragraph type="secondary" style={{ marginBottom: 0, fontSize: 13 }}>
+            Tài khoản do công ty cấp. Quên mật khẩu thì báo Phòng Nhân sự đặt lại.
+          </Paragraph>
+
+          <Paragraph type="secondary" style={{ marginBottom: 0, fontSize: 13 }}>
+            Bạn là CBNV muốn gửi đơn? Không cần đăng nhập — mở <a href="/don">form gửi đơn</a>.
+          </Paragraph>
+        </Space>
+      </form>
     </Card>
   );
 }

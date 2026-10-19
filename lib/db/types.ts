@@ -1,6 +1,11 @@
 /** Shapes shared between the database and the app. Keep in step with `supabase/migrations`. */
 
-export type AppRole = "approver" | "cnb" | "supervisor";
+/**
+ * The admin-zone roles. `supervisor` was removed on 2026-08-25; the value
+ * survives in the `lg_app_role` enum only because Postgres cannot drop one, and
+ * a check constraint keeps it out of `lg_app_user`.
+ */
+export type AppRole = "approver" | "cnb";
 
 export type RequestKind = "leave" | "gate";
 
